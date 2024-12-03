@@ -25,4 +25,6 @@ plt.ylabel("Average time (s)")
 plt.legend()
 plt.tight_layout()
 
-plt.savefig("execution-time.png")
+filename = "execution-time.png"
+print(f"Saving figure to {filename}")
+plt.savefig(filename)
