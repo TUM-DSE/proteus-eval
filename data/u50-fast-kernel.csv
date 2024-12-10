@@ -1,0 +1,6 @@
+app_name,kernel_input_data_size,iterations,data_to_fpga_avg_time,kernel_avg_time,data_to_host_avg_time
+cl_burst_rw,524288,1000,137103,978201,101740
+cl_helloworld,524288,1000,87468,578612,66526
+cl_lmem_2rw,524288,1000,88540,615365,53157
+cl_shift_register,524332,100,146525,36467189,170619
+cl_wide_mem_rw,8388608,1000,1201118,1471230,490686
