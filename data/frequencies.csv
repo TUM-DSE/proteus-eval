@@ -1,0 +1,16 @@
+app_name,u50_slow_freq,u50_fast_freq,u280_slow_freq,u280_fast_freq,u280_ddr_slow_freq,u280_ddr_fast_freq
+cl_array_partition,,216.2,,,,
+cl_burst_rw,300,549.7,300,518.1,300,471.2
+cl_dataflow_func,,565.2,,493,,
+cl_dataflow_subfunc,,532.7,,547.9,,
+cl_helloworld,300,536.4,300,490.1,300,413.3
+cl_lmem_2rw,300,522.4,300,501.5,300,443.6
+cl_loop_reorder,,230.9,,,,
+cl_partition_cyclicblock,,,,,,
+cl_shift_register,300,434.7,300,424.2,300,438.2
+cl_systolic_array,,,,,,
+cl_wide_mem_rw,300,542,300,526.3,300,442.2
+3d-rendering,,,,,,
+digit-recognition,,,,,,
+optical-flow,,,,,,
+spam-filter,,,,,,
