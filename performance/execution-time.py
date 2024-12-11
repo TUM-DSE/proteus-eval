@@ -18,19 +18,20 @@ df_u280_ddr_slow_kernel = pd.read_csv("../data/u280-ddr-slow-kernel.csv", skipin
 df_u280_ddr_fast = pd.read_csv("../data/u280-ddr-fast.csv", skipinitialspace=True)
 df_u280_ddr_fast_kernel = pd.read_csv("../data/u280-ddr-fast-kernel.csv", skipinitialspace=True)
 
-bar_width = 0.1
+bar_width = 0.12
 app_names = df_u50_slow["app_name"].values
 x = np.arange(len(app_names))
 
-plt.bar(x - 2 * bar_width, df_u50_slow["average"].values, width=bar_width, label=f"U50 {common.BASE_FREQ} MHz")
-plt.bar(x -     bar_width, df_u50_fast["average"].values, width=bar_width, label="U50 unlimited")
-plt.bar(x                , df_u280_slow["average"].values, width=bar_width, label=f"U280 {common.BASE_FREQ} MHz")
-plt.bar(x +     bar_width, df_u280_fast["average"].values, width=bar_width, label="U280 unlimited")
+plt.bar(x - 2 * bar_width, df_u50_slow["average"].values, width=bar_width, label=f"U50 HBM {common.BASE_FREQ} MHz")
+plt.bar(x -     bar_width, df_u50_fast["average"].values, width=bar_width, label="U50 HBM unlimited")
+plt.bar(x                , df_u280_slow["average"].values, width=bar_width, label=f"U280 HBM {common.BASE_FREQ} MHz")
+plt.bar(x +     bar_width, df_u280_fast["average"].values, width=bar_width, label="U280 HBM unlimited")
 plt.bar(x + 2 * bar_width, df_u280_ddr_slow["average"].values, width=bar_width, label=f"U280 DDR {common.BASE_FREQ} MHz")
 plt.bar(x + 3 * bar_width, df_u280_ddr_fast["average"].values, width=bar_width, label="U280 DDR unlimited")
 
 plt.xticks(x, app_names, rotation=45, ha="right")
 plt.ylabel("Average time (s)")
+plt.ylim(top=21)
 # plt.yscale("log")
 plt.legend()
 plt.tight_layout()
