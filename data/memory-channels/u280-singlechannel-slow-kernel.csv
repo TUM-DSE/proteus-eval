@@ -1,0 +1,2 @@
+app_name,kernel_input_data_size,iterations,data_to_fpga_avg_time,kernel_avg_time,data_to_host_avg_time
+cl_wide_mem_rw,8388608,1000,753621,1841075,456938
