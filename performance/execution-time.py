@@ -29,9 +29,9 @@ plt.bar(x +     bar_width, df_u280_fast["average"].values, width=bar_width, labe
 plt.bar(x + 2 * bar_width, df_u280_ddr_slow["average"].values, width=bar_width, label=f"U280 DDR {common.BASE_FREQ} MHz")
 plt.bar(x + 3 * bar_width, df_u280_ddr_fast["average"].values, width=bar_width, label="U280 DDR unlimited")
 
-plt.xticks(x, app_names, rotation=45, ha="right")
+plt.xticks(x, app_names, rotation=10, ha="right")
 plt.ylabel("Average time (s)")
-plt.ylim(top=21)
+# plt.ylim(top=20)
 # plt.yscale("log")
 plt.legend()
 plt.tight_layout()
