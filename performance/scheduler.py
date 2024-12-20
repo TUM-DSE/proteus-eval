@@ -10,14 +10,20 @@ class Kernel:
         self.in_ports = in_ports
         self.out_ports = out_ports
 
-
+### bandwidths are roughly measured by 'xbutil validate'
 # Memory
-HBM_CHANNEL_BANDWIDTH = 10_000
+HBM_CHANNEL_BANDWIDTH = 12_400 #MB/s
 HBM_CHANNELS = 32
 HBM_CAPACITY = 8_000
-DDR_CHANNEL_BANDWIDTH = 15_000
+DDR_CHANNEL_BANDWIDTH = 17_000 #MB/s
 DDR_CHANNELS = 2
 DDR_CAPACITY = 32_000
+
+# PCIe
+PCIE_HBM_WR_BANDWIDTH = 11_500
+PCIE_HBM_RD_BANDWIDTH = 11_500
+PCIE_DDR_WR_BANDWIDTH =  8_500
+PCIE_DDR_RD_BANDWIDTH = 11_500
 
 # Weights
 W_FREQ = 1/2
