@@ -46,8 +46,13 @@ kernels = {
     "cl_wide_mem_rw": Kernel([512, 512], [512]),
 }
 
-fpgas = ["u50_slow", "u50_fast", "u280_slow",
-         "u280_fast", "u280_ddr_slow", "u280_ddr_fast"]
+# fpgas = ["u50_slow", "u50_fast", "u280_slow",
+#          "u280_fast", "u280_ddr_slow", "u280_ddr_fast"]
+fpgas = ["u50_slow", "u280_slow", "u280_ddr_slow",
+         "u50_fast", "u280_fast", "u280_ddr_fast"]
+
+# fpgas = ["u50_slow", "u280_slow", "u280_ddr_slow"]
+# fpgas = ["u50_fast", "u280_fast", "u280_ddr_fast"]
 
 df_freq = pd.read_csv("../data/frequencies.csv", skipinitialspace=True)
 df_max_freq = df_freq.iloc[:, 1:].max(axis=1)
@@ -55,6 +60,7 @@ df_max_freq = df_freq.iloc[:, 1:].max(axis=1)
 for i, app in enumerate(kernels.keys()):
     print(f"{app} -----------------------------------------------------------------------")
     max_freq = df_max_freq.iloc[i]
+    # max_freq = 200
     port_widths = kernels[app].in_ports + kernels[app].out_ports
     thrps = {}
     score_thrps = {}
@@ -98,5 +104,17 @@ for i, app in enumerate(kernels.keys()):
         print(f"{fpga}: {score_thrps[fpga]}")
 
     print(f"Final scores (score_freq * {W_FREQ} + score_thrp * {W_THRP}, ignoring memory capacity for now):")
+    tmp_list = [] 
     for fpga in fpgas:
-        print(f"{fpga}: ", score_freqs[fpga] * W_FREQ + score_thrps[fpga] * W_THRP)
+        final_score = score_freqs[fpga] * W_FREQ + score_thrps[fpga] * W_THRP
+        print(f"{fpga}: ", final_score)
+        # print(f"{fpga}: ", score_freqs[fpga] * W_FREQ + score_thrps[fpga] * W_THRP)
+        tmp_list.insert(len(tmp_list), final_score)
+
+    df_result = pd.DataFrame({"fpgas": fpgas, app: tmp_list})
+    print(df_result)
+
+    ### Export the result to csv
+    # filename = f"{app}.csv"
+    # print(f"Saving data to {filename}")
+    # df_result.to_csv(filename, index=False)
