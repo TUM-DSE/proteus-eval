@@ -50,9 +50,10 @@ plt.bar(x + 3 * bar_width, df_u280_ddr_fast["transfer+kernel"].values, width=bar
 
 plt.xticks(x, app_names, rotation=30, ha="right")
 plt.ylabel("Average data transfer + kernel time (ms)")
+plt.grid(which="both", axis="y")
 # plt.ylim(top=20)
 plt.yscale("log")
-plt.legend()
+plt.legend(loc="upper left")
 plt.tight_layout()
 
 filename = "execution-time-transfer-kernel.png"
