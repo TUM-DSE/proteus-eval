@@ -14,6 +14,7 @@ df_u280_ddr_fast = pd.read_csv("../data/u280-ddr-fast-vitis.csv", skipinitialspa
 
 for df in [df_u50_slow, df_u50_fast, df_u280_slow, df_u280_fast, df_u280_ddr_slow, df_u280_ddr_fast]:
     df["transfer+kernel"] = df["data_to_fpga_average"] + df["kernel_average"] + df["data_to_host_average"]
+    df["transfer+kernel"] /= 1_000_000
 
 bar_width = 0.12
 app_names = df_u50_slow["app_name"].values
@@ -28,7 +29,7 @@ plt.bar(x + 2 * bar_width, df_u280_ddr_slow["average"].values, width=bar_width, 
 plt.bar(x + 3 * bar_width, df_u280_ddr_fast["average"].values, width=bar_width, label="U280 DDR unlimited")
 
 plt.xticks(x, app_names, rotation=30, ha="right")
-plt.ylabel("Average time (s)")
+plt.ylabel("Average total execution time (s)")
 # plt.ylim(top=20)
 # plt.yscale("log")
 plt.legend()
@@ -48,9 +49,9 @@ plt.bar(x + 2 * bar_width, df_u280_ddr_slow["transfer+kernel"].values, width=bar
 plt.bar(x + 3 * bar_width, df_u280_ddr_fast["transfer+kernel"].values, width=bar_width, label="U280 DDR unlimited")
 
 plt.xticks(x, app_names, rotation=30, ha="right")
-plt.ylabel("Average time (s)")
+plt.ylabel("Average data transfer + kernel time (ms)")
 # plt.ylim(top=20)
-# plt.yscale("log")
+plt.yscale("log")
 plt.legend()
 plt.tight_layout()
 
