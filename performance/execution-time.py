@@ -14,7 +14,7 @@ df_u280_ddr_fast = pd.read_csv("../data/u280-ddr-fast-vitis.csv", skipinitialspa
 
 for df in [df_u50_slow, df_u50_fast, df_u280_slow, df_u280_fast, df_u280_ddr_slow, df_u280_ddr_fast]:
     df["transfer+kernel"] = df["data_to_fpga_average"] + df["kernel_average"] + df["data_to_host_average"]
-    df["transfer+kernel"] /= 1_000_000
+    df["transfer+kernel"] /= 1_000_000 # to miliseconds
 
 bar_width = 0.12
 app_names = df_u50_slow["app_name"].values
