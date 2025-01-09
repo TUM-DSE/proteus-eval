@@ -1,0 +1,15 @@
+app_name,slowest_time,slowest_fpga,fastest_time,fastest_fpga,speedup
+cl_array_partition,0.658094,u280_ddr_200mhz,0.470394,u50_hbm_unlimited,1.399027198476171
+cl_burst_rw,3.066183,u280_ddr_200mhz,1.327249,u50_hbm_unlimited,2.3101791751208705
+cl_dataflow_func,1.27552,u280_ddr_200mhz,0.57288,u50_hbm_unlimited,2.2265046781175815
+cl_dataflow_subfunc,1.339009,u280_ddr_200mhz,0.599093,u280_hbm_unlimited,2.2350603328698546
+cl_helloworld,1.938872,u280_ddr_200mhz,0.816812,u50_hbm_unlimited,2.373706556710724
+cl_lmem_2rw,2.16071,u280_hbm_200mhz,0.843493,u50_hbm_unlimited,2.5616217324862207
+cl_loop_reorder,0.259069,u280_hbm_200mhz,0.225569,u50_hbm_unlimited,1.1485133152161866
+cl_partition_cyclicblock,1.294769,u280_ddr_200mhz,0.92996,u50_hbm_unlimited,1.392284614392017
+cl_shift_register,82.876823,u280_ddr_200mhz,37.125703,u50_hbm_unlimited,2.232330065238091
+cl_systolic_array,0.231071,u280_hbm_200mhz,0.182779,u50_hbm_unlimited,1.2642097833996246
+cl_wide_mem_rw,3.856407,u50_hbm_200mhz,2.919102,u280_ddr_unlimited,1.3210936102952209
+cl_wide_mem_rw_strm,3.02974,u50_hbm_200mhz,2.692402,u280_ddr_unlimited,1.125292582608392
+cl_wide_mem_rw_2x,2.463986,u280_ddr_200mhz,1.931048,u50_hbm_unlimited,1.275983818113273
+cl_wide_mem_rw_4x,2.135097,u280_ddr_200mhz,1.892179,u50_hbm_unlimited,1.1283800316989037
