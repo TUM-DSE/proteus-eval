@@ -16,7 +16,6 @@ fpga_configs = ["u50_hbm", "u280_hbm", "u280_ddr"]
 # Sum up data transfer + kernel execution time
 for df in [df_u50_slow, df_u50_fast, df_u280_slow, df_u280_fast, df_u280_ddr_slow, df_u280_ddr_fast]:
     df["transfer+kernel"] = df["data_to_fpga"] + df["kernel"] + df["data_to_host"]
-    df["transfer+kernel"] /= 1_000_000 # to miliseconds
 
 apps = df_u50_slow["app_name"].values
 num_apps = len(apps)
@@ -31,7 +30,6 @@ for i, dfs in enumerate([dfs_slow, dfs_fast]):
     for app in apps:
         f.write(f"{app},")
         idxmax = df_combined.loc[df_combined["app_name"] == app, "transfer+kernel"].idxmax()
-        print(idxmax)
         max = df_combined.loc[df_combined["app_name"] == app, "transfer+kernel"].max()
         max_fpga = fpga_configs[int(idxmax / num_apps)]
         f.write(f"{max},{max_fpga},")
