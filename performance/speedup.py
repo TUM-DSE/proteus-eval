@@ -20,7 +20,9 @@ for df in [df_u50_slow, df_u50_fast, df_u280_slow, df_u280_fast, df_u280_ddr_slo
 apps = df_u50_slow["app_name"].values
 num_apps = len(apps)
 
-filenames = ["speedup-200mhz.csv", "speedup-unlimited.csv"]
+# Best case speedup -----------------------------------------------------------------------------------------
+
+filenames = ["speedup-best-200mhz.csv", "speedup-best-unlimited.csv"]
 
 for i, dfs in enumerate([dfs_slow, dfs_fast]):
     print(f"Saving data in {filenames[i]}")
