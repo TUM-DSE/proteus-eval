@@ -115,10 +115,7 @@ for app in apps:
         print(f"Warning: fastest FPGA for {app} has a score < 1.0 ({max_score})")
 
     idxmax = df_scheduler[app].idxmax()
-    print(max_score)
-    print("idxmax: ", idxmax)
     max_score_fpga = df_scheduler.loc[idxmax, "fpgas"]
-    print("At idxmax: ", max_score_fpga)
 
     if max_score_fpga == "u50_fast":
         best_fpga = fpga_configs[0]
