@@ -44,6 +44,9 @@ kernels = {
     "cl_shift_register": Kernel([32, 32], [32]),
     "cl_systolic_array": Kernel([32, 32], [32]),
     "cl_wide_mem_rw": Kernel([512, 512], [512]),
+    "cl_wide_mem_rw_strm": Kernel([512, 512], [512]),
+    "cl_wide_mem_rw_2x": Kernel([512, 512], [512]),
+    "cl_wide_mem_rw_4x": Kernel([512, 512], [512]),
 }
 
 fpgas = ["u50_slow", "u280_slow", "u280_ddr_slow",
