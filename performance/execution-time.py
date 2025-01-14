@@ -20,65 +20,41 @@ bar_width = 0.12
 app_names = df_u50_slow["app_name"].values
 x = np.arange(len(app_names))
 
-# Total execution time 200 MHz
-plt.bar(x - bar_width, df_u50_slow["average"].values, width=bar_width, label=f"U50 HBM")
-plt.bar(x            , df_u280_slow["average"].values, width=bar_width, label=f"U280 HBM")
-plt.bar(x + bar_width, df_u280_ddr_slow["average"].values, width=bar_width, label=f"U280 DDR")
+# Total execution time --------------------------------------------------------------------------------------
+
+plt.bar(x - 2 * bar_width, df_u50_slow["average"].values, width=bar_width, label=f"U50 HBM 200 MHz")
+plt.bar(x - 1 * bar_width, df_u280_slow["average"].values, width=bar_width, label=f"U280 HBM 200 MHz")
+plt.bar(x                , df_u280_ddr_slow["average"].values, width=bar_width, label=f"U280 DDR 200 MHz")
+plt.bar(x + 1 * bar_width, df_u50_fast["average"].values, width=bar_width, label="U50 HBM unlimited")
+plt.bar(x + 2 * bar_width, df_u280_fast["average"].values, width=bar_width, label="U280 HBM unlimited")
+plt.bar(x + 3 * bar_width, df_u280_ddr_fast["average"].values, width=bar_width, label="U280 DDR unlimited")
 
 plt.xticks(x, app_names, rotation=30, ha="right")
 plt.ylabel("Average total execution time (s)")
 plt.legend()
 plt.tight_layout()
 
-filename = "execution-time-total-200mhz.png"
+filename = "execution-time-total.png"
 print(f"Saving figure to {filename}")
 plt.savefig(filename)
 plt.clf()
 
-# Total execution time unlimited
-plt.bar(x - bar_width, df_u50_fast["average"].values, width=bar_width, label="U50 HBM")
-plt.bar(x            , df_u280_fast["average"].values, width=bar_width, label="U280 HBM")
-plt.bar(x + bar_width, df_u280_ddr_fast["average"].values, width=bar_width, label="U280 DDR")
+# Data transfer + kernel time -------------------------------------------------------------------------------
 
-plt.xticks(x, app_names, rotation=30, ha="right")
-plt.ylabel("Average total execution time (s)")
-plt.legend()
-plt.tight_layout()
-
-filename = "execution-time-total-unlimited.png"
-print(f"Saving figure to {filename}")
-plt.savefig(filename)
-plt.clf()
-
-# Data transfer + kernel time 200 MHz
-plt.bar(x - bar_width, df_u50_slow["transfer+kernel"].values, width=bar_width, label=f"U50 HBM")
-plt.bar(x            , df_u280_slow["transfer+kernel"].values, width=bar_width, label=f"U280 HBM")
-plt.bar(x + bar_width, df_u280_ddr_slow["transfer+kernel"].values, width=bar_width, label=f"U280 DDR")
+plt.bar(x - 2 * bar_width, df_u50_slow["transfer+kernel"].values, width=bar_width, label=f"U50 HBM 200 MHz")
+plt.bar(x - 1 * bar_width, df_u280_slow["transfer+kernel"].values, width=bar_width, label=f"U280 HBM 200 MHz")
+plt.bar(x                , df_u280_ddr_slow["transfer+kernel"].values, width=bar_width, label=f"U280 DDR 200 MHz")
+plt.bar(x + 1 * bar_width, df_u50_fast["transfer+kernel"].values, width=bar_width, label="U50 HBM unlimited")
+plt.bar(x + 2 * bar_width, df_u280_fast["transfer+kernel"].values, width=bar_width, label="U280 HBM unlimited")
+plt.bar(x + 3 * bar_width, df_u280_ddr_fast["transfer+kernel"].values, width=bar_width, label="U280 DDR unlimited")
 
 plt.xticks(x, app_names, rotation=30, ha="right")
 plt.ylabel("Data transfer + kernel time (s)")
 # plt.grid(which="both", axis="y")
 plt.yscale("log")
-plt.legend(loc="upper left")
+plt.legend(loc=(0.15, 0.6))
 plt.tight_layout()
 
-filename = "execution-time-transfer-kernel-200mhz.png"
-print(f"Saving figure to {filename}")
-plt.savefig(filename)
-plt.clf()
-
-# Data transfer + kernel time unlimited
-plt.bar(x - bar_width, df_u50_fast["transfer+kernel"].values, width=bar_width, label="U50 HBM")
-plt.bar(x            , df_u280_fast["transfer+kernel"].values, width=bar_width, label="U280 HBM")
-plt.bar(x + bar_width, df_u280_ddr_fast["transfer+kernel"].values, width=bar_width, label="U280 DDR")
-
-plt.xticks(x, app_names, rotation=30, ha="right")
-plt.ylabel("Data transfer + kernel time (s)")
-# plt.grid(which="both", axis="y")
-plt.yscale("log")
-plt.legend(loc="upper left")
-plt.tight_layout()
-
-filename = "execution-time-transfer-kernel-unlimited.png"
+filename = "execution-time-transfer-kernel.png"
 print(f"Saving figure to {filename}")
 plt.savefig(filename)
