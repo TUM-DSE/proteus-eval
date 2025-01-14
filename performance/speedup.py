@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import pandas as pd
+import statistics
 
 df_u50_slow = pd.read_csv("../data/u50-slow-vitis.csv", skipinitialspace=True)
 df_u50_fast = pd.read_csv("../data/u50-fast-vitis.csv", skipinitialspace=True)
@@ -24,6 +25,7 @@ num_apps = len(apps)
 # Best case speedup -----------------------------------------------------------------------------------------
 
 filenames = ["speedup-best-200mhz.csv", "speedup-best-unlimited.csv"]
+speedups = [[], []]
 
 for i, dfs in enumerate([dfs_slow, dfs_fast]):
     print(f"Saving best case speedup data in {filenames[i]}")
@@ -44,11 +46,19 @@ for i, dfs in enumerate([dfs_slow, dfs_fast]):
 
         speedup = max / min
         f.write(f"{speedup}\n")
+        speedups[i].append(speedup)
+
+avg_speedup = statistics.fmean(speedups[1])
+print("Saving average speedup data in speedup-avg.csv")
+f_avg = open("speedup-avg.csv", "w")
+f_avg.write("best,freq\n")
+f_avg.write(f"{avg_speedup},")
 
 # Speedup of bitstream with highest clock frequency ---------------------------------------------------------
 
 df_freq_fast = df_freq[["app_name", "u50_fast_freq", "u280_fast_freq", "u280_ddr_fast_freq"]]
 filename = "speedup-freq-unlimited.csv"
+speedups = []
 
 print(f"Saving frequency only speedup data in {filename}")
 f = open(filename, "w")
@@ -75,3 +85,7 @@ for app in apps:
     f.write(f"{freq_max_time},{freq_max_fpga},")
     speedup = max / freq_max_time
     f.write(f"{speedup}\n")
+    speedups.append(speedup)
+
+avg_speedup = statistics.fmean(speedups)
+f_avg.write(f"{avg_speedup}\n")
