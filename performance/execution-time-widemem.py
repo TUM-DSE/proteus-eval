@@ -41,12 +41,12 @@ plt.clf()
 
 # Data transfer + kernel time -------------------------------------------------------------------------------
 
-plt.bar(x - 2 * bar_width, df_u50_slow["transfer+kernel"].values, width=bar_width, label=f"U50 HBM 200 MHz")
-plt.bar(x - 1 * bar_width, df_u280_slow["transfer+kernel"].values, width=bar_width, label=f"U280 HBM 200 MHz")
-plt.bar(x                , df_u280_ddr_slow["transfer+kernel"].values, width=bar_width, label=f"U280 DDR 200 MHz")
-plt.bar(x + 1 * bar_width, df_u50_fast["transfer+kernel"].values, width=bar_width, label="U50 HBM unlimited")
-plt.bar(x + 2 * bar_width, df_u280_fast["transfer+kernel"].values, width=bar_width, label="U280 HBM unlimited")
-plt.bar(x + 3 * bar_width, df_u280_ddr_fast["transfer+kernel"].values, width=bar_width, label="U280 DDR unlimited")
+plt.bar(x - 2 * bar_width, df_u50_slow["time_cpu"].values, width=bar_width, label=f"U50 HBM 200 MHz")
+plt.bar(x - 1 * bar_width, df_u280_slow["time_cpu"].values, width=bar_width, label=f"U280 HBM 200 MHz")
+plt.bar(x                , df_u280_ddr_slow["time_cpu"].values, width=bar_width, label=f"U280 DDR 200 MHz")
+plt.bar(x + 1 * bar_width, df_u50_fast["time_cpu"].values, width=bar_width, label="U50 HBM unlimited")
+plt.bar(x + 2 * bar_width, df_u280_fast["time_cpu"].values, width=bar_width, label="U280 HBM unlimited")
+plt.bar(x + 3 * bar_width, df_u280_ddr_fast["time_cpu"].values, width=bar_width, label="U280 DDR unlimited")
 
 plt.xticks(x, app_names)
 plt.ylabel("Data transfer + kernel time (s)")
