@@ -52,7 +52,7 @@ plt.xticks(x, app_names, rotation=30, ha="right")
 plt.ylabel("Data transfer + kernel time (s)")
 # plt.grid(which="both", axis="y")
 plt.yscale("log")
-plt.legend(loc=(0.15, 0.6))
+plt.legend()
 plt.tight_layout()
 
 filename = "execution-time-transfer-kernel.png"
