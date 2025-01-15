@@ -17,7 +17,7 @@ fpga_configs = ["u50_hbm", "u280_hbm", "u280_ddr"]
 
 # Sum up data transfer + kernel execution time
 for df in [df_u50_slow, df_u50_fast, df_u280_slow, df_u280_fast, df_u280_ddr_slow, df_u280_ddr_fast]:
-    df["transfer+kernel"] = df["data_to_fpga_cpu"] + df["kernel_cpu"] + df["data_to_host_cpu"]
+    df["transfer+kernel"] = df["data_to_fpga_ocl"] + df["kernel_ocl"] + df["data_to_host_ocl"]
 
 apps = df_u50_slow["app_name"].values
 num_apps = len(apps)
