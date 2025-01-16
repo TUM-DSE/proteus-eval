@@ -5,12 +5,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Use first 11 rows, other cl_wide_mem_rw variants are handled in a different script
-df_u50_slow = pd.read_csv("../data/u50-slow-vitis.csv", skipinitialspace=True).iloc[:11]
-df_u50_fast = pd.read_csv("../data/u50-fast-vitis.csv", skipinitialspace=True).iloc[:11]
-df_u280_slow = pd.read_csv("../data/u280-slow-vitis.csv", skipinitialspace=True).iloc[:11]
-df_u280_fast = pd.read_csv("../data/u280-fast-vitis.csv", skipinitialspace=True).iloc[:11]
-df_u280_ddr_slow = pd.read_csv("../data/u280-ddr-slow-vitis.csv", skipinitialspace=True).iloc[:11]
-df_u280_ddr_fast = pd.read_csv("../data/u280-ddr-fast-vitis.csv", skipinitialspace=True).iloc[:11]
+df_u50_slow = pd.read_csv("../data/u50-slow-vitis.csv", skipinitialspace=True).iloc[:10]
+df_u50_fast = pd.read_csv("../data/u50-fast-vitis.csv", skipinitialspace=True).iloc[:10]
+df_u280_slow = pd.read_csv("../data/u280-slow-vitis.csv", skipinitialspace=True).iloc[:10]
+df_u280_fast = pd.read_csv("../data/u280-fast-vitis.csv", skipinitialspace=True).iloc[:10]
+df_u280_ddr_slow = pd.read_csv("../data/u280-ddr-slow-vitis.csv", skipinitialspace=True).iloc[:10]
+df_u280_ddr_fast = pd.read_csv("../data/u280-ddr-fast-vitis.csv", skipinitialspace=True).iloc[:10]
 
 # Sum up data transfer + kernel execution time
 for df in [df_u50_slow, df_u50_fast, df_u280_slow, df_u280_fast, df_u280_ddr_slow, df_u280_ddr_fast]:

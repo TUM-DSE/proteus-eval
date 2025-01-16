@@ -5,12 +5,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # cl_wide_mem_{strm,2x,4x}
-df_u50_slow = pd.read_csv("../data/u50-slow-vitis.csv", skipinitialspace=True).iloc[11:]
-df_u50_fast = pd.read_csv("../data/u50-fast-vitis.csv", skipinitialspace=True).iloc[11:]
-df_u280_slow = pd.read_csv("../data/u280-slow-vitis.csv", skipinitialspace=True).iloc[11:]
-df_u280_fast = pd.read_csv("../data/u280-fast-vitis.csv", skipinitialspace=True).iloc[11:]
-df_u280_ddr_slow = pd.read_csv("../data/u280-ddr-slow-vitis.csv", skipinitialspace=True).iloc[11:]
-df_u280_ddr_fast = pd.read_csv("../data/u280-ddr-fast-vitis.csv", skipinitialspace=True).iloc[11:]
+df_u50_slow = pd.read_csv("../data/u50-slow-vitis.csv", skipinitialspace=True).iloc[10:]
+df_u50_fast = pd.read_csv("../data/u50-fast-vitis.csv", skipinitialspace=True).iloc[10:]
+df_u280_slow = pd.read_csv("../data/u280-slow-vitis.csv", skipinitialspace=True).iloc[10:]
+df_u280_fast = pd.read_csv("../data/u280-fast-vitis.csv", skipinitialspace=True).iloc[10:]
+df_u280_ddr_slow = pd.read_csv("../data/u280-ddr-slow-vitis.csv", skipinitialspace=True).iloc[10:]
+df_u280_ddr_fast = pd.read_csv("../data/u280-ddr-fast-vitis.csv", skipinitialspace=True).iloc[10:]
 
 # Sum up data transfer + kernel execution time
 for df in [df_u50_slow, df_u50_fast, df_u280_slow, df_u280_fast, df_u280_ddr_slow, df_u280_ddr_fast]:
@@ -48,7 +48,7 @@ plt.bar(x + 1 * bar_width, df_u50_fast["time_cpu"].values, width=bar_width, labe
 plt.bar(x + 2 * bar_width, df_u280_fast["time_cpu"].values, width=bar_width, label="U280 HBM unlimited")
 plt.bar(x + 3 * bar_width, df_u280_ddr_fast["time_cpu"].values, width=bar_width, label="U280 DDR unlimited")
 
-plt.xticks(x, app_names)
+plt.xticks(x, app_names, rotation=20)
 plt.ylabel("Data transfer + kernel time (s)")
 # plt.grid(which="both", axis="y")
 # plt.yscale("log")
