@@ -23,6 +23,6 @@ plt.ylabel("Average time (ns)")
 plt.legend()
 plt.tight_layout()
 
-filename = "memory-channels-kernel.png"
+filename = "../plots/memory-channels-fpga.png"
 print(f"Saving figure to {filename}")
 plt.savefig(filename)

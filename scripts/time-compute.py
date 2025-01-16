@@ -34,7 +34,7 @@ plt.ylabel("Average total execution time (s)")
 plt.legend()
 plt.tight_layout()
 
-filename = "execution-time-total.png"
+filename = "../plots/time-compute-total.png"
 print(f"Saving figure to {filename}")
 plt.savefig(filename)
 plt.clf()
@@ -55,6 +55,6 @@ plt.yscale("log")
 plt.legend()
 plt.tight_layout()
 
-filename = "execution-time-transfer-kernel.png"
+filename = "../plots/time-compute-fpga.png"
 print(f"Saving figure to {filename}")
 plt.savefig(filename)
