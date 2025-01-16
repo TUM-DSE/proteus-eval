@@ -118,7 +118,7 @@ for i, app in enumerate(kernels.keys()):
     # print(f"Saving data to {filename}")
     # df_result.to_csv(filename, index=False)
 
-filename = "scheduler-scores.csv"
+filename = "../data/scheduler-scores.csv"
 print(f"\nFinal scores (saved to {filename}):")
 print(df_final_scores)
 df_final_scores.to_csv(filename, index=False)

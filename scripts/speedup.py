@@ -24,7 +24,7 @@ num_apps = len(apps)
 
 # Best case speedup -----------------------------------------------------------------------------------------
 
-filenames = ["speedup-best-200mhz.csv", "speedup-best-unlimited.csv"]
+filenames = ["../data/speedup-best-200mhz.csv", "../data/speedup-best-unlimited.csv"]
 speedups = [[], []]
 
 for i, dfs in enumerate([dfs_slow, dfs_fast]):
@@ -49,8 +49,9 @@ for i, dfs in enumerate([dfs_slow, dfs_fast]):
         speedups[i].append(speedup)
 
 avg_speedup = statistics.fmean(speedups[1])
-print("Saving average speedup data in speedup-avg.csv")
-f_avg = open("speedup-avg.csv", "w")
+filename = "../data/speedup-avg.csv"
+print(f"Saving average speedup data in {filename}")
+f_avg = open(filename, "w")
 f_avg.write("best,frequency_only,scheduler\n")
 f_avg.write(f"{avg_speedup},")
 
@@ -58,7 +59,7 @@ f_avg.write(f"{avg_speedup},")
 
 # Ignore 200 MHz cases
 df_freq_fast = df_freq[["app_name", "u50_fast_freq", "u280_fast_freq", "u280_ddr_fast_freq"]]
-filename = "speedup-freq-unlimited.csv"
+filename = "../data/speedup-freq-unlimited.csv"
 speedups = []
 
 print(f"Saving frequency only speedup data in {filename}")
@@ -93,10 +94,10 @@ f_avg.write(f"{avg_speedup}\n")
 
 # Speedup of bitstream chosen by scheduler.py ---------------------------------------------------------------
 
-df_scheduler = pd.read_csv("scheduler-scores.csv", skipinitialspace=True)
+df_scheduler = pd.read_csv("../data/scheduler-scores.csv", skipinitialspace=True)
 # Ignore 200 MHz cases
 df_scheduler = df_scheduler[df_scheduler["fpgas"].isin(["u50_fast", "u280_fast", "u280_ddr_fast"])]
-filename = "speedup-scheduler-unlimited.csv"
+filename = "../data/speedup-scheduler-unlimited.csv"
 speedups = []
 
 print(f"Saving scheduler speedup data in {filename}")
