@@ -39,9 +39,9 @@ plt.ylabel("Throughput Host to FPGA (MB/s)")
 plt.legend()
 plt.tight_layout()
 
-filename = "../plots/throughput-to-fpga.png"
+filename = "../plots/throughput-to-fpga.pdf"
 print(f"Saving figure to {filename}")
-plt.savefig(filename)
+plt.savefig(filename, format="pdf")
 plt.clf()
 
 # Throughput kernel compute intensive apps ----------------------------------------------------------------------------
@@ -58,9 +58,9 @@ plt.ylabel("Throughput FPGA kernel (MB/s)")
 plt.legend()
 plt.tight_layout()
 
-filename = "../plots/throughput-kernel-compute.png"
+filename = "../plots/throughput-kernel-compute.pdf"
 print(f"Saving figure to {filename}")
-plt.savefig(filename)
+plt.savefig(filename, format="pdf")
 plt.clf()
 
 # Throughput kernel memory intensive apps -----------------------------------------------------------------------------
@@ -77,9 +77,9 @@ plt.ylabel("Throughput FPGA kernel (MB/s)")
 plt.legend()
 plt.tight_layout()
 
-filename = "../plots/throughput-kernel-memory.png"
+filename = "../plots/throughput-kernel-memory.pdf"
 print(f"Saving figure to {filename}")
-plt.savefig(filename)
+plt.savefig(filename, format="pdf")
 plt.clf()
 
 # Throughput FPGA to host ---------------------------------------------------------------------------------------------
@@ -96,6 +96,6 @@ plt.ylabel("Throughput FPGA to host (MB/s)")
 plt.legend()
 plt.tight_layout()
 
-filename = "../plots/throughput-to-host.png"
+filename = "../plots/throughput-to-host.pdf"
 print(f"Saving figure to {filename}")
-plt.savefig(filename)
+plt.savefig(filename, format="pdf")

@@ -60,8 +60,8 @@ plt.legend(handles=patches)
 
 plt.tight_layout()
 
-filename = "../plots/time-breakdown.png"
+filename = "../plots/time-breakdown.pdf"
 print(f"Saving figure to {filename}")
-plt.savefig(filename)
+plt.savefig(filename, format="pdf")
 
 

@@ -10,5 +10,6 @@ cd "$script_dir"
 ./time-compute.py
 ./time-memory.py
 ./time-breakdown.py
+./throughput.py
 ./memory-channels-total.py
 ./memory-channels-fpga.py

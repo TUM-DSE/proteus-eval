@@ -20,6 +20,6 @@ plt.xticks(x, app_names, rotation=45, ha="right")
 plt.ylabel("Average time (s)")
 plt.tight_layout()
 
-filename = "../plots/memory-channels-total.png"
+filename = "../plots/memory-channels-total.pdf"
 print(f"Saving figure to {filename}")
-plt.savefig(filename)
+plt.savefig(filename, format="pdf")

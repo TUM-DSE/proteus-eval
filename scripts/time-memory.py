@@ -34,9 +34,9 @@ plt.ylabel("Average total execution time (s)")
 plt.legend()
 plt.tight_layout()
 
-filename = "../plots/time-memory-total.png"
+filename = "../plots/time-memory-total.pdf"
 print(f"Saving figure to {filename}")
-plt.savefig(filename)
+plt.savefig(filename, format="pdf")
 plt.clf()
 
 # Data transfer + kernel time -------------------------------------------------------------------------------
@@ -55,6 +55,6 @@ plt.ylabel("Data transfer + kernel time (s)")
 plt.legend()
 plt.tight_layout()
 
-filename = "../plots/time-memory-fpga.png"
+filename = "../plots/time-memory-fpga.pdf"
 print(f"Saving figure to {filename}")
-plt.savefig(filename)
+plt.savefig(filename, format="pdf")
