@@ -64,28 +64,4 @@ filename = "../plots/time-breakdown.png"
 print(f"Saving figure to {filename}")
 plt.savefig(filename)
 
-# ax = df_u50_slow[columns].plot.bar(x="app_name", stacked=True, align="edge", width=-3*bar_width)
-# df_u280_slow[columns].plot.bar(x="app_name", stacked=True, ax=ax, legend=False, align="edge", width=-2*bar_width)
-# df_u280_ddr_slow[columns].plot.bar(x="app_name", stacked=True, ax=ax, legend=False, align="edge", width=-bar_width)
-# df_u50_fast[columns].plot.bar(x="app_name", stacked=True, ax=ax, legend=False, align="edge", width=bar_width)
-# df_u280_fast[columns].plot.bar(x="app_name", stacked=True, ax=ax, legend=False, align="edge", width=2*bar_width)
-# df_u280_ddr_fast[columns].plot.bar(x="app_name", stacked=True, ax=ax, legend=False, align="edge", width=3*bar_width)
-
-# fig = ax.get_figure()
-
-# plt.bar(x, df_u50_slow["data_to_fpga_ocl"].values, width=bar_width, label=f"U50 HBM 200 MHz tf")
-# plt.bar(x, df_u50_slow["kernel_ocl"].values, width=bar_width, label=f"U50 HBM 200 MHz k")
-# plt.bar(x, df_u50_slow["data_to_host_ocl"].values, width=bar_width, label=f"U50 HBM 200 MHz th")
-# plt.bar(x - 1 * bar_width, df_u280_slow["transfer+kernel"].values, width=bar_width, label=f"U280 HBM 200 MHz")
-# plt.bar(x                , df_u280_ddr_slow["transfer+kernel"].values, width=bar_width, label=f"U280 DDR 200 MHz")
-# plt.bar(x + 1 * bar_width, df_u50_fast["transfer+kernel"].values, width=bar_width, label="U50 HBM unlimited")
-# plt.bar(x + 2 * bar_width, df_u280_fast["transfer+kernel"].values, width=bar_width, label="U280 HBM unlimited")
-# plt.bar(x + 3 * bar_width, df_u280_ddr_fast["transfer+kernel"].values, width=bar_width, label="U280 DDR unlimited")
-
-#fig.xticks(x, app_names, rotation=30, ha="right")
-# plt.ylabel("Data transfer + kernel time (s)")
-# # plt.grid(which="both", axis="y")
-# plt.yscale("log")
-# plt.legend()
-# plt.tight_layout()
 
