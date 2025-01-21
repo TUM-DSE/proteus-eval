@@ -44,22 +44,40 @@ print(f"Saving figure to {filename}")
 plt.savefig(filename)
 plt.clf()
 
-# Throughput kernel ---------------------------------------------------------------------------------------------------
+# Throughput kernel compute intensive apps ----------------------------------------------------------------------------
 
-plt.bar(x - 2 * bar_width, df_u50_slow["thrp_kernel"].values, width=bar_width, label=f"U50 HBM 200 MHz")
-plt.bar(x - 1 * bar_width, df_u280_slow["thrp_kernel"].values, width=bar_width, label=f"U280 HBM 200 MHz")
-plt.bar(x                , df_u280_ddr_slow["thrp_kernel"].values, width=bar_width, label=f"U280 DDR 200 MHz")
-plt.bar(x + 1 * bar_width, df_u50_fast["thrp_kernel"].values, width=bar_width, label="U50 HBM unlimited")
-plt.bar(x + 2 * bar_width, df_u280_fast["thrp_kernel"].values, width=bar_width, label="U280 HBM unlimited")
-plt.bar(x + 3 * bar_width, df_u280_ddr_fast["thrp_kernel"].values, width=bar_width, label="U280 DDR unlimited")
+plt.bar(x[:10] - 2 * bar_width, df_u50_slow["thrp_kernel"].iloc[:10].values, width=bar_width, label=f"U50 HBM 200 MHz")
+plt.bar(x[:10] - 1 * bar_width, df_u280_slow["thrp_kernel"].iloc[:10].values, width=bar_width, label=f"U280 HBM 200 MHz")
+plt.bar(x[:10]                , df_u280_ddr_slow["thrp_kernel"].iloc[:10].values, width=bar_width, label=f"U280 DDR 200 MHz")
+plt.bar(x[:10] + 1 * bar_width, df_u50_fast["thrp_kernel"].iloc[:10].values, width=bar_width, label="U50 HBM unlimited")
+plt.bar(x[:10] + 2 * bar_width, df_u280_fast["thrp_kernel"].iloc[:10].values, width=bar_width, label="U280 HBM unlimited")
+plt.bar(x[:10] + 3 * bar_width, df_u280_ddr_fast["thrp_kernel"].iloc[:10].values, width=bar_width, label="U280 DDR unlimited")
 
-plt.xticks(x, app_names, rotation=30, ha="right")
+plt.xticks(x[:10], app_names[:10], rotation=30, ha="right")
 plt.ylabel("Throughput FPGA kernel (MB/s)")
-plt.yscale("log")
 plt.legend()
 plt.tight_layout()
 
-filename = "../plots/throughput-kernel.png"
+filename = "../plots/throughput-kernel-compute.png"
+print(f"Saving figure to {filename}")
+plt.savefig(filename)
+plt.clf()
+
+# Throughput kernel memory intensive apps -----------------------------------------------------------------------------
+
+plt.bar(x[10:] - 2 * bar_width, df_u50_slow["thrp_kernel"].iloc[10:].values, width=bar_width, label=f"U50 HBM 200 MHz")
+plt.bar(x[10:] - 1 * bar_width, df_u280_slow["thrp_kernel"].iloc[10:].values, width=bar_width, label=f"U280 HBM 200 MHz")
+plt.bar(x[10:]                , df_u280_ddr_slow["thrp_kernel"].iloc[10:].values, width=bar_width, label=f"U280 DDR 200 MHz")
+plt.bar(x[10:] + 1 * bar_width, df_u50_fast["thrp_kernel"].iloc[10:].values, width=bar_width, label="U50 HBM unlimited")
+plt.bar(x[10:] + 2 * bar_width, df_u280_fast["thrp_kernel"].iloc[10:].values, width=bar_width, label="U280 HBM unlimited")
+plt.bar(x[10:] + 3 * bar_width, df_u280_ddr_fast["thrp_kernel"].iloc[10:].values, width=bar_width, label="U280 DDR unlimited")
+
+plt.xticks(x[10:], app_names[10:], rotation=30, ha="right")
+plt.ylabel("Throughput FPGA kernel (MB/s)")
+plt.legend()
+plt.tight_layout()
+
+filename = "../plots/throughput-kernel-memory.png"
 print(f"Saving figure to {filename}")
 plt.savefig(filename)
 plt.clf()
