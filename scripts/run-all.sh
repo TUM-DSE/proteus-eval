@@ -9,3 +9,4 @@ cd "$script_dir"
 ./speedup.py
 ./time-compute.py
 ./time-memory.py
+./time-breakdown.py
