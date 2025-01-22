@@ -27,9 +27,9 @@ x = np.arange(len(app_names))
 
 # Throughput host to FPGA ---------------------------------------------------------------------------------------------
 
-plt.bar(x - 2 * bar_width, df_u50_slow["thrp_to_fpga"].values, width=bar_width, label=f"U50 HBM 200 MHz")
-plt.bar(x - 1 * bar_width, df_u280_slow["thrp_to_fpga"].values, width=bar_width, label=f"U280 HBM 200 MHz")
-plt.bar(x                , df_u280_ddr_slow["thrp_to_fpga"].values, width=bar_width, label=f"U280 DDR 200 MHz")
+plt.bar(x - 2 * bar_width, df_u50_slow["thrp_to_fpga"].values, width=bar_width, label=f"U50 HBM limited")
+plt.bar(x - 1 * bar_width, df_u280_slow["thrp_to_fpga"].values, width=bar_width, label=f"U280 HBM limited")
+plt.bar(x                , df_u280_ddr_slow["thrp_to_fpga"].values, width=bar_width, label=f"U280 DDR limited")
 plt.bar(x + 1 * bar_width, df_u50_fast["thrp_to_fpga"].values, width=bar_width, label="U50 HBM unlimited")
 plt.bar(x + 2 * bar_width, df_u280_fast["thrp_to_fpga"].values, width=bar_width, label="U280 HBM unlimited")
 plt.bar(x + 3 * bar_width, df_u280_ddr_fast["thrp_to_fpga"].values, width=bar_width, label="U280 DDR unlimited")
@@ -65,9 +65,9 @@ plt.clf()
 
 # Throughput kernel memory intensive apps -----------------------------------------------------------------------------
 
-plt.bar(x[10:] - 2 * bar_width, df_u50_slow["thrp_kernel"].iloc[10:].values, width=bar_width, label=f"U50 HBM 200 MHz")
-plt.bar(x[10:] - 1 * bar_width, df_u280_slow["thrp_kernel"].iloc[10:].values, width=bar_width, label=f"U280 HBM 200 MHz")
-plt.bar(x[10:]                , df_u280_ddr_slow["thrp_kernel"].iloc[10:].values, width=bar_width, label=f"U280 DDR 200 MHz")
+plt.bar(x[10:] - 2 * bar_width, df_u50_slow["thrp_kernel"].iloc[10:].values, width=bar_width, label=f"U50 HBM 300 MHz")
+plt.bar(x[10:] - 1 * bar_width, df_u280_slow["thrp_kernel"].iloc[10:].values, width=bar_width, label=f"U280 HBM 300 MHz")
+plt.bar(x[10:]                , df_u280_ddr_slow["thrp_kernel"].iloc[10:].values, width=bar_width, label=f"U280 DDR 300 MHz")
 plt.bar(x[10:] + 1 * bar_width, df_u50_fast["thrp_kernel"].iloc[10:].values, width=bar_width, label="U50 HBM unlimited")
 plt.bar(x[10:] + 2 * bar_width, df_u280_fast["thrp_kernel"].iloc[10:].values, width=bar_width, label="U280 HBM unlimited")
 plt.bar(x[10:] + 3 * bar_width, df_u280_ddr_fast["thrp_kernel"].iloc[10:].values, width=bar_width, label="U280 DDR unlimited")
@@ -84,9 +84,9 @@ plt.clf()
 
 # Throughput FPGA to host ---------------------------------------------------------------------------------------------
 
-plt.bar(x - 2 * bar_width, df_u50_slow["thrp_to_host"].values, width=bar_width, label=f"U50 HBM 200 MHz")
-plt.bar(x - 1 * bar_width, df_u280_slow["thrp_to_host"].values, width=bar_width, label=f"U280 HBM 200 MHz")
-plt.bar(x                , df_u280_ddr_slow["thrp_to_host"].values, width=bar_width, label=f"U280 DDR 200 MHz")
+plt.bar(x - 2 * bar_width, df_u50_slow["thrp_to_host"].values, width=bar_width, label=f"U50 HBM limited")
+plt.bar(x - 1 * bar_width, df_u280_slow["thrp_to_host"].values, width=bar_width, label=f"U280 HBM limited")
+plt.bar(x                , df_u280_ddr_slow["thrp_to_host"].values, width=bar_width, label=f"U280 DDR limited")
 plt.bar(x + 1 * bar_width, df_u50_fast["thrp_to_host"].values, width=bar_width, label="U50 HBM unlimited")
 plt.bar(x + 2 * bar_width, df_u280_fast["thrp_to_host"].values, width=bar_width, label="U280 HBM unlimited")
 plt.bar(x + 3 * bar_width, df_u280_ddr_fast["thrp_to_host"].values, width=bar_width, label="U280 DDR unlimited")
