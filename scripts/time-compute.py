@@ -30,7 +30,7 @@ plt.bar(x + 2 * bar_width, df_u280_fast["average"].values, width=bar_width, labe
 plt.bar(x + 3 * bar_width, df_u280_ddr_fast["average"].values, width=bar_width, label="U280 DDR unlimited")
 
 plt.xticks(x, app_names, rotation=30, ha="right")
-plt.ylabel("Average total execution time (s)")
+plt.ylabel("Total execution time (s)")
 plt.legend()
 plt.tight_layout()
 
@@ -50,7 +50,6 @@ plt.bar(x + 3 * bar_width, df_u280_ddr_fast["transfer+kernel"].values, width=bar
 
 plt.xticks(x, app_names, rotation=30, ha="right")
 plt.ylabel("Data transfer + kernel time (s)")
-plt.yscale("log")
 plt.legend()
 plt.tight_layout()
 

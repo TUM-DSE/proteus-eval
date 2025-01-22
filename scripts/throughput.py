@@ -34,7 +34,7 @@ plt.bar(x + 1 * bar_width, df_u50_fast["thrp_to_fpga"].values, width=bar_width, 
 plt.bar(x + 2 * bar_width, df_u280_fast["thrp_to_fpga"].values, width=bar_width, label="U280 HBM unlimited")
 plt.bar(x + 3 * bar_width, df_u280_ddr_fast["thrp_to_fpga"].values, width=bar_width, label="U280 DDR unlimited")
 
-plt.xticks(x, app_names, rotation=30, ha="right")
+plt.xticks(x, app_names, rotation=40, ha="right")
 plt.ylabel("Throughput Host to FPGA (MB/s)")
 plt.legend()
 plt.tight_layout()
@@ -91,7 +91,7 @@ plt.bar(x + 1 * bar_width, df_u50_fast["thrp_to_host"].values, width=bar_width, 
 plt.bar(x + 2 * bar_width, df_u280_fast["thrp_to_host"].values, width=bar_width, label="U280 HBM unlimited")
 plt.bar(x + 3 * bar_width, df_u280_ddr_fast["thrp_to_host"].values, width=bar_width, label="U280 DDR unlimited")
 
-plt.xticks(x, app_names, rotation=30, ha="right")
+plt.xticks(x, app_names, rotation=40, ha="right")
 plt.ylabel("Throughput FPGA to host (MB/s)")
 plt.legend()
 plt.tight_layout()

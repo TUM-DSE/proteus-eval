@@ -35,14 +35,13 @@ kernels = {
     "cl_burst_rw": Kernel([32], []),  # Result written back to input port
     "cl_dataflow_func": Kernel([32], [32]),
     "cl_dataflow_subfunc": Kernel([32], [32]),
-    # Currently not in frequencies.csv
-    # "cl_gmem_2banks": Kernel([512], [512]),
     "cl_helloworld": Kernel([32, 32], [32]),
     "cl_lmem_2rw": Kernel([32, 32], [32]),
     "cl_loop_reorder": Kernel([32, 32], [32]),
     "cl_partition_cyclicblock": Kernel([32, 32], [32]),
     "cl_shift_register": Kernel([32, 32], [32]),
     "cl_systolic_array": Kernel([32, 32], [32]),
+    "cl_gmem_2banks": Kernel([512], [512]),
     "cl_wide_mem_rw": Kernel([512, 512], [512]),
     "cl_wide_mem_rw_strm": Kernel([512, 512], [512]),
     "cl_wide_mem_rw_2x": Kernel([512, 512], [512]),

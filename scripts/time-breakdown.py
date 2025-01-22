@@ -48,7 +48,7 @@ for df in dfs:
 
     x_offset += bar_width * 1.3
 
-plt.xticks(x, app_names, rotation=30, ha="right")
+plt.xticks(x, app_names, rotation=40, ha="right")
 plt.ylabel("Time")
 
 patches = [
