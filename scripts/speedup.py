@@ -90,7 +90,7 @@ for app in apps:
     speedups.append(speedup)
 
 avg_speedup = statistics.fmean(speedups)
-f_avg.write(f"{avg_speedup}\n")
+f_avg.write(f"{avg_speedup},")
 
 # Speedup of bitstream chosen by scheduler.py ---------------------------------------------------------------
 
