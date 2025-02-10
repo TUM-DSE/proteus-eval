@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-df_kernel_time = pd.read_csv("../data/memory-channels-kernel.csv", skipinitialspace=True)
+df_kernel_time = pd.read_csv("../data/native/memory-channels-kernel.csv", skipinitialspace=True)
 
 configs = ["singlechannel-300mhz", "multichannel-300mhz", "singlechannel-fast", "multichannel-fast",
            "singlechannel-ddr-300mhz", "singlechannel-ddr-fast", "multichannel-ddr-300mhz", "multichannel-ddr-fast"]
@@ -23,6 +23,6 @@ plt.ylabel("Average time (ns)")
 plt.legend()
 plt.tight_layout()
 
-filename = "../plots/memory-channels-fpga.pdf"
+filename = "../plots/native/memory-channels-fpga.pdf"
 print(f"Saving figure to {filename}")
 plt.savefig(filename, format="pdf")
