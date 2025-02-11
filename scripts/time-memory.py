@@ -58,7 +58,7 @@ for setting in ["native", "proteus"]:
     plt.bar(x + 3 * bar_width, df_u280_ddr_fast[setting]["transfer+kernel"].values, width=bar_width, label="U280 DDR unlimited")
 
     plt.xticks(x, app_names, rotation=20)
-    plt.ylabel("Data transfer + kernel time (s)")
+    plt.ylabel("Total data transfer + kernel time (s)")
     plt.legend()
     plt.tight_layout()
 
@@ -84,7 +84,7 @@ plt.bar(x + 3 * bar_width, df_u280_ddr_fast["proteus"]["average"].values, width=
 
 
 plt.xticks(x, app_names, rotation=30, ha="right")
-plt.ylabel("Average total execution time (s)")
+plt.ylabel("Total execution time (s)")
 plt.ylim(top=30)
 plt.legend()
 plt.tight_layout()
@@ -104,7 +104,7 @@ plt.bar(x + 2 * bar_width, df_u280_ddr_fast["native"]["transfer+kernel"].values,
 plt.bar(x + 3 * bar_width, df_u280_ddr_fast["proteus"]["transfer+kernel"].values, width=bar_width, label="U280 DDR Proteus")
 
 plt.xticks(x, app_names, rotation=30, ha="right")
-plt.ylabel("Average data transfer + kernel time (s)")
+plt.ylabel("Total data transfer + kernel time (s)")
 plt.ylim(top=15)
 plt.legend()
 plt.tight_layout()
