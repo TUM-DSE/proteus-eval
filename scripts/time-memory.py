@@ -85,7 +85,6 @@ plt.bar(x + 3 * bar_width, df_u280_ddr_fast["proteus"]["average"].values, width=
 
 plt.xticks(x, app_names, rotation=30, ha="right")
 plt.ylabel("Total execution time (s)")
-plt.ylim(top=30)
 plt.legend()
 plt.tight_layout()
 
@@ -105,7 +104,6 @@ plt.bar(x + 3 * bar_width, df_u280_ddr_fast["proteus"]["transfer+kernel"].values
 
 plt.xticks(x, app_names, rotation=30, ha="right")
 plt.ylabel("Total data transfer + kernel time (s)")
-plt.ylim(top=15)
 plt.legend()
 plt.tight_layout()
 
