@@ -100,3 +100,4 @@ for setting in ["native", "proteus"]:
     filename = f"../plots/{setting}/throughput-to-host.pdf"
     print(f"Saving figure to {filename}")
     plt.savefig(filename, format="pdf")
+    plt.clf()
