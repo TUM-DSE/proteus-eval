@@ -29,6 +29,9 @@ for setting in ["native", "proteus"]:
     # Sum up data transfer + kernel execution time, time_cpu seems to be measured incorrectly for Proteus currently
     for df in dfs:
         df[setting]["transfer+kernel"] = df[setting]["data_to_fpga_ocl"] + df[setting]["kernel_ocl"] + df[setting]["data_to_host_ocl"]
+        # Average standard deviation is the square root of the average variance, variance is stddev ** 2
+        avg_variance = (df[setting]["data_to_fpga_ocl_stddev"] ** 2 + df[setting]["kernel_ocl_stddev"] ** 2 + df[setting]["data_to_host_ocl_stddev"] ** 2) / 3
+        df[setting]["transfer+kernel_stddev"] = np.sqrt(avg_variance)
 
     bar_width = 0.12
     app_names = df_u50_slow[setting]["app_name"].values
@@ -56,6 +59,7 @@ for setting in ["native", "proteus"]:
     for i in range(6):
         x_offs = i - 2
         plt.bar(x + x_offs * bar_width, dfs[i][setting]["transfer+kernel"].values, width=bar_width, label=labels[i])
+        plt.errorbar(x + x_offs * bar_width, dfs[i][setting]["transfer+kernel"].values, yerr=dfs[i][setting]["transfer+kernel_stddev"].values, fmt="none", color="k")
 
     plt.xticks(x, app_names, rotation=20)
     plt.ylabel("Total data transfer + kernel time (s)")
@@ -79,10 +83,10 @@ labels = ["U50 HBM native", "U50 HBM Proteus", "U280 HBM native", "U280 HBM Prot
 
 x_offs = -2
 for i in range(3):
-    plt.bar(x + x_offs * bar_width, dfs[i]["native"]["average"].values, width=bar_width, label=labels[i])
+    plt.bar(x + x_offs * bar_width, dfs[i]["native"]["average"].values, width=bar_width, label=labels[2 * i])
     plt.errorbar(x + x_offs * bar_width, dfs[i]["native"]["average"].values, yerr=dfs[i]["native"]["stddev"].values, fmt="none", color="k")
     x_offs += 1
-    plt.bar(x + x_offs * bar_width, dfs[i]["proteus"]["average"].values, width=bar_width, label=labels[i + 1])
+    plt.bar(x + x_offs * bar_width, dfs[i]["proteus"]["average"].values, width=bar_width, label=labels[2 * i + 1])
     plt.errorbar(x + x_offs * bar_width, dfs[i]["proteus"]["average"].values, yerr=dfs[i]["proteus"]["stddev"].values, fmt="none", color="k")
     x_offs += 1
 
@@ -100,9 +104,11 @@ plt.clf()
 
 x_offs = -2
 for i in range(3):
-    plt.bar(x + x_offs * bar_width, dfs[i]["native"]["transfer+kernel"].values, width=bar_width, label=labels[i])
+    plt.bar(x + x_offs * bar_width, dfs[i]["native"]["transfer+kernel"].values, width=bar_width, label=labels[2 * i])
+    plt.errorbar(x + x_offs * bar_width, dfs[i]["native"]["transfer+kernel"].values, yerr=dfs[i]["native"]["transfer+kernel_stddev"].values, fmt="none", color="k")
     x_offs += 1
-    plt.bar(x + x_offs * bar_width, dfs[i]["proteus"]["transfer+kernel"].values, width=bar_width, label=labels[i + 1])
+    plt.bar(x + x_offs * bar_width, dfs[i]["proteus"]["transfer+kernel"].values, width=bar_width, label=labels[2 * i + 1])
+    plt.errorbar(x + x_offs * bar_width, dfs[i]["proteus"]["transfer+kernel"].values, yerr=dfs[i]["proteus"]["transfer+kernel_stddev"].values, fmt="none", color="k")
     x_offs += 1
 
 plt.xticks(x, app_names, rotation=30, ha="right")
