@@ -117,7 +117,7 @@ for i in range(3):
     bars = plt.bar(x + x_offs * bar_width, dfs[i]["proteus"]["transfer+kernel"].values, width=bar_width, label=labels[2 * i + 1])
     proteus_overhead = ((dfs[i]["proteus"]["transfer+kernel"].values / dfs[i]["native"]["transfer+kernel"].values) * 100) - 100
     for j, b in enumerate(bars):
-        plt.text(b.get_x() + bar_width / 4, b.get_height() + 0.5, f"{proteus_overhead[j]:+.2f}%", rotation=90, size=5)
+        plt.text(b.get_x() + bar_width / 4, b.get_height() + 0.2, f"{proteus_overhead[j]:+.2f}%", rotation=90, size=5)
     plt.errorbar(x + x_offs * bar_width, dfs[i]["proteus"]["transfer+kernel"].values, yerr=dfs[i]["proteus"]["transfer+kernel_stddev"].values, fmt="none", color="k")
     x_offs += 1
 
