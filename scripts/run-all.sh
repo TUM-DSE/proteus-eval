@@ -13,3 +13,4 @@ cd "$script_dir"
 ./throughput.py
 ./memory-channels-total.py
 ./memory-channels-fpga.py
+./oversub.py
