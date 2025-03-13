@@ -18,17 +18,29 @@ app_names[0] = "unlimited"
 x = np.arange(len(app_names))
 
 times_hbm_unopt = df_u280_fast["time_total"][:unopt_index].values
+stddev_hbm_unopt = df_u280_fast["time_total_stddev"][:unopt_index].values
 times_hbm_opt = df_u280_fast["time_total"][unopt_index:].values
-times_hbm_opt = np.insert(times_hbm_opt, 0, 0.0)  # Index 0 is unlimited mem limit
+stddev_hbm_opt = df_u280_fast["time_total_stddev"][unopt_index:].values
+# Index 0 is no mem limit, no chunking, no optimization
+times_hbm_opt = np.insert(times_hbm_opt, 0, 0.0)
+stddev_hbm_opt = np.insert(stddev_hbm_opt, 0, 0.0)
 
 times_ddr_unopt = df_u280_ddr_fast["time_total"][:unopt_index].values
+stddev_ddr_unopt = df_u280_ddr_fast["time_total_stddev"][:unopt_index].values
 times_ddr_opt = df_u280_ddr_fast["time_total"][unopt_index:].values
-times_ddr_opt = np.insert(times_ddr_opt, 0, 0.0)  # Index 0 is unlimited mem limit
+stddev_ddr_opt = df_u280_ddr_fast["time_total_stddev"][unopt_index:].values
+# Index 0 is no mem limit, no chunking, no optimization
+times_ddr_opt = np.insert(times_ddr_opt, 0, 0.0)
+stddev_ddr_opt = np.insert(stddev_ddr_opt, 0, 0.0)
 
-plt.bar(x - 2 * bar_width, times_hbm_unopt, width=bar_width, label="HBM sequential")
-plt.bar(x - 1 * bar_width, times_hbm_opt, width=bar_width, label="HBM optimized")
-plt.bar(x + 0 * bar_width, times_ddr_unopt, width=bar_width, label="DDR sequential")
-plt.bar(x + 1 * bar_width, times_ddr_opt, width=bar_width, label="DDR optimized")
+plt.bar(x - 1.5 * bar_width, times_hbm_unopt, width=bar_width, label="HBM sequential")
+plt.errorbar(x - 1.5 * bar_width, times_hbm_unopt, yerr=stddev_hbm_unopt, fmt="none", color="k")
+plt.bar(x - 0.5 * bar_width, times_hbm_opt, width=bar_width, label="HBM optimized")
+plt.errorbar(x - 0.5 * bar_width, times_hbm_opt, yerr=stddev_hbm_opt, fmt="none", color="k")
+plt.bar(x + 0.5 * bar_width, times_ddr_unopt, width=bar_width, label="DDR sequential")
+plt.errorbar(x + 0.5 * bar_width, times_ddr_unopt, yerr=stddev_ddr_unopt, fmt="none", color="k")
+plt.bar(x + 1.5 * bar_width, times_ddr_opt, width=bar_width, label="DDR optimized")
+plt.errorbar(x + 1.5 * bar_width, times_ddr_opt, yerr=stddev_ddr_opt, fmt="none", color="k")
 
 plt.xticks(x, app_names)
 plt.xlabel("On-FPGA memory limit (MiB)")
