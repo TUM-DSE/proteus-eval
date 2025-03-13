@@ -10,7 +10,7 @@ df_u280_ddr_fast = pd.read_csv(f"../data/native/oversub-u280-ddr-fast.csv", skip
 dfs = [df_u280_fast, df_u280_ddr_fast]
 
 # Runs without -o option until this index
-unopt_index = 7
+unopt_index = 8
 
 bar_width = 0.2
 app_names = df_u280_fast["mem_limit"][:unopt_index]
