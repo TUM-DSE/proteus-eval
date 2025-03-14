@@ -42,23 +42,27 @@ plt.errorbar(x - 1.5 * bar_width, times_hbm_unopt, yerr=stddev_hbm_unopt, fmt="n
 # HBM opt
 bars = plt.bar(x - 0.5 * bar_width, times_hbm_opt, width=bar_width, label="HBM optimized")
 for i, b in enumerate(bars[1:]):
-    plt.text(b.get_x() + 0.04, b.get_height() + 0.05, f"{hbm_opt_diff[i]:+.2f}%", rotation=90, size=7)
+    plt.text(b.get_x() + 0.04, b.get_height() + 0.05,
+             f"{hbm_opt_diff[i]:+.2f}%", rotation=90, size=7)
 plt.errorbar(x - 0.5 * bar_width, times_hbm_opt, yerr=stddev_hbm_opt, fmt="none", color="k")
 
 # DDR unopt
-plt.bar(x + 0.5 * bar_width, times_ddr_unopt, width=bar_width, label="DDR sequential, unified memory banks")
+plt.bar(x + 0.5 * bar_width, times_ddr_unopt, width=bar_width,
+        label="DDR sequential, unified memory banks")
 plt.errorbar(x + 0.5 * bar_width, times_ddr_unopt, yerr=stddev_ddr_unopt, fmt="none", color="k")
 
 # DDR opt
-bars = plt.bar(x + 1.5 * bar_width, times_ddr_opt, width=bar_width, label="DDR optimized, unified memory banks")
+bars = plt.bar(x + 1.5 * bar_width, times_ddr_opt, width=bar_width,
+               label="DDR optimized, unified memory banks")
 for i, b in enumerate(bars[1:]):
-    plt.text(b.get_x() + 0.04, b.get_height() + 0.05, f"{ddr_opt_diff[i]:+.2f}%", rotation=90, size=7)
+    plt.text(b.get_x() + 0.04, b.get_height() + 0.05,
+             f"{ddr_opt_diff[i]:+.2f}%", rotation=90, size=7)
 plt.errorbar(x + 1.5 * bar_width, times_ddr_opt, yerr=stddev_ddr_opt, fmt="none", color="k")
 
 plt.xticks(x, app_names)
 plt.xlabel("On-FPGA memory usage (MiB)")
 plt.ylabel("Data transfer + kernel time (s)")
-plt.legend()
+plt.legend(loc="lower center")
 plt.tight_layout()
 
 filename = f"../plots/native/oversub.pdf"
