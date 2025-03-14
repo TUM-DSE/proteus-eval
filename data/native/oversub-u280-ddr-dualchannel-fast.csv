@@ -1,0 +1,8 @@
+app_name,runs,buf_size,mem_limit,num_chunks,chunk_size,input_size,time_total,time_total_stddev,time_to_fpga,time_to_fpga_stddev,time_kernel,time_kernel_stddev,time_to_host,time_to_host_stddev
+cl_wide_mem_rw_strm_oversub-u280-ddr-opt-fast-buf10-lim10-o,1,10,10,7,1744896,20971520,0.011266834,0.0,0.001872068,0.0,0.002452452,0.0,0.000773331,0.0
+cl_wide_mem_rw_strm_oversub-u280-ddr-opt-fast-buf10-lim8-o,1,10,8,8,1396736,20971520,0.011818759,0.0,0.002233607,0.0,0.002167287,0.0,0.000790109,0.0
+cl_wide_mem_rw_strm_oversub-u280-ddr-opt-fast-buf10-lim6-o,1,10,6,10,1048576,20971520,0.011442628,0.0,0.001847017,0.0,0.002247605,0.0,0.000799769,0.0
+cl_wide_mem_rw_strm_oversub-u280-ddr-opt-fast-buf10-lim5-o,1,10,5,13,872448,20971520,0.011585101,0.0,0.002195403,0.0,0.002593198,0.0,0.000946784,0.0
+cl_wide_mem_rw_strm_oversub-u280-ddr-opt-fast-buf10-lim4-o,1,10,4,16,696320,20971520,0.011802643,0.0,0.002425125,0.0,0.00267193,0.0,0.000978826,0.0
+cl_wide_mem_rw_strm_oversub-u280-ddr-opt-fast-buf10-lim3-o,1,10,3,20,524288,20971520,0.011989103,0.0,0.002372119,0.0,0.002704488,0.0,0.001004351,0.0
+cl_wide_mem_rw_strm_oversub-u280-ddr-opt-fast-buf10-lim2-o,1,10,2,31,348160,20971520,0.012519754,0.0,0.002652029,0.0,0.00305812,0.0,0.001194206,0.0
