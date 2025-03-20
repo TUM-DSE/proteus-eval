@@ -16,11 +16,22 @@ x_labels = ["Program bitstream", "Allocate kernel", "Set kernel args",
 x = np.arange(len(x_labels))
 
 plt.bar(x - 2.5 * bar_width, times.iloc[0], width=bar_width, label="Proteus U50")
+plt.errorbar(x - 2.5 * bar_width, times.iloc[0], yerr=times_stddevs.iloc[0], fmt="none", color="k")
+
 plt.bar(x - 1.5 * bar_width, times.iloc[3], width=bar_width, label="Native U50")
+plt.errorbar(x - 1.5 * bar_width, times.iloc[3], yerr=times_stddevs.iloc[3], fmt="none", color="k")
+
 plt.bar(x - 0.5 * bar_width, times.iloc[1], width=bar_width, label="Proteus U280 HBM")
+plt.errorbar(x - 0.5 * bar_width, times.iloc[1], yerr=times_stddevs.iloc[1], fmt="none", color="k")
+
 plt.bar(x + 0.5 * bar_width, times.iloc[4], width=bar_width, label="Native U280 HBM")
+plt.errorbar(x + 0.5 * bar_width, times.iloc[4], yerr=times_stddevs.iloc[4], fmt="none", color="k")
+
 plt.bar(x + 1.5 * bar_width, times.iloc[2], width=bar_width, label="Proteus U280 DDR")
+plt.errorbar(x + 1.5 * bar_width, times.iloc[2], yerr=times_stddevs.iloc[2], fmt="none", color="k")
+
 plt.bar(x + 2.5 * bar_width, times.iloc[5], width=bar_width, label="Native U280 DDR")
+plt.errorbar(x + 2.5 * bar_width, times.iloc[5], yerr=times_stddevs.iloc[5], fmt="none", color="k")
 
 plt.xticks(x, x_labels, rotation=30, ha="right")
 plt.ylabel("Time (ms)")
