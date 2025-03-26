@@ -14,3 +14,5 @@ cd "$script_dir"
 ./memory-channels-total.py
 ./memory-channels-fpga.py
 ./oversub.py
+./fstate-oh.py
+./migration-checkpoint.py
