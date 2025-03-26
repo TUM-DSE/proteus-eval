@@ -1,18 +1,20 @@
-import plot_common as fp
-from plot_common import (
+#!/usr/bin/env python3
+
+import common as fp
+from common import (
     plt, np, pd, sns
 )
 
-plot_name = "mig_and_snapshot_oh"
-data_subdir = "state_mgmt"
+plot_name = "mig-and-snapshot-oh"
+data_subdir = "proteus"
 
 # Find a CSV file for inputs
-cp_data_name = "vm_state_oh"
+cp_data_name = "vm-state-oh"
 csvfile = f"{fp.data_rootdir}/{data_subdir}/{cp_data_name}.csv"
 df_cp = pd.read_csv(csvfile, sep=",")
 print(df_cp)
 
-mig_data_name = "migration_oh"
+mig_data_name = "migration-oh"
 csvfile = f"{fp.data_rootdir}/{data_subdir}/{mig_data_name}.csv"
 df_mig = pd.read_csv(csvfile, sep=",")
 print(df_mig)
@@ -91,5 +93,5 @@ ax.grid(axis='y', zorder=1)
 # save the plot as pdf
 plt.tight_layout()
 plt.margins(x=0.02, tight=True)
-plt.savefig(f"{fp.plot_dir}/{plot_name}.pdf", dpi=300,
+plt.savefig(f"{fp.plot_dir}/proteus/{plot_name}.pdf", dpi=300,
             pad_inches=0.02, bbox_inches='tight', format='pdf')

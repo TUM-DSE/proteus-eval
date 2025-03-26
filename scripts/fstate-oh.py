@@ -1,11 +1,13 @@
-import plot_common as fp
-from plot_common import (
+#!/usr/bin/env python3
+
+import common as fp
+from common import (
     plt, np, pd, sns
 )
 
 # Find a CSV file for inputs
-data_subdir = "state_mgmt"
-data_name = "fpga_state_oh"
+data_subdir = "proteus"
+data_name = "fpga-state-oh"
 csvfile = f"{fp.data_rootdir}/{data_subdir}/{data_name}.csv"
 df = pd.read_csv(csvfile, sep=",")
 print(df)
@@ -56,5 +58,5 @@ ax.grid(axis='y', zorder=1)
 # save the plot as pdf
 plt.tight_layout()
 plt.margins(x=0.02, tight=True)
-plt.savefig(f"{fp.plot_dir}/{data_name}.pdf", dpi=300,
+plt.savefig(f"{fp.plot_dir}/proteus/{data_name}.pdf", dpi=300,
             pad_inches=0.02, bbox_inches='tight', format='pdf')
