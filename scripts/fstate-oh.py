@@ -12,33 +12,40 @@ csvfile = f"{fp.data_rootdir}/{data_subdir}/{data_name}.csv"
 df = pd.read_csv(csvfile, sep=",")
 print(df)
 
-# Get numbers and labels
-np_save_fpga = df["save_fpga[s]"].to_numpy(dtype=float)
-np_load_fpga = df["load_fpga[s]"].to_numpy(dtype=float)
-np_work_init = df["worker_init[s]"].to_numpy(dtype=float)
-np_labels = df["signal_size[MB]"].to_numpy(dtype=str)
-
-savefpga_stddev_index = df.columns.get_loc("save_fpga[s]")+1
-np_savefpga_stddev = df.iloc[:, savefpga_stddev_index].to_numpy(dtype=float)
-loadfpga_stddev_index = df.columns.get_loc("load_fpga[s]")+1
-np_loadfpga_stddev = df.iloc[:, loadfpga_stddev_index].to_numpy(dtype=float)
+fpgas = ["u50-fast", "u280-fast", "u280-ddr-fast"]
+labels = ["U50 HBM", "U280 HBM", "U280 DDR"]
+colors = [[fp.bar_blue, fp.bar_orange], [fp.bar_brown, fp.bar_green], [fp.bar_grey, fp.bar_purple]]
+sig_sizes = [100, 500, 1000]
 
 # Initialize a plot
 plt.rcParams.update({'font.size': 8})
-width = 3.3
+width = 5
 aspect = 1.6
 height = width/aspect
+bar_width = 0.1
+x_offs = -2 * bar_width
 fig, ax = plt.subplots(figsize=(width, height))
 
-# Create bars
-x_positions = np.arange(len(np_labels))
-bar_width = 0.4
-ax.bar(x_positions - bar_width/2, np_save_fpga, bar_width, yerr=np_savefpga_stddev,
-       error_kw={'elinewidth': 1, 'capsize': 2},  color=fp.bar_blue, edgecolor='k', label='FPGA evict', zorder=2)
-ax.bar(x_positions + bar_width/2, np_work_init, bar_width, bottom=np_load_fpga-np_work_init, yerr=np_loadfpga_stddev,
-       error_kw={'elinewidth': 1, 'capsize': 2}, color=fp.bar_orange, edgecolor='k', hatch='//', label='Worker init', zorder=3)
-ax.bar(x_positions + bar_width/2, np_load_fpga, bar_width,
-       color=fp.bar_orange, edgecolor='k', label='FPGA resume', zorder=2)
+for fpga, label, color in zip(fpgas, labels, colors):
+    # Get numbers and labels
+    np_save_fpga = df.loc[df["fpga"] == fpga]["save_fpga[s]"].to_numpy(dtype=float)
+    np_load_fpga = df.loc[df["fpga"] == fpga]["load_fpga[s]"].to_numpy(dtype=float)
+    np_work_init = df.loc[df["fpga"] == fpga]["worker_init[s]"].to_numpy(dtype=float)
+    np_labels = df.loc[df["fpga"] == fpga]["signal_size[MB]"].to_numpy(dtype=str)
+
+    savefpga_stddev_index = df.columns.get_loc("save_fpga[s]")+1
+    np_savefpga_stddev = df.loc[df["fpga"] == fpga].iloc[:, savefpga_stddev_index].to_numpy(dtype=float)
+    loadfpga_stddev_index = df.columns.get_loc("load_fpga[s]")+1
+    np_loadfpga_stddev = df.loc[df["fpga"] == fpga].iloc[:, loadfpga_stddev_index].to_numpy(dtype=float)
+
+    # Create bars
+    x_positions = np.arange(len(np_labels))
+    ax.bar(x_positions + x_offs - bar_width/2, np_save_fpga, bar_width, yerr=np_savefpga_stddev,
+            error_kw={'elinewidth': 1, 'capsize': 2},  color=color[0], edgecolor='k', label=f"{label} evict", zorder=2)
+    ax.bar(x_positions + x_offs + bar_width/2, np_load_fpga, bar_width, yerr=np_loadfpga_stddev,
+            error_kw={'elinewidth': 1, 'capsize': 2}, color=color[1], edgecolor='k', label=f"{label} resume", zorder=2)
+
+    x_offs += 2 * bar_width
 
 # define x/y labels and legends
 ax.set_xticks(x_positions)
