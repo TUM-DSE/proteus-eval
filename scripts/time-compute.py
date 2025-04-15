@@ -12,6 +12,27 @@ df_u280_fast = {}
 df_u280_ddr_slow = {}
 df_u280_ddr_fast = {}
 
+bar_width = 0.12
+
+bar_args = {
+    "width": bar_width,
+    "linewidth": 1,
+    "edgecolor": "k",
+}
+
+errorbar_args = {
+    "fmt": "none",
+    "color": "k",
+    "elinewidth": 1,
+    "capsize": 2,
+}
+
+plt.rcParams.update({'font.size': 12})
+width = 15.0
+aspect = 3
+height = width / aspect
+plt.figure(figsize=(width, height))
+
 # Individual plots ----------------------------------------------------------------------------------------------------
 
 for setting in ["native", "proteus"]:
@@ -34,7 +55,6 @@ for setting in ["native", "proteus"]:
         avg_variance = (df[setting]["data_to_fpga_ocl_stddev"] ** 2 + df[setting]["kernel_ocl_stddev"] ** 2 + df[setting]["data_to_host_ocl_stddev"] ** 2) / 3
         df[setting]["transfer+kernel_stddev"] = np.sqrt(avg_variance)
 
-    bar_width = 0.12
     app_names = df_u50_slow[setting]["app_name"].values
     x = np.arange(len(app_names))
 
@@ -42,8 +62,8 @@ for setting in ["native", "proteus"]:
 
     for i in range(6):
         x_offs = i - 2
-        plt.bar(x + x_offs * bar_width, dfs[i][setting]["average"].values, width=bar_width, label=labels[i])
-        plt.errorbar(x + x_offs * bar_width, dfs[i][setting]["average"].values, yerr=dfs[i][setting]["stddev"].values, fmt="none", color="k")
+        plt.bar(x + x_offs * bar_width, dfs[i][setting]["average"].values, label=labels[i], **bar_args)
+        plt.errorbar(x + x_offs * bar_width, dfs[i][setting]["average"].values, yerr=dfs[i][setting]["stddev"].values, **errorbar_args)
 
     plt.xticks(x, app_names, rotation=30, ha="right")
     plt.ylabel("Total execution time (s)")
@@ -59,8 +79,8 @@ for setting in ["native", "proteus"]:
 
     for i in range(6):
         x_offs = i - 2
-        plt.bar(x + x_offs * bar_width, dfs[i][setting]["transfer+kernel"].values, width=bar_width, label=labels[i])
-        plt.errorbar(x + x_offs * bar_width, dfs[i][setting]["transfer+kernel"].values, yerr=dfs[i][setting]["transfer+kernel_stddev"].values, fmt="none", color="k")
+        plt.bar(x + x_offs * bar_width, dfs[i][setting]["transfer+kernel"].values, label=labels[i], **bar_args)
+        plt.errorbar(x + x_offs * bar_width, dfs[i][setting]["transfer+kernel"].values, yerr=dfs[i][setting]["transfer+kernel_stddev"].values, **errorbar_args)
 
     plt.xticks(x, app_names, rotation=30, ha="right")
     plt.ylabel("Total data transfer + kernel time (s)")
@@ -85,15 +105,15 @@ labels = ["U50 HBM native", "U50 HBM Proteus", "U280 HBM native", "U280 HBM Prot
 x_offs = -2
 for i in range(3):
     # Native
-    plt.bar(x + x_offs * bar_width, dfs[i]["native"]["average"].values, width=bar_width, label=labels[2 * i])
-    plt.errorbar(x + x_offs * bar_width, dfs[i]["native"]["average"].values, yerr=dfs[i]["native"]["stddev"].values, fmt="none", color="k")
+    plt.bar(x + x_offs * bar_width, dfs[i]["native"]["average"].values, label=labels[2 * i], **bar_args)
+    plt.errorbar(x + x_offs * bar_width, dfs[i]["native"]["average"].values, yerr=dfs[i]["native"]["stddev"].values, **errorbar_args)
     x_offs += 1
     # Proteus
-    bars = plt.bar(x + x_offs * bar_width, dfs[i]["proteus"]["average"].values, width=bar_width, label=labels[2 * i + 1])
+    bars = plt.bar(x + x_offs * bar_width, dfs[i]["proteus"]["average"].values, label=labels[2 * i + 1], **bar_args)
     proteus_overhead = ((dfs[i]["proteus"]["average"].values / dfs[i]["native"]["average"].values) * 100) - 100
     for j, b in enumerate(bars):
-        plt.text(b.get_x(), b.get_height() + 1, f"{proteus_overhead[j]:+.2f}%", rotation=90, size=5)
-    plt.errorbar(x + x_offs * bar_width, dfs[i]["proteus"]["average"].values, yerr=dfs[i]["proteus"]["stddev"].values, fmt="none", color="k")
+        plt.text(b.get_x() + 0.25 * bar_width, b.get_height() + 1, f"{proteus_overhead[j]:+.2f}%", rotation=90, size=6)
+    plt.errorbar(x + x_offs * bar_width, dfs[i]["proteus"]["average"].values, yerr=dfs[i]["proteus"]["stddev"].values, **errorbar_args)
     x_offs += 1
 
 plt.xticks(x, app_names, rotation=30, ha="right")
@@ -111,15 +131,15 @@ plt.clf()
 x_offs = -2
 for i in range(3):
     # Native
-    plt.bar(x + x_offs * bar_width, dfs[i]["native"]["transfer+kernel"].values, width=bar_width, label=labels[2 * i])
-    plt.errorbar(x + x_offs * bar_width, dfs[i]["native"]["transfer+kernel"].values, yerr=dfs[i]["native"]["transfer+kernel_stddev"].values, fmt="none", color="k")
+    plt.bar(x + x_offs * bar_width, dfs[i]["native"]["transfer+kernel"].values, label=labels[2 * i], **bar_args)
+    plt.errorbar(x + x_offs * bar_width, dfs[i]["native"]["transfer+kernel"].values, yerr=dfs[i]["native"]["transfer+kernel_stddev"].values, **errorbar_args)
     x_offs += 1
     # Proteus
-    bars = plt.bar(x + x_offs * bar_width, dfs[i]["proteus"]["transfer+kernel"].values, width=bar_width, label=labels[2 * i + 1])
+    bars = plt.bar(x + x_offs * bar_width, dfs[i]["proteus"]["transfer+kernel"].values, label=labels[2 * i + 1], **bar_args)
     proteus_overhead = ((dfs[i]["proteus"]["transfer+kernel"].values / dfs[i]["native"]["transfer+kernel"].values) * 100) - 100
     for j, b in enumerate(bars):
-        plt.text(b.get_x(), b.get_height() + 0.5, f"{proteus_overhead[j]:+.2f}%", rotation=90, size=5)
-    plt.errorbar(x + x_offs * bar_width, dfs[i]["proteus"]["transfer+kernel"].values, yerr=dfs[i]["proteus"]["transfer+kernel_stddev"].values, fmt="none", color="k")
+        plt.text(b.get_x() + 0.25 * bar_width, b.get_height() + 0.5, f"{proteus_overhead[j]:+.2f}%", rotation=90, size=6)
+    plt.errorbar(x + x_offs * bar_width, dfs[i]["proteus"]["transfer+kernel"].values, yerr=dfs[i]["proteus"]["transfer+kernel_stddev"].values, **errorbar_args)
     x_offs += 1
 
 plt.xticks(x, app_names, rotation=30, ha="right")
