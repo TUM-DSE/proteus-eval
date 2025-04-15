@@ -4,6 +4,21 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
+bar_width = 0.15
+
+bar_args = {
+    "width": bar_width,
+    "linewidth": 1,
+    "edgecolor": "k",
+}
+
+errorbar_args = {
+    "fmt": "none",
+    "color": "k",
+    "elinewidth": 1,
+    "capsize": 2,
+}
+
 plt.rcParams.update({'font.size': 12})
 width = 7.0
 aspect = 1.6
@@ -19,7 +34,6 @@ dfs = [df_u280_fast, df_u280_ddr_fast]
 # Runs for HBM and DDR without -o option until this index, DDR dual channel always uses -o option
 unopt_index = 8
 
-bar_width = 0.15
 app_names = df_u280_fast["mem_limit"][:unopt_index]
 app_names[0] = "unlimited"
 x = np.arange(len(app_names))
@@ -50,36 +64,33 @@ stddev_ddr_dc = np.insert(stddev_ddr_dc, 0, 0.0)
 ddr_dc_diff = (times_ddr_dc[1:] / times_ddr_opt[1:] * 100) - 100
 
 # HBM unopt
-plt.bar(x - 2 * bar_width, times_hbm_unopt, width=bar_width, label="HBM sequential")
-plt.errorbar(x - 2 * bar_width, times_hbm_unopt, yerr=stddev_hbm_unopt, fmt="none", color="k")
+plt.bar(x - 2 * bar_width, times_hbm_unopt, label="HBM sequential", **bar_args)
+plt.errorbar(x - 2 * bar_width, times_hbm_unopt, yerr=stddev_hbm_unopt, **errorbar_args)
 
 # HBM opt
-bars = plt.bar(x - 1 * bar_width, times_hbm_opt, width=bar_width, label="HBM optimized")
+bars = plt.bar(x - 1 * bar_width, times_hbm_opt, label="HBM optimized", **bar_args)
 for i, b in enumerate(bars[1:]):
     plt.text(b.get_x() + 0.02, b.get_height() + 0.05,
              f"{hbm_opt_diff[i]:+.2f}%", rotation=90, size=7)
-plt.errorbar(x - 1 * bar_width, times_hbm_opt, yerr=stddev_hbm_opt, fmt="none", color="k")
+plt.errorbar(x - 1 * bar_width, times_hbm_opt, yerr=stddev_hbm_opt, **errorbar_args)
 
 # DDR unopt
-plt.bar(x + 0 * bar_width, times_ddr_unopt, width=bar_width,
-        label="DDR sequential, unified memory banks")
-plt.errorbar(x + 0 * bar_width, times_ddr_unopt, yerr=stddev_ddr_unopt, fmt="none", color="k")
+plt.bar(x + 0 * bar_width, times_ddr_unopt, label="DDR sequential, unified memory banks", **bar_args)
+plt.errorbar(x + 0 * bar_width, times_ddr_unopt, yerr=stddev_ddr_unopt, **errorbar_args)
 
 # DDR opt
-bars = plt.bar(x + 1 * bar_width, times_ddr_opt, width=bar_width,
-               label="DDR optimized, unified memory banks")
+bars = plt.bar(x + 1 * bar_width, times_ddr_opt, label="DDR optimized, unified memory banks", **bar_args)
 for i, b in enumerate(bars[1:]):
     plt.text(b.get_x() + 0.02, b.get_height() + 0.05,
              f"{ddr_opt_diff[i]:+.2f}%", rotation=90, size=7)
-plt.errorbar(x + 1 * bar_width, times_ddr_opt, yerr=stddev_ddr_opt, fmt="none", color="k")
+plt.errorbar(x + 1 * bar_width, times_ddr_opt, yerr=stddev_ddr_opt, **errorbar_args)
 
 # DDR opt + dualchannel
-bars = plt.bar(x + 2 * bar_width, times_ddr_dc, width=bar_width,
-               label="DDR optimized, separate memory banks")
+bars = plt.bar(x + 2 * bar_width, times_ddr_dc, label="DDR optimized, separate memory banks", **bar_args)
 for i, b in enumerate(bars[1:]):
     plt.text(b.get_x() + 0.02, b.get_height() + 0.05,
              f"{ddr_dc_diff[i]:+.2f}%", rotation=90, size=7)
-plt.errorbar(x + 2 * bar_width, times_ddr_dc, yerr=stddev_ddr_dc, fmt="none", color="k")
+plt.errorbar(x + 2 * bar_width, times_ddr_dc, yerr=stddev_ddr_dc, **errorbar_args)
 
 
 plt.xticks(x, app_names)
