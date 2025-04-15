@@ -10,6 +10,12 @@ times_stddevs = df[["kernel_alloc_stddev", "kernel_setarg_stddev",
                     "kernel_enqueue_stddev", "buf_alloc_stddev", "transfer_stddev", "finish_stddev"]]
 
 bar_width = 0.12
+plt.rcParams.update({'font.size': 12})
+width = 7.0
+aspect = 1.6
+height = width / aspect
+plt.figure(figsize=(width, height))
+
 x_labels = ["Allocate kernel", "Set kernel args", "Enqueue kernel", "Allocate buffer", "Data transfer", "Finish"]
 x = np.arange(len(x_labels))
 
