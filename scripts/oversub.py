@@ -101,6 +101,14 @@ plt.ylabel("Data transfer + kernel time (s)")
 plt.legend(loc="lower center")
 plt.tight_layout()
 
+ax = plt.gca()
+ax.spines['top'].set_visible(False)
+ax.spines['right'].set_visible(False)
+# ax.spines['bottom'].set_visible(False)
+ax.spines['left'].set_visible(False)
+ax.set_axisbelow(True)
+ax.grid(axis='y')
+
 filename = f"../plots/native/oversub.pdf"
 print(f"Saving figure to {filename}")
 plt.savefig(filename, format="pdf")
