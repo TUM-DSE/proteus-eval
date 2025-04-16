@@ -3,6 +3,8 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import common
+
 
 df = pd.read_csv(f"../data/overheads.csv", skipinitialspace=True)
 times = df[["kernel_alloc", "kernel_setarg", "kernel_enqueue", "buf_alloc", "transfer", "finish"]]
@@ -24,6 +26,10 @@ errorbar_args = {
     "capsize": 2,
 }
 
+colors = [common.bar_blue, common.bar_orange, common.bar_green,
+          common.bar_brown, common.bar_purple, common.bar_grey]
+plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
+
 plt.rcParams.update({'font.size': 12})
 width = 7.0
 aspect = 1.6
@@ -34,23 +40,23 @@ x_labels = ["Allocate kernel", "Set kernel args",
             "Enqueue kernel", "Allocate buffer", "Data transfer", "Finish"]
 x = np.arange(len(x_labels))
 
-plt.bar(x - 2.5 * bar_width, times.iloc[0], label="Proteus U50", **bar_args)
-plt.errorbar(x - 2.5 * bar_width, times.iloc[0], yerr=times_stddevs.iloc[0], **errorbar_args)
+plt.bar(x - 2.5 * bar_width, times.iloc[3], label="Native U50", **bar_args)
+plt.errorbar(x - 2.5 * bar_width, times.iloc[3], yerr=times_stddevs.iloc[3], **errorbar_args)
 
-plt.bar(x - 1.5 * bar_width, times.iloc[3], label="Native U50", **bar_args)
-plt.errorbar(x - 1.5 * bar_width, times.iloc[3], yerr=times_stddevs.iloc[3], **errorbar_args)
+plt.bar(x - 1.5 * bar_width, times.iloc[0], label="Proteus U50", **bar_args)
+plt.errorbar(x - 1.5 * bar_width, times.iloc[0], yerr=times_stddevs.iloc[0], **errorbar_args)
 
-plt.bar(x - 0.5 * bar_width, times.iloc[1], label="Proteus U280 HBM", **bar_args)
-plt.errorbar(x - 0.5 * bar_width, times.iloc[1], yerr=times_stddevs.iloc[1], **errorbar_args)
+plt.bar(x - 0.5 * bar_width, times.iloc[4], label="Native U280 HBM", **bar_args)
+plt.errorbar(x - 0.5 * bar_width, times.iloc[4], yerr=times_stddevs.iloc[4], **errorbar_args)
 
-plt.bar(x + 0.5 * bar_width, times.iloc[4], label="Native U280 HBM", **bar_args)
-plt.errorbar(x + 0.5 * bar_width, times.iloc[4], yerr=times_stddevs.iloc[4], **errorbar_args)
+plt.bar(x + 0.5 * bar_width, times.iloc[1], label="Proteus U280 HBM", **bar_args)
+plt.errorbar(x + 0.5 * bar_width, times.iloc[1], yerr=times_stddevs.iloc[1], **errorbar_args)
 
-plt.bar(x + 1.5 * bar_width, times.iloc[2], label="Proteus U280 DDR", **bar_args)
-plt.errorbar(x + 1.5 * bar_width, times.iloc[2], yerr=times_stddevs.iloc[2], **errorbar_args)
+plt.bar(x + 1.5 * bar_width, times.iloc[5], label="Native U280 DDR", **bar_args)
+plt.errorbar(x + 1.5 * bar_width, times.iloc[5], yerr=times_stddevs.iloc[5], **errorbar_args)
 
-plt.bar(x + 2.5 * bar_width, times.iloc[5], label="Native U280 DDR", **bar_args)
-plt.errorbar(x + 2.5 * bar_width, times.iloc[5], yerr=times_stddevs.iloc[5], **errorbar_args)
+plt.bar(x + 2.5 * bar_width, times.iloc[2], label="Proteus U280 DDR", **bar_args)
+plt.errorbar(x + 2.5 * bar_width, times.iloc[2], yerr=times_stddevs.iloc[2], **errorbar_args)
 
 plt.xticks(x, x_labels, rotation=30, ha="right")
 plt.ylabel("Time (ms)")

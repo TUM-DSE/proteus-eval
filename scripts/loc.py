@@ -4,6 +4,7 @@ import common
 import pandas as pd
 import numpy as np
 
+
 df = pd.read_csv(f"{common.data_rootdir}/loc.csv", skipinitialspace=True)
 
 df_apps = df[df["File"].str.contains("host.cpp")]

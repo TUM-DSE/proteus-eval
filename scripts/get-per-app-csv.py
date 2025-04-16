@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import pandas as pd
 
+
 u50_slow = pd.read_csv("../data/u50-slow-vitis.csv", skipinitialspace=True)
 u280_slow = pd.read_csv("../data/u280-slow-vitis.csv", skipinitialspace=True)
 u280_ddr_slow = pd.read_csv("../data/u280-ddr-slow-vitis.csv", skipinitialspace=True)

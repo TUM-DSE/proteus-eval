@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 import seaborn as sns  # type: ignore
 
+
 bar_blue = '#8EA9DB'
 bar_orange = '#F4B084'
 bar_green = '#99d8c9'

@@ -5,6 +5,7 @@ from common import (
     plt, np, pd, sns
 )
 
+
 # Find a CSV file for inputs
 data_subdir = "proteus"
 data_name = "fpga-state-oh"
@@ -14,7 +15,7 @@ print(df)
 
 fpgas = ["u50-fast", "u280-fast", "u280-ddr-fast"]
 labels = ["U50 HBM", "U280 HBM", "U280 DDR"]
-colors = [[fp.bar_blue, fp.bar_orange], [fp.bar_brown, fp.bar_green], [fp.bar_grey, fp.bar_purple]]
+colors = [[fp.bar_blue, fp.bar_orange], [fp.bar_green, fp.bar_brown], [fp.bar_purple, fp.bar_grey]]
 sig_sizes = [100, 500, 1000]
 
 # Initialize a plot

@@ -5,6 +5,7 @@ from common import (
     plt, np, pd, sns
 )
 
+
 plot_name = "mig-and-snapshot-oh"
 data_subdir = "proteus"
 

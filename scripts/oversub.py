@@ -3,6 +3,8 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import common
+
 
 bar_width = 0.15
 
@@ -18,6 +20,10 @@ errorbar_args = {
     "elinewidth": 1,
     "capsize": 2,
 }
+
+colors = [common.bar_blue, common.bar_orange, common.bar_green,
+          common.bar_brown, common.bar_purple, common.bar_grey]
+plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
 
 plt.rcParams.update({'font.size': 12})
 width = 7.0
