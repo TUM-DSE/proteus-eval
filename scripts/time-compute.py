@@ -5,6 +5,19 @@ import numpy as np
 import matplotlib.pyplot as plt
 import statistics as stat
 
+
+def configure_ax():
+    ax = plt.gca()
+
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    # ax.spines['bottom'].set_visible(False)
+    ax.spines['left'].set_visible(False)
+
+    ax.set_axisbelow(True)
+    ax.grid(axis='y')
+
+
 df_u50_slow = {}
 df_u50_fast = {}
 df_u280_slow = {}
@@ -81,6 +94,7 @@ for setting in ["native", "proteus"]:
     plt.ylabel("Total execution time (s)")
     plt.legend()
     plt.tight_layout()
+    configure_ax()
 
     filename = f"../plots/{setting}/time-compute-total.pdf"
     print(f"Saving figure to {filename}")
@@ -100,6 +114,7 @@ for setting in ["native", "proteus"]:
     plt.ylabel("Total data transfer + kernel time (s)")
     plt.legend()
     plt.tight_layout()
+    configure_ax()
 
     filename = f"../plots/{setting}/time-compute-fpga.pdf"
     print(f"Saving figure to {filename}")
@@ -141,6 +156,7 @@ plt.xticks(x, app_names, rotation=20)
 plt.ylabel("Total execution time (s)")
 plt.legend()
 plt.tight_layout()
+configure_ax()
 
 filename = f"../plots/time-compute-total.pdf"
 print(f"Saving figure to {filename}")
@@ -173,6 +189,7 @@ plt.xticks(x, app_names, rotation=20)
 plt.ylabel("Total data transfer + kernel time (s)")
 plt.legend()
 plt.tight_layout()
+configure_ax()
 
 filename = f"../plots/time-compute-fpga.pdf"
 print(f"Saving figure to {filename}")
