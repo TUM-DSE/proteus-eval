@@ -34,16 +34,18 @@ for fpga, label, color in zip(fpgas, labels, colors):
     np_labels = df.loc[df["fpga"] == fpga]["signal_size[MB]"].to_numpy(dtype=str)
 
     savefpga_stddev_index = df.columns.get_loc("save_fpga[s]")+1
-    np_savefpga_stddev = df.loc[df["fpga"] == fpga].iloc[:, savefpga_stddev_index].to_numpy(dtype=float)
+    np_savefpga_stddev = df.loc[df["fpga"] == fpga].iloc[:,
+                                                         savefpga_stddev_index].to_numpy(dtype=float)
     loadfpga_stddev_index = df.columns.get_loc("load_fpga[s]")+1
-    np_loadfpga_stddev = df.loc[df["fpga"] == fpga].iloc[:, loadfpga_stddev_index].to_numpy(dtype=float)
+    np_loadfpga_stddev = df.loc[df["fpga"] == fpga].iloc[:,
+                                                         loadfpga_stddev_index].to_numpy(dtype=float)
 
     # Create bars
     x_positions = np.arange(len(np_labels))
     ax.bar(x_positions + x_offs - bar_width/2, np_save_fpga, bar_width, yerr=np_savefpga_stddev,
-            error_kw={'elinewidth': 1, 'capsize': 2},  color=color[0], edgecolor='k', label=f"{label} evict", zorder=2)
+           error_kw={'elinewidth': 1, 'capsize': 2},  color=color[0], edgecolor='k', label=f"{label} evict", zorder=2)
     ax.bar(x_positions + x_offs + bar_width/2, np_load_fpga, bar_width, yerr=np_loadfpga_stddev,
-            error_kw={'elinewidth': 1, 'capsize': 2}, color=color[1], edgecolor='k', label=f"{label} resume", zorder=2)
+           error_kw={'elinewidth': 1, 'capsize': 2}, color=color[1], edgecolor='k', label=f"{label} resume", zorder=2)
 
     x_offs += 2 * bar_width
 

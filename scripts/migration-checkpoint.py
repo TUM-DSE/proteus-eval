@@ -59,21 +59,21 @@ for i, (fpga, label, color) in enumerate(zip(fpgas, labels, colors)):
 
     # NOTE: keep the order of the following ax.bar() to fix the order of items shown in the legend.
     ax.bar(x_pos_r1 + x_offs, np_save_fpga_mig, bar_width,
-        color=fp.bar_blue,   edgecolor='k', label=f'FPGA evict' if i == 0 else '', zorder=2)
+           color=fp.bar_blue,   edgecolor='k', label=f'FPGA evict' if i == 0 else '', zorder=2)
     ax.bar(x_pos_r1 + x_offs, np_save_vm_mig,   bar_width, bottom=np_save_fpga_mig,
-        color=fp.bar_green,  edgecolor='k', hatch='//', label=f'VM save (mig)' if i == 0 else '', zorder=2)
+           color=fp.bar_green,  edgecolor='k', hatch='//', label=f'VM save (mig)' if i == 0 else '', zorder=2)
     ax.bar(x_pos_r3 + x_offs, np_save_fpga_cp, bar_width,
-        color=fp.bar_blue,   edgecolor='k', zorder=2)
+           color=fp.bar_blue,   edgecolor='k', zorder=2)
     ax.bar(x_pos_r3 + x_offs, np_save_vm_cp,   bar_width, bottom=np_save_fpga_cp,
-        color=fp.bar_purple,  edgecolor='k', hatch='//', label='Checkpoint' if i == 0 else '', zorder=2)
+           color=fp.bar_purple,  edgecolor='k', hatch='//', label='Checkpoint' if i == 0 else '', zorder=2)
     ax.bar(x_pos_r2 + x_offs, np_load_fpga_mig, bar_width,
-        color=fp.bar_orange, edgecolor='k', label='FPGA resume' if i == 0 else '', zorder=2)
+           color=fp.bar_orange, edgecolor='k', label='FPGA resume' if i == 0 else '', zorder=2)
     ax.bar(x_pos_r2 + x_offs, np_load_vm_mig,   bar_width, bottom=np_load_fpga_mig,
-        color=fp.bar_brown,  edgecolor='k', hatch='..', label='VM load (mig)' if i == 0 else '', zorder=2)
+           color=fp.bar_brown,  edgecolor='k', hatch='..', label='VM load (mig)' if i == 0 else '', zorder=2)
     ax.bar(x_pos_r4 + x_offs, np_load_fpga_cp, bar_width,
-        color=fp.bar_orange, edgecolor='k', zorder=2)
+           color=fp.bar_orange, edgecolor='k', zorder=2)
     ax.bar(x_pos_r4 + x_offs, np_load_vm_cp,   bar_width, bottom=np_load_fpga_cp,
-        color=fp.bar_grey,  edgecolor='k', hatch='..', label='Restore' if i == 0 else '', zorder=2)
+           color=fp.bar_grey,  edgecolor='k', hatch='..', label='Restore' if i == 0 else '', zorder=2)
 
     x_offs += 6 * bar_width
 

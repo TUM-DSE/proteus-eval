@@ -30,7 +30,8 @@ aspect = 1.6
 height = width / aspect
 plt.figure(figsize=(width, height))
 
-x_labels = ["Allocate kernel", "Set kernel args", "Enqueue kernel", "Allocate buffer", "Data transfer", "Finish"]
+x_labels = ["Allocate kernel", "Set kernel args",
+            "Enqueue kernel", "Allocate buffer", "Data transfer", "Finish"]
 x = np.arange(len(x_labels))
 
 plt.bar(x - 2.5 * bar_width, times.iloc[0], label="Proteus U50", **bar_args)

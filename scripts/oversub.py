@@ -79,14 +79,16 @@ plt.bar(x + 0 * bar_width, times_ddr_unopt, label="DDR sequential, unified memor
 plt.errorbar(x + 0 * bar_width, times_ddr_unopt, yerr=stddev_ddr_unopt, **errorbar_args)
 
 # DDR opt
-bars = plt.bar(x + 1 * bar_width, times_ddr_opt, label="DDR optimized, unified memory banks", **bar_args)
+bars = plt.bar(x + 1 * bar_width, times_ddr_opt,
+               label="DDR optimized, unified memory banks", **bar_args)
 for i, b in enumerate(bars[1:]):
     plt.text(b.get_x() + 0.02, b.get_height() + 0.05,
              f"{ddr_opt_diff[i]:+.2f}%", rotation=90, size=7)
 plt.errorbar(x + 1 * bar_width, times_ddr_opt, yerr=stddev_ddr_opt, **errorbar_args)
 
 # DDR opt + dualchannel
-bars = plt.bar(x + 2 * bar_width, times_ddr_dc, label="DDR optimized, separate memory banks", **bar_args)
+bars = plt.bar(x + 2 * bar_width, times_ddr_dc,
+               label="DDR optimized, separate memory banks", **bar_args)
 for i, b in enumerate(bars[1:]):
     plt.text(b.get_x() + 0.02, b.get_height() + 0.05,
              f"{ddr_dc_diff[i]:+.2f}%", rotation=90, size=7)

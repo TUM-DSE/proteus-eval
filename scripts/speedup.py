@@ -26,7 +26,8 @@ for setting in ["native", "proteus"]:
 
     # Best case speedup -----------------------------------------------------------------------------------------
 
-    filenames = [f"../data/{setting}/speedup-best-200mhz.csv", f"../data/{setting}/speedup-best-unlimited.csv"]
+    filenames = [f"../data/{setting}/speedup-best-200mhz.csv",
+                 f"../data/{setting}/speedup-best-unlimited.csv"]
     speedups = [[], []]
 
     for i, dfs in enumerate([dfs_slow, dfs_fast]):
@@ -75,16 +76,20 @@ for setting in ["native", "proteus"]:
         max_fpga = fpga_configs[int(idxmax / num_apps)]
         f.write(f"{max},{max_fpga},")
 
-        freq_max = df_freq_fast.loc[df_freq_fast["app_name"] == app, ["u50_fast_freq", "u280_fast_freq", "u280_ddr_fast_freq"]].idxmax(axis=1).iloc[0]
+        freq_max = df_freq_fast.loc[df_freq_fast["app_name"] == app, [
+            "u50_fast_freq", "u280_fast_freq", "u280_ddr_fast_freq"]].idxmax(axis=1).iloc[0]
         if freq_max == "u50_fast_freq":
             freq_max_fpga = fpga_configs[0]
-            freq_max_time = df_u50_fast.loc[df_u50_fast["app_name"] == app, "transfer+kernel"].iloc[0]
+            freq_max_time = df_u50_fast.loc[df_u50_fast["app_name"]
+                                            == app, "transfer+kernel"].iloc[0]
         elif freq_max == "u280_fast_freq":
             freq_max_fpga = fpga_configs[1]
-            freq_max_time = df_u280_fast.loc[df_u280_fast["app_name"] == app, "transfer+kernel"].iloc[0]
+            freq_max_time = df_u280_fast.loc[df_u280_fast["app_name"]
+                                             == app, "transfer+kernel"].iloc[0]
         elif freq_max == "u280_ddr_fast_freq":
             freq_max_fpga = fpga_configs[2]
-            freq_max_time = df_u280_ddr_fast.loc[df_u280_ddr_fast["app_name"] == app, "transfer+kernel"].iloc[0]
+            freq_max_time = df_u280_ddr_fast.loc[df_u280_ddr_fast["app_name"]
+                                                 == app, "transfer+kernel"].iloc[0]
 
         f.write(f"{freq_max_time},{freq_max_fpga},")
         speedup = max / freq_max_time
@@ -98,7 +103,8 @@ for setting in ["native", "proteus"]:
 
     df_scheduler = pd.read_csv("../data/scheduler-scores.csv", skipinitialspace=True)
     # Ignore 200 MHz cases
-    df_scheduler = df_scheduler[df_scheduler["fpgas"].isin(["u50_fast", "u280_fast", "u280_ddr_fast"])]
+    df_scheduler = df_scheduler[df_scheduler["fpgas"].isin(
+        ["u50_fast", "u280_fast", "u280_ddr_fast"])]
     filename = f"../data/{setting}/speedup-scheduler-unlimited.csv"
     speedups = []
 
@@ -128,7 +134,8 @@ for setting in ["native", "proteus"]:
             best_time = df_u280_fast.loc[df_u280_fast["app_name"] == app, "transfer+kernel"].iloc[0]
         elif max_score_fpga == "u280_ddr_fast":
             best_fpga = fpga_configs[2]
-            best_time = df_u280_ddr_fast.loc[df_u280_ddr_fast["app_name"] == app, "transfer+kernel"].iloc[0]
+            best_time = df_u280_ddr_fast.loc[df_u280_ddr_fast["app_name"]
+                                             == app, "transfer+kernel"].iloc[0]
 
         f.write(f"{best_time},{best_fpga},")
         speedup = max / best_time

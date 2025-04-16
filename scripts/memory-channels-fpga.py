@@ -15,7 +15,8 @@ x = np.arange(len(df_kernel_time))
 
 plt.bar(x - bar_width, df_kernel_time["kernel_avg_time"].values, width=bar_width, label="kernel")
 plt.bar(x, df_kernel_time["data_to_fpga_avg_time"].values, width=bar_width, label="data to fpga")
-plt.bar(x + bar_width, df_kernel_time["data_to_host_avg_time"].values, width=bar_width, label="data to host")
+plt.bar(x + bar_width, df_kernel_time["data_to_host_avg_time"].values,
+        width=bar_width, label="data to host")
 
 plt.xticks(x, app_names, rotation=45, ha="right")
 plt.ylabel("Average time (ns)")

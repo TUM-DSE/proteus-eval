@@ -10,19 +10,20 @@ class Kernel:
         self.in_ports = in_ports
         self.out_ports = out_ports
 
-### bandwidths are roughly measured by 'xbutil validate'
+
+# bandwidths are roughly measured by 'xbutil validate'
 # Memory
-HBM_CHANNEL_BANDWIDTH = 12_400 #MB/s
+HBM_CHANNEL_BANDWIDTH = 12_400  # MB/s
 HBM_CHANNELS = 32
 HBM_CAPACITY = 8_000
-DDR_CHANNEL_BANDWIDTH = 17_000 #MB/s
+DDR_CHANNEL_BANDWIDTH = 17_000  # MB/s
 DDR_CHANNELS = 2
 DDR_CAPACITY = 32_000
 
 # PCIe
 PCIE_HBM_WR_BANDWIDTH = 11_500
 PCIE_HBM_RD_BANDWIDTH = 11_500
-PCIE_DDR_WR_BANDWIDTH =  8_500
+PCIE_DDR_WR_BANDWIDTH = 8_500
 PCIE_DDR_RD_BANDWIDTH = 11_500
 
 # Weights
@@ -102,7 +103,8 @@ for i, app in enumerate(kernels.keys()):
         score_thrps[fpga] = thrps[fpga] / max_thrp
         print(f"- {fpga}: {score_thrps[fpga]}")
 
-    print(f"Final scores (score_freq * {W_FREQ} + score_thrp * {W_THRP}, ignoring memory capacity for now):")
+    print(f"Final scores (score_freq * {W_FREQ} + score_thrp * {W_THRP}, "
+          "ignoring memory capacity for now):")
     tmp_list = []
     for fpga in fpgas:
         final_score = score_freqs[fpga] * W_FREQ + score_thrps[fpga] * W_THRP
@@ -112,7 +114,7 @@ for i, app in enumerate(kernels.keys()):
 
     df_final_scores[app] = tmp_list
 
-    ### Export the result to csv
+    # Export the result to csv
     # filename = f"{app}.csv"
     # print(f"Saving data to {filename}")
     # df_result.to_csv(filename, index=False)
