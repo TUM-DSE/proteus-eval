@@ -131,13 +131,13 @@ for i in range(3):
     proteus_overhead = ((dfs[i]["proteus"]["average"].values / dfs[i]
                         ["native"]["average"].values) * 100) - 100
     for j, b in enumerate(bars):
-        plt.text(b.get_x() + bar_width / 4, b.get_height() + 0.5,
-                 f"{proteus_overhead[j]:+.2f}%", rotation=90, size=5)
+        plt.text(b.get_x() + 0.016, b.get_height() + 0.5,
+                 f"{proteus_overhead[j]:+.2f}%", rotation=90, size=8)
     plt.errorbar(x + x_offs * bar_width, dfs[i]["proteus"]["average"].values,
                  yerr=dfs[i]["proteus"]["stddev"].values, **errorbar_args)
     x_offs += 1
 
-plt.xticks(x, app_names, rotation=30, ha="right")
+plt.xticks(x, app_names, rotation=20)
 plt.ylabel("Total execution time (s)")
 plt.legend()
 plt.tight_layout()
@@ -169,7 +169,7 @@ for i in range(3):
                  yerr=dfs[i]["proteus"]["transfer+kernel_stddev"].values, **errorbar_args)
     x_offs += 1
 
-plt.xticks(x, app_names, rotation=30, ha="right")
+plt.xticks(x, app_names, rotation=20)
 plt.ylabel("Total data transfer + kernel time (s)")
 plt.legend()
 plt.tight_layout()

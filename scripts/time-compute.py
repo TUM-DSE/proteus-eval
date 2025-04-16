@@ -33,7 +33,7 @@ aspect = 3
 height = width / aspect
 plt.figure(figsize=(width, height))
 
-# Individual plots ----------------------------------------------------------------------------------------------------
+# Individual plots ------------------------------------------------------------------------------------------
 
 for setting in ["native", "proteus"]:
 
@@ -55,7 +55,8 @@ for setting in ["native", "proteus"]:
     labels = ["U50 HBM 200 MHz", "U280 HBM 200 MHz", "U280 DDR 200 MHz",
               "U50 HBM unlimited", "U280 HBM unlimited", "U280 DDR unlimited"]
 
-    # Sum up data transfer + kernel execution time, time_cpu seems to be measured incorrectly for Proteus currently
+    # Sum up data transfer + kernel execution time,
+    # time_cpu seems to be measured incorrectly for Proteus currently
     for df in dfs:
         df[setting]["transfer+kernel"] = df[setting]["data_to_fpga_ocl"] + \
             df[setting]["kernel_ocl"] + df[setting]["data_to_host_ocl"]
@@ -67,7 +68,7 @@ for setting in ["native", "proteus"]:
     app_names = df_u50_slow[setting]["app_name"].values
     x = np.arange(len(app_names))
 
-    # Total execution time --------------------------------------------------------------------------------------
+    # Total execution time ----------------------------------------------------------------------------------
 
     for i in range(6):
         x_offs = i - 2
@@ -76,7 +77,7 @@ for setting in ["native", "proteus"]:
         plt.errorbar(x + x_offs * bar_width, dfs[i][setting]["average"].values,
                      yerr=dfs[i][setting]["stddev"].values, **errorbar_args)
 
-    plt.xticks(x, app_names, rotation=30, ha="right")
+    plt.xticks(x, app_names, rotation=20)
     plt.ylabel("Total execution time (s)")
     plt.legend()
     plt.tight_layout()
@@ -86,7 +87,7 @@ for setting in ["native", "proteus"]:
     plt.savefig(filename, format="pdf")
     plt.clf()
 
-    # Data transfer + kernel time -------------------------------------------------------------------------------
+    # Data transfer + kernel time ---------------------------------------------------------------------------
 
     for i in range(6):
         x_offs = i - 2
@@ -95,7 +96,7 @@ for setting in ["native", "proteus"]:
         plt.errorbar(x + x_offs * bar_width, dfs[i][setting]["transfer+kernel"].values,
                      yerr=dfs[i][setting]["transfer+kernel_stddev"].values, **errorbar_args)
 
-    plt.xticks(x, app_names, rotation=30, ha="right")
+    plt.xticks(x, app_names, rotation=20)
     plt.ylabel("Total data transfer + kernel time (s)")
     plt.legend()
     plt.tight_layout()
@@ -105,7 +106,7 @@ for setting in ["native", "proteus"]:
     plt.savefig(filename, format="pdf")
     plt.clf()
 
-# Native vs Proteus plot ---------------------------------------------------------------------------------------------
+# Native vs Proteus plot ------------------------------------------------------------------------------------
 
 bar_width = 0.12
 app_names = df_u50_slow[setting]["app_name"].values
@@ -127,16 +128,16 @@ for i in range(3):
     # Proteus
     bars = plt.bar(x + x_offs * bar_width, dfs[i]["proteus"]
                    ["average"].values, label=labels[2 * i + 1], **bar_args)
-    proteus_overhead = ((dfs[i]["proteus"]["average"].values / dfs[i]
-                        ["native"]["average"].values) * 100) - 100
+    proteus_overhead = ((dfs[i]["proteus"]["average"].values /
+                        dfs[i]["native"]["average"].values) * 100) - 100
     for j, b in enumerate(bars):
-        plt.text(b.get_x() + 0.25 * bar_width, b.get_height() + 1,
-                 f"{proteus_overhead[j]:+.2f}%", rotation=90, size=6)
+        plt.text(b.get_x() + 0.19 * bar_width, b.get_height() + 1,
+                 f"{proteus_overhead[j]:+.2f}%", rotation=90, size=8)
     plt.errorbar(x + x_offs * bar_width, dfs[i]["proteus"]["average"].values,
                  yerr=dfs[i]["proteus"]["stddev"].values, **errorbar_args)
     x_offs += 1
 
-plt.xticks(x, app_names, rotation=30, ha="right")
+plt.xticks(x, app_names, rotation=20)
 plt.ylabel("Total execution time (s)")
 plt.legend()
 plt.tight_layout()
@@ -162,13 +163,13 @@ for i in range(3):
     proteus_overhead = ((dfs[i]["proteus"]["transfer+kernel"].values /
                         dfs[i]["native"]["transfer+kernel"].values) * 100) - 100
     for j, b in enumerate(bars):
-        plt.text(b.get_x() + 0.25 * bar_width, b.get_height() + 0.5,
-                 f"{proteus_overhead[j]:+.2f}%", rotation=90, size=6)
+        plt.text(b.get_x() + 0.19 * bar_width, b.get_height() + 0.5,
+                 f"{proteus_overhead[j]:+.2f}%", rotation=90, size=8)
     plt.errorbar(x + x_offs * bar_width, dfs[i]["proteus"]["transfer+kernel"].values,
                  yerr=dfs[i]["proteus"]["transfer+kernel_stddev"].values, **errorbar_args)
     x_offs += 1
 
-plt.xticks(x, app_names, rotation=30, ha="right")
+plt.xticks(x, app_names, rotation=20)
 plt.ylabel("Total data transfer + kernel time (s)")
 plt.legend()
 plt.tight_layout()
