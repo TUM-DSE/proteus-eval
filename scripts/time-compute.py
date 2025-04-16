@@ -84,6 +84,8 @@ for setting in ["native", "proteus"]:
         df[setting]["transfer+kernel_stddev"] = np.sqrt(avg_variance)
 
     app_names = df_u50_slow[setting]["app_name"].values
+    # Remove cl_
+    app_names = [s[3:] for s in app_names]
     x = np.arange(len(app_names))
 
     # Total execution time ----------------------------------------------------------------------------------
@@ -130,6 +132,8 @@ for setting in ["native", "proteus"]:
 
 bar_width = 0.12
 app_names = df_u50_slow[setting]["app_name"].values
+# Remove cl_
+app_names = [s[3:] for s in app_names]
 x = np.arange(len(app_names))
 dfs = [df_u50_fast, df_u280_fast, df_u280_ddr_fast]
 labels = ["U50 HBM native", "U50 HBM Proteus", "U280 HBM native",
