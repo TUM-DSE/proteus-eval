@@ -74,4 +74,4 @@ ax.grid(axis='y')
 
 filename = f"../plots/overheads.pdf"
 print(f"Saving figure to {filename}")
-plt.savefig(filename, format="pdf")
+plt.savefig(filename, dpi=300, pad_inches=0.02, bbox_inches='tight', format="pdf")

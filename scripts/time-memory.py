@@ -40,6 +40,13 @@ errorbar_args = {
     "capsize": 2,
 }
 
+savefig_args = {
+    "dpi": 300,
+    "pad_inches": 0.02,
+    "bbox_inches": 'tight',
+    "format": "pdf",
+}
+
 colors = [common.bar_blue, common.bar_orange, common.bar_green,
           common.bar_brown, common.bar_purple, common.bar_grey]
 plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
@@ -105,7 +112,7 @@ for setting in ["native", "proteus"]:
 
     filename = f"../plots/{setting}/time-memory-total.pdf"
     print(f"Saving figure to {filename}")
-    plt.savefig(filename, format="pdf")
+    plt.savefig(filename, **savefig_args)
     plt.clf()
 
     # Data transfer + kernel time ---------------------------------------------------------------------------
@@ -125,7 +132,7 @@ for setting in ["native", "proteus"]:
 
     filename = f"../plots/{setting}/time-memory-fpga.pdf"
     print(f"Saving figure to {filename}")
-    plt.savefig(filename, format="pdf")
+    plt.savefig(filename, **savefig_args)
     plt.clf()
 
 # Native vs Proteus plot ------------------------------------------------------------------------------------
@@ -169,7 +176,7 @@ configure_ax()
 
 filename = f"../plots/time-memory-total.pdf"
 print(f"Saving figure to {filename}")
-plt.savefig(filename, format="pdf")
+plt.savefig(filename, **savefig_args)
 plt.clf()
 
 # Data transfer + kernel time -------------------------------------------------------------------------------
@@ -202,5 +209,5 @@ configure_ax()
 
 filename = f"../plots/time-memory-fpga.pdf"
 print(f"Saving figure to {filename}")
-plt.savefig(filename, format="pdf")
+plt.savefig(filename, **savefig_args)
 plt.clf()
