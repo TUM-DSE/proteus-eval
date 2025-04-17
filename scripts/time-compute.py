@@ -104,7 +104,7 @@ for setting in ["native", "proteus"]:
         plt.errorbar(x + x_offs * bar_width, dfs[i][setting]["average"].values,
                      yerr=dfs[i][setting]["stddev"].values, **errorbar_args)
 
-    plt.xticks(x, app_names, rotation=20)
+    plt.xticks(x, app_names, rotation=10)
     plt.ylabel("Total execution time (s)")
     plt.legend()
     plt.tight_layout()
@@ -124,7 +124,7 @@ for setting in ["native", "proteus"]:
         plt.errorbar(x + x_offs * bar_width, dfs[i][setting]["transfer+kernel"].values,
                      yerr=dfs[i][setting]["transfer+kernel_stddev"].values, **errorbar_args)
 
-    plt.xticks(x, app_names, rotation=20)
+    plt.xticks(x, app_names, rotation=10)
     plt.ylabel("Total data transfer + kernel time (s)")
     plt.legend()
     plt.tight_layout()
@@ -168,7 +168,7 @@ for i in range(3):
                  yerr=dfs[i]["proteus"]["stddev"].values, **errorbar_args)
     x_offs += 1
 
-plt.xticks(x, app_names, rotation=20)
+plt.xticks(x, app_names, rotation=10)
 plt.ylabel("Total execution time (s)")
 plt.legend()
 plt.tight_layout()
@@ -201,7 +201,7 @@ for i in range(3):
                  yerr=dfs[i]["proteus"]["transfer+kernel_stddev"].values, **errorbar_args)
     x_offs += 1
 
-plt.xticks(x, app_names, rotation=20)
+plt.xticks(x, app_names, rotation=10)
 plt.ylabel("Total data transfer + kernel time (s)")
 plt.legend()
 plt.tight_layout()

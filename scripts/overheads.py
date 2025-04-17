@@ -58,7 +58,7 @@ plt.errorbar(x + 1.5 * bar_width, times.iloc[5], yerr=times_stddevs.iloc[5], **e
 plt.bar(x + 2.5 * bar_width, times.iloc[2], label="Proteus U280 DDR", **bar_args)
 plt.errorbar(x + 2.5 * bar_width, times.iloc[2], yerr=times_stddevs.iloc[2], **errorbar_args)
 
-plt.xticks(x, x_labels, rotation=20)
+plt.xticks(x, x_labels, rotation=15)
 plt.ylabel("Time (ms)")
 plt.yscale("log")
 plt.legend()
