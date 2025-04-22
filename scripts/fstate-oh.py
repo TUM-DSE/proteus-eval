@@ -15,7 +15,8 @@ print(df)
 
 fpgas = ["u50-fast", "u280-fast", "u280-ddr-fast"]
 labels = ["U50 HBM", "U280 HBM", "U280 DDR"]
-colors = [[fp.bar_blue, fp.bar_orange], [fp.bar_green, fp.bar_brown], [fp.bar_purple, fp.bar_grey]]
+colors = [[fp.bar_blue, fp.bar_blue], [fp.bar_orange, fp.bar_orange], [fp.bar_green, fp.bar_green]]
+hatches = ["//", ".."]
 sig_sizes = [100, 500, 1000]
 
 # Initialize a plot
@@ -43,9 +44,9 @@ for fpga, label, color in zip(fpgas, labels, colors):
 
     # Create bars
     x_positions = np.arange(len(np_labels))
-    ax.bar(x_positions + x_offs - bar_width/2, np_save_fpga, bar_width, yerr=np_savefpga_stddev,
+    ax.bar(x_positions + x_offs - bar_width/2, np_save_fpga, bar_width, hatch=hatches[0], yerr=np_savefpga_stddev,
            error_kw={'elinewidth': 1, 'capsize': 2},  color=color[0], edgecolor='k', label=f"{label} evict", zorder=2)
-    ax.bar(x_positions + x_offs + bar_width/2, np_load_fpga, bar_width, yerr=np_loadfpga_stddev,
+    ax.bar(x_positions + x_offs + bar_width/2, np_load_fpga, bar_width, hatch=hatches[1], yerr=np_loadfpga_stddev,
            error_kw={'elinewidth': 1, 'capsize': 2}, color=color[1], edgecolor='k', label=f"{label} resume", zorder=2)
 
     x_offs += 2 * bar_width

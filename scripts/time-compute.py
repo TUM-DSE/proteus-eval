@@ -48,8 +48,9 @@ savefig_args = {
     "format": "pdf",
 }
 
-colors = [common.bar_blue, common.bar_orange, common.bar_green,
-          common.bar_brown, common.bar_purple, common.bar_grey]
+colors = [common.bar_blue, common.bar_blue, common.bar_orange,
+          common.bar_orange, common.bar_green, common.bar_green]
+hatches = ["//", ".."]
 plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
 
 plt.rcParams.update({'font.size': 12})
@@ -99,8 +100,8 @@ for setting in ["native", "proteus"]:
 
     for i in range(6):
         x_offs = i - 2
-        plt.bar(x + x_offs * bar_width, dfs[i][setting]
-                ["average"].values, label=labels[i], **bar_args)
+        plt.bar(x + x_offs * bar_width, dfs[i][setting]["average"].values,
+                hatch=hatches[i % 2], label=labels[i], **bar_args)
         plt.errorbar(x + x_offs * bar_width, dfs[i][setting]["average"].values,
                      yerr=dfs[i][setting]["stddev"].values, **errorbar_args)
 
@@ -119,8 +120,8 @@ for setting in ["native", "proteus"]:
 
     for i in range(6):
         x_offs = i - 2
-        plt.bar(x + x_offs * bar_width, dfs[i][setting]
-                ["transfer+kernel"].values, label=labels[i], **bar_args)
+        plt.bar(x + x_offs * bar_width, dfs[i][setting]["transfer+kernel"].values,
+                hatch=hatches[i % 2], label=labels[i], **bar_args)
         plt.errorbar(x + x_offs * bar_width, dfs[i][setting]["transfer+kernel"].values,
                      yerr=dfs[i][setting]["transfer+kernel_stddev"].values, **errorbar_args)
 
@@ -151,14 +152,14 @@ labels = ["U50 HBM native", "U50 HBM Proteus", "U280 HBM native",
 x_offs = -2
 for i in range(3):
     # Native
-    plt.bar(x + x_offs * bar_width, dfs[i]["native"]
-            ["average"].values, label=labels[2 * i], **bar_args)
+    plt.bar(x + x_offs * bar_width, dfs[i]["native"]["average"].values,
+            hatch=hatches[0], label=labels[2 * i], **bar_args)
     plt.errorbar(x + x_offs * bar_width, dfs[i]["native"]["average"].values,
                  yerr=dfs[i]["native"]["stddev"].values, **errorbar_args)
     x_offs += 1
     # Proteus
-    bars = plt.bar(x + x_offs * bar_width, dfs[i]["proteus"]
-                   ["average"].values, label=labels[2 * i + 1], **bar_args)
+    bars = plt.bar(x + x_offs * bar_width, dfs[i]["proteus"]["average"].values,
+                   hatch=hatches[1], label=labels[2 * i + 1], **bar_args)
     proteus_overhead = ((dfs[i]["proteus"]["average"].values /
                         dfs[i]["native"]["average"].values) * 100) - 100
     for j, b in enumerate(bars):
@@ -184,14 +185,14 @@ plt.clf()
 x_offs = -2
 for i in range(3):
     # Native
-    plt.bar(x + x_offs * bar_width, dfs[i]["native"]
-            ["transfer+kernel"].values, label=labels[2 * i], **bar_args)
+    plt.bar(x + x_offs * bar_width, dfs[i]["native"]["transfer+kernel"].values,
+            hatch=hatches[0], label=labels[2 * i], **bar_args)
     plt.errorbar(x + x_offs * bar_width, dfs[i]["native"]["transfer+kernel"].values,
                  yerr=dfs[i]["native"]["transfer+kernel_stddev"].values, **errorbar_args)
     x_offs += 1
     # Proteus
-    bars = plt.bar(x + x_offs * bar_width,
-                   dfs[i]["proteus"]["transfer+kernel"].values, label=labels[2 * i + 1], **bar_args)
+    bars = plt.bar(x + x_offs * bar_width, dfs[i]["proteus"]["transfer+kernel"].values,
+                   hatch=hatches[1], label=labels[2 * i + 1], **bar_args)
     proteus_overhead = ((dfs[i]["proteus"]["transfer+kernel"].values /
                         dfs[i]["native"]["transfer+kernel"].values) * 100) - 100
     for j, b in enumerate(bars):

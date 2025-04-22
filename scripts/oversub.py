@@ -21,8 +21,9 @@ errorbar_args = {
     "capsize": 2,
 }
 
-colors = [common.bar_blue, common.bar_orange, common.bar_green,
-          common.bar_brown, common.bar_purple, common.bar_grey]
+colors = [common.bar_blue, common.bar_blue, common.bar_orange,
+          common.bar_orange, common.bar_orange]
+hatches = ["//", "..", "**"]
 plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
 
 plt.rcParams.update({'font.size': 12})
@@ -70,22 +71,24 @@ stddev_ddr_dc = np.insert(stddev_ddr_dc, 0, 0.0)
 ddr_dc_diff = (times_ddr_dc[1:] / times_ddr_opt[1:] * 100) - 100
 
 # HBM unopt
-plt.bar(x - 2 * bar_width, times_hbm_unopt, label="HBM sequential", **bar_args)
+plt.bar(x - 2 * bar_width, times_hbm_unopt, hatch=hatches[0], label="HBM sequential", **bar_args)
 plt.errorbar(x - 2 * bar_width, times_hbm_unopt, yerr=stddev_hbm_unopt, **errorbar_args)
 
 # HBM opt
-bars = plt.bar(x - 1 * bar_width, times_hbm_opt, label="HBM optimized", **bar_args)
+bars = plt.bar(x - 1 * bar_width, times_hbm_opt,
+               hatch=hatches[1], label="HBM optimized", **bar_args)
 for i, b in enumerate(bars[1:]):
     plt.text(b.get_x() + 0.02, b.get_height() + 0.05,
              f"{hbm_opt_diff[i]:+.2f}%", rotation=90, size=7)
 plt.errorbar(x - 1 * bar_width, times_hbm_opt, yerr=stddev_hbm_opt, **errorbar_args)
 
 # DDR unopt
-plt.bar(x + 0 * bar_width, times_ddr_unopt, label="DDR sequential, unified memory banks", **bar_args)
+plt.bar(x + 0 * bar_width, times_ddr_unopt,
+        hatch=hatches[0], label="DDR sequential, unified memory banks", **bar_args)
 plt.errorbar(x + 0 * bar_width, times_ddr_unopt, yerr=stddev_ddr_unopt, **errorbar_args)
 
 # DDR opt
-bars = plt.bar(x + 1 * bar_width, times_ddr_opt,
+bars = plt.bar(x + 1 * bar_width, times_ddr_opt, hatch=hatches[1],
                label="DDR optimized, unified memory banks", **bar_args)
 for i, b in enumerate(bars[1:]):
     plt.text(b.get_x() + 0.02, b.get_height() + 0.05,
@@ -93,7 +96,7 @@ for i, b in enumerate(bars[1:]):
 plt.errorbar(x + 1 * bar_width, times_ddr_opt, yerr=stddev_ddr_opt, **errorbar_args)
 
 # DDR opt + dualchannel
-bars = plt.bar(x + 2 * bar_width, times_ddr_dc,
+bars = plt.bar(x + 2 * bar_width, times_ddr_dc, hatch=hatches[2],
                label="DDR optimized, separate memory banks", **bar_args)
 for i, b in enumerate(bars[1:]):
     plt.text(b.get_x() + 0.02, b.get_height() + 0.05,
@@ -101,8 +104,10 @@ for i, b in enumerate(bars[1:]):
 plt.errorbar(x + 2 * bar_width, times_ddr_dc, yerr=stddev_ddr_dc, **errorbar_args)
 
 
+# TODO: Remove 128 and 64
+
 plt.xticks(x, app_names)
-plt.xlabel("On-FPGA memory usage (MiB)")
+plt.xlabel("Emulated FPGA memory capacity (MiB)")
 plt.ylabel("Data transfer + kernel time (s)")
 plt.legend(loc="lower center")
 plt.tight_layout()
