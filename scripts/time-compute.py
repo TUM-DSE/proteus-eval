@@ -107,7 +107,7 @@ for setting in ["native", "proteus"]:
 
     plt.xticks(x, app_names, rotation=10)
     plt.ylabel("Total execution time (s)")
-    plt.legend()
+    plt.legend(loc='upper left', fancybox=True, shadow=True, ncol=3, bbox_to_anchor=(0, 1.0))
     plt.tight_layout()
     configure_ax()
 
@@ -127,7 +127,7 @@ for setting in ["native", "proteus"]:
 
     plt.xticks(x, app_names, rotation=10)
     plt.ylabel("Total data transfer + kernel time (s)")
-    plt.legend()
+    plt.legend(loc='upper left', fancybox=True, shadow=True, ncol=3, bbox_to_anchor=(0, 1.0))
     plt.tight_layout()
     configure_ax()
 
@@ -171,7 +171,7 @@ for i in range(3):
 
 plt.xticks(x, app_names, rotation=10)
 plt.ylabel("Total execution time (s)")
-plt.legend()
+plt.legend(loc='upper left', fancybox=True, shadow=True, ncol=3, bbox_to_anchor=(0, 1.0))
 plt.tight_layout()
 configure_ax()
 
@@ -204,7 +204,7 @@ for i in range(3):
 
 plt.xticks(x, app_names, rotation=10)
 plt.ylabel("Total data transfer + kernel time (s)")
-plt.legend()
+plt.legend(loc='upper left', fancybox=True, shadow=True, ncol=3, bbox_to_anchor=(0, 1.0))
 plt.tight_layout()
 configure_ax()
 

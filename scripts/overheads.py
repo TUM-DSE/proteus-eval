@@ -62,7 +62,7 @@ plt.errorbar(x + 2.5 * bar_width, times.iloc[2], yerr=times_stddevs.iloc[2], **e
 plt.xticks(x, x_labels, rotation=15)
 plt.ylabel("Time (ms)")
 plt.yscale("log")
-plt.legend()
+plt.legend(loc='upper right', fancybox=True, shadow=True, ncol=2, fontsize=6.5, bbox_to_anchor=(1, 0.97))
 plt.tight_layout()
 
 ax = plt.gca()

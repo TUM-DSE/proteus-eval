@@ -109,7 +109,7 @@ plt.errorbar(x + 2 * bar_width, times_ddr_dc, yerr=stddev_ddr_dc, **errorbar_arg
 plt.xticks(x, app_names)
 plt.xlabel("Emulated FPGA memory capacity (MiB)")
 plt.ylabel("Data transfer + kernel time (s)")
-plt.legend(loc="lower center")
+plt.legend(loc="lower center", fancybox=True, shadow=True, ncol=1)
 plt.tight_layout()
 
 ax = plt.gca()
