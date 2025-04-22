@@ -164,7 +164,7 @@ for i in range(3):
                         dfs[i]["native"]["average"].values) * 100) - 100
     for j, b in enumerate(bars):
         plt.text(b.get_x() + 0.19 * bar_width, b.get_height() + 1,
-                 f"{proteus_overhead[j]:+.2f}%", rotation=90, size=8)
+                 f"{proteus_overhead[j]:.1f}%", rotation=90, size=8)
     plt.errorbar(x + x_offs * bar_width, dfs[i]["proteus"]["average"].values,
                  yerr=dfs[i]["proteus"]["stddev"].values, **errorbar_args)
     x_offs += 1
@@ -197,7 +197,7 @@ for i in range(3):
                         dfs[i]["native"]["transfer+kernel"].values) * 100) - 100
     for j, b in enumerate(bars):
         plt.text(b.get_x() + 0.19 * bar_width, b.get_height() + 0.5,
-                 f"{proteus_overhead[j]:+.2f}%", rotation=90, size=8)
+                 f"{proteus_overhead[j]:.1f}%", rotation=90, size=8)
     plt.errorbar(x + x_offs * bar_width, dfs[i]["proteus"]["transfer+kernel"].values,
                  yerr=dfs[i]["proteus"]["transfer+kernel_stddev"].values, **errorbar_args)
     x_offs += 1
