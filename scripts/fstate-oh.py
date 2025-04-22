@@ -16,7 +16,7 @@ print(df)
 fpgas = ["u50-fast", "u280-fast", "u280-ddr-fast"]
 labels = ["U50 HBM", "U280 HBM", "U280 DDR"]
 colors = [[fp.bar_blue, fp.bar_blue], [fp.bar_orange, fp.bar_orange], [fp.bar_green, fp.bar_green]]
-hatches = ["//", ".."]
+hatches = ["", "//"]
 sig_sizes = [100, 500, 1000]
 
 # Initialize a plot

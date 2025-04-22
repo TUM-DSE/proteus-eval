@@ -49,7 +49,7 @@ savefig_args = {
 
 colors = [common.bar_blue, common.bar_blue, common.bar_orange,
           common.bar_orange, common.bar_green, common.bar_green]
-hatches = ["//", ".."]
+hatches = ["", "//"]
 plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
 
 plt.rcParams.update({'font.size': 12})
