@@ -84,7 +84,6 @@ ax.bar(x_pos_r4, np_load_vm_cp,   bar_width, bottom=np_load_fpga_cp,
 # define x/y labels and legends
 ax.set_xticks((x_pos_r1+x_pos_r2+x_pos_r3+x_pos_r4)/4, labels)
 ax.set_xticklabels(labels, rotation=30, fontsize=6)
-ax.set_xlabel('Input/output data on FPGA [MiB]', labelpad=1.0)
 ax.set_ylabel('Time [s]')
 x_margin, y_margin = plt.margins()
 plt.margins(y=y_margin + 0.3)
