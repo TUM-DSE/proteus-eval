@@ -20,15 +20,15 @@ df_mig = pd.read_csv(csvfile, sep=",")
 
 fpgas = ["u50-fast", "u280-fast", "u280-ddr-fast"]
 labels = [
-    "U50 HBM\nto U50 HBM",
-    "U50 HBM\nto U280 HBM",
-    "U50 HBM\nto U280 DDR",
-    "U280 HBM\nto U50 HBM",
-    "U280 HBM\nto U280 HBM",
-    "U280 HBM\nto U280 DDR",
-    "U280 DDR\nto U50 HBM",
-    "U280 DDR\nto U280 HBM",
-    "U280 DDR\nto U280 DDR",
+    "U50\nto U50",
+    "U50\nto U280-HBM",
+    "U50\nto U280-DDR",
+    "U280-HBM\nto U50",
+    "U280-HBM\nto U280-HBM",
+    "U280-HBM\nto U280-DDR",
+    "U280-DDR\nto U50",
+    "U280-DDR\nto U280-HBM",
+    "U280-DDR\nto U280-DDR",
 ]
 
 # Initialize a plot
