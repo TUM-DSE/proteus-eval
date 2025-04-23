@@ -78,7 +78,7 @@ plt.errorbar(x - 2 * bar_width, times_hbm_unopt, yerr=stddev_hbm_unopt, **errorb
 bars = plt.bar(x - 1 * bar_width, times_hbm_opt,
                hatch=hatches[1], label="HBM opt", **bar_args)
 for i, b in enumerate(bars[1:]):
-    plt.text(b.get_x() + 0.02, b.get_height() + 0.05,
+    plt.text(b.get_x() + 0.03, b.get_height() + 0.05,
              f"{hbm_opt_diff[i]:+.2f}%", rotation=90, size=7)
 plt.errorbar(x - 1 * bar_width, times_hbm_opt, yerr=stddev_hbm_opt, **errorbar_args)
 
@@ -91,7 +91,7 @@ plt.errorbar(x + 0 * bar_width, times_ddr_unopt, yerr=stddev_ddr_unopt, **errorb
 bars = plt.bar(x + 1 * bar_width, times_ddr_opt, hatch=hatches[1],
                label="DDR opt", **bar_args)
 for i, b in enumerate(bars[1:]):
-    plt.text(b.get_x() + 0.02, b.get_height() + 0.05,
+    plt.text(b.get_x() + 0.03, b.get_height() + 0.05,
              f"{ddr_opt_diff[i]:+.2f}%", rotation=90, size=7)
 plt.errorbar(x + 1 * bar_width, times_ddr_opt, yerr=stddev_ddr_opt, **errorbar_args)
 
@@ -99,7 +99,7 @@ plt.errorbar(x + 1 * bar_width, times_ddr_opt, yerr=stddev_ddr_opt, **errorbar_a
 bars = plt.bar(x + 2 * bar_width, times_ddr_dc, hatch=hatches[2],
                label="DDR opt + bank opt", **bar_args)
 for i, b in enumerate(bars[1:]):
-    plt.text(b.get_x() + 0.02, b.get_height() + 0.05,
+    plt.text(b.get_x() + 0.03, b.get_height() + 0.05,
              f"{ddr_dc_diff[i]:+.2f}%", rotation=90, size=7)
 plt.errorbar(x + 2 * bar_width, times_ddr_dc, yerr=stddev_ddr_dc, **errorbar_args)
 
