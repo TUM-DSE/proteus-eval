@@ -108,7 +108,8 @@ plt.xlabel("Emulated FPGA memory capacity (MiB)")
 plt.ylabel("Data transfer + kernel time (s)")
 x_margin, y_margin = plt.margins()
 plt.margins(y=y_margin + 0.3)
-plt.legend(loc="upper left", fancybox=True, shadow=True, ncol=3, fontsize=8, bbox_to_anchor=(0.35, 1))
+plt.legend(loc="upper left", fancybox=True, shadow=True,
+           ncol=3, fontsize=8, bbox_to_anchor=(0.35, 1))
 plt.tight_layout()
 
 ax = plt.gca()
