@@ -6,6 +6,12 @@ from common import (
 )
 
 
+def add_line(ax, xpos, ypos):
+    line = plt.Line2D([xpos, xpos], [ypos+0.194, ypos], transform=ax.transAxes, color='black')
+    line.set_clip_on(False)
+    ax.add_line(line)
+
+
 plot_name = "mig-and-snapshot-oh"
 data_subdir = "proteus"
 
@@ -20,15 +26,15 @@ df_mig = pd.read_csv(csvfile, sep=",")
 
 fpgas = ["u50-fast", "u280-fast", "u280-ddr-fast"]
 labels = [
-    "U50\nto U50",
-    "U50\nto U280-HBM",
-    "U50\nto U280-DDR",
-    "U280-HBM\nto U50",
-    "U280-HBM\nto U280-HBM",
-    "U280-HBM\nto U280-DDR",
-    "U280-DDR\nto U50",
-    "U280-DDR\nto U280-HBM",
-    "U280-DDR\nto U280-DDR",
+    "U50",
+    "U280-HBM",
+    "U280-DDR",
+    "U50",
+    "U280-HBM",
+    "U280-DDR",
+    "U50",
+    "U280-HBM",
+    "U280-DDR",
 ]
 
 # Initialize a plot
@@ -83,7 +89,7 @@ ax.bar(x_pos_r4, np_load_vm_cp,   bar_width, bottom=np_load_fpga_cp,
 
 # define x/y labels and legends
 ax.set_xticks((x_pos_r1+x_pos_r2+x_pos_r3+x_pos_r4)/4, labels)
-ax.set_xticklabels(labels, rotation=30, fontsize=6)
+ax.set_xticklabels(labels, rotation=0, fontsize=6)
 ax.set_ylabel('Time [s]')
 x_margin, y_margin = plt.margins()
 plt.margins(y=y_margin + 0.3)
@@ -96,6 +102,15 @@ ax.spines['right'].set_visible(False)
 # ax.spines['bottom'].set_visible(False)
 ax.spines['left'].set_visible(False)
 ax.grid(axis='y', zorder=1)
+
+add_line(ax, 0, -.2)
+add_line(ax, 0.34, -.2)
+add_line(ax, 0.68, -.2)
+add_line(ax, 1, -.2)
+
+plt.text(0.6, -2, "Source U50")
+plt.text(3.19, -2, "Source U280-HBM")
+plt.text(6.2, -2, "Source U280-DDR")
 
 # save the plot as pdf
 plt.tight_layout()
