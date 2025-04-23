@@ -55,7 +55,7 @@ plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
 
 plt.rcParams.update({'font.size': 12})
 width = 15.0
-aspect = 5
+aspect = 4
 height = width / aspect
 plt.figure(figsize=(width, height))
 
