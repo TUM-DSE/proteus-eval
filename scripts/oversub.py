@@ -103,9 +103,6 @@ for i, b in enumerate(bars[1:]):
              f"{ddr_dc_diff[i]:+.2f}%", rotation=90, size=7)
 plt.errorbar(x + 2 * bar_width, times_ddr_dc, yerr=stddev_ddr_dc, **errorbar_args)
 
-
-# TODO: Remove 128 and 64
-
 plt.xticks(x, app_names)
 plt.xlabel("Emulated FPGA memory capacity (MiB)")
 plt.ylabel("Data transfer + kernel time (s)")
