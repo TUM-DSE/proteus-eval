@@ -66,14 +66,20 @@ x_pos_r3 = x_pos_r2 + bar_width
 x_pos_r4 = x_pos_r3 + bar_width
 
 # NOTE: keep the order of the following ax.bar() to fix the order of items shown in the legend.
-ax.bar(x_pos_r1, np_save_fpga_mig, bar_width, color=fp.bar_blue,   edgecolor='k', label='FPGA evict', zorder=2)
-ax.bar(x_pos_r1, np_save_vm_mig,   bar_width, bottom=np_save_fpga_mig, color=fp.bar_green,  edgecolor='k', hatch='//', label='VM save (mig)', zorder=2)
+ax.bar(x_pos_r1, np_save_fpga_mig, bar_width, color=fp.bar_blue,
+       edgecolor='k', label='FPGA evict', zorder=2)
+ax.bar(x_pos_r1, np_save_vm_mig,   bar_width, bottom=np_save_fpga_mig,
+       color=fp.bar_green,  edgecolor='k', hatch='//', label='VM save (mig)', zorder=2)
 ax.bar(x_pos_r3, np_save_fpga_cp, bar_width, color=fp.bar_blue,   edgecolor='k', zorder=2)
-ax.bar(x_pos_r3, np_save_vm_cp,   bar_width, bottom=np_save_fpga_cp, color=fp.bar_purple,  edgecolor='k', hatch='//', label='Checkpoint', zorder=2)
-ax.bar(x_pos_r2, np_load_fpga_mig, bar_width, color=fp.bar_orange, edgecolor='k', label='FPGA resume', zorder=2)
-ax.bar(x_pos_r2, np_load_vm_mig,   bar_width, bottom=np_load_fpga_mig, color=fp.bar_brown,  edgecolor='k', hatch='..', label='VM load (mig)', zorder=2)
+ax.bar(x_pos_r3, np_save_vm_cp,   bar_width, bottom=np_save_fpga_cp,
+       color=fp.bar_purple,  edgecolor='k', hatch='//', label='Checkpoint', zorder=2)
+ax.bar(x_pos_r2, np_load_fpga_mig, bar_width, color=fp.bar_orange,
+       edgecolor='k', label='FPGA resume', zorder=2)
+ax.bar(x_pos_r2, np_load_vm_mig,   bar_width, bottom=np_load_fpga_mig,
+       color=fp.bar_brown,  edgecolor='k', hatch='..', label='VM load (mig)', zorder=2)
 ax.bar(x_pos_r4, np_load_fpga_cp, bar_width, color=fp.bar_orange, edgecolor='k', zorder=2)
-ax.bar(x_pos_r4, np_load_vm_cp,   bar_width, bottom=np_load_fpga_cp, color=fp.bar_grey,  edgecolor='k', hatch='..', label='Restore', zorder=2)
+ax.bar(x_pos_r4, np_load_vm_cp,   bar_width, bottom=np_load_fpga_cp,
+       color=fp.bar_grey,  edgecolor='k', hatch='..', label='Restore', zorder=2)
 
 # define x/y labels and legends
 ax.set_xticks((x_pos_r1+x_pos_r2+x_pos_r3+x_pos_r4)/4, labels)
