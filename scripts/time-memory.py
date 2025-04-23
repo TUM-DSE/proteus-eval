@@ -54,7 +54,7 @@ plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
 
 plt.rcParams.update({'font.size': 12})
 width = 7.0
-aspect = 1.6
+aspect = 2.0
 height = width / aspect
 plt.figure(figsize=(width, height))
 
@@ -163,7 +163,7 @@ for i in range(3):
     proteus_overhead = ((dfs[i]["proteus"]["average"].values / dfs[i]
                         ["native"]["average"].values) * 100) - 100
     for j, b in enumerate(bars):
-        plt.text(b.get_x() + 0.016, b.get_height() + 0.5,
+        plt.text(b.get_x() + 0.02, b.get_height() + 0.6,
                  f"{proteus_overhead[j]:.1f}%", rotation=90, size=8)
     plt.errorbar(x + x_offs * bar_width, dfs[i]["proteus"]["average"].values,
                  yerr=dfs[i]["proteus"]["stddev"].values, **errorbar_args)
@@ -171,7 +171,9 @@ for i in range(3):
 
 plt.xticks(x, app_names, rotation=10)
 plt.ylabel("Total execution time (s)")
-plt.legend(fancybox=True, shadow=True, ncol=3, fontsize=6.5)
+x_margin, y_margin = plt.margins()
+plt.margins(y=y_margin + 0.3)
+plt.legend(fancybox=True, shadow=True, ncol=3, fontsize=8)
 plt.tight_layout()
 configure_ax()
 

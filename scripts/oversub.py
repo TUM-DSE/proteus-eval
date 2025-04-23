@@ -28,7 +28,7 @@ plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
 
 plt.rcParams.update({'font.size': 12})
 width = 7.0
-aspect = 1.6
+aspect = 2
 height = width / aspect
 plt.figure(figsize=(width, height))
 
@@ -39,25 +39,25 @@ df_u280_ddr_dc_fast = pd.read_csv(
 dfs = [df_u280_fast, df_u280_ddr_fast]
 
 # Runs for HBM and DDR without -o option until this index, DDR dual channel always uses -o option
-unopt_index = 8
+unopt_end = 6
 
-app_names = df_u280_fast["mem_limit"][:unopt_index]
+app_names = df_u280_fast["mem_limit"][:unopt_end]
 app_names[0] = "unlimited"
 x = np.arange(len(app_names))
 
-times_hbm_unopt = df_u280_fast["time_total"][:unopt_index].values
-stddev_hbm_unopt = df_u280_fast["time_total_stddev"][:unopt_index].values
-times_hbm_opt = df_u280_fast["time_total"][unopt_index:].values
-stddev_hbm_opt = df_u280_fast["time_total_stddev"][unopt_index:].values
+times_hbm_unopt = df_u280_fast["time_total"][:unopt_end].values
+stddev_hbm_unopt = df_u280_fast["time_total_stddev"][:unopt_end].values
+times_hbm_opt = df_u280_fast["time_total"][unopt_end:].values
+stddev_hbm_opt = df_u280_fast["time_total_stddev"][unopt_end:].values
 # Index 0 is no mem limit, no chunking, no optimization
 times_hbm_opt = np.insert(times_hbm_opt, 0, 0.0)
 stddev_hbm_opt = np.insert(stddev_hbm_opt, 0, 0.0)
 hbm_opt_diff = (times_hbm_opt[1:] / times_hbm_unopt[1:] * 100) - 100
 
-times_ddr_unopt = df_u280_ddr_fast["time_total"][:unopt_index].values
-stddev_ddr_unopt = df_u280_ddr_fast["time_total_stddev"][:unopt_index].values
-times_ddr_opt = df_u280_ddr_fast["time_total"][unopt_index:].values
-stddev_ddr_opt = df_u280_ddr_fast["time_total_stddev"][unopt_index:].values
+times_ddr_unopt = df_u280_ddr_fast["time_total"][:unopt_end].values
+stddev_ddr_unopt = df_u280_ddr_fast["time_total_stddev"][:unopt_end].values
+times_ddr_opt = df_u280_ddr_fast["time_total"][unopt_end:].values
+stddev_ddr_opt = df_u280_ddr_fast["time_total_stddev"][unopt_end:].values
 # Index 0 is no mem limit, no chunking, no optimization
 times_ddr_opt = np.insert(times_ddr_opt, 0, 0.0)
 stddev_ddr_opt = np.insert(stddev_ddr_opt, 0, 0.0)
@@ -71,12 +71,12 @@ stddev_ddr_dc = np.insert(stddev_ddr_dc, 0, 0.0)
 ddr_dc_diff = (times_ddr_dc[1:] / times_ddr_opt[1:] * 100) - 100
 
 # HBM unopt
-plt.bar(x - 2 * bar_width, times_hbm_unopt, hatch=hatches[0], label="HBM sequential", **bar_args)
+plt.bar(x - 2 * bar_width, times_hbm_unopt, hatch=hatches[0], label="HBM seq", **bar_args)
 plt.errorbar(x - 2 * bar_width, times_hbm_unopt, yerr=stddev_hbm_unopt, **errorbar_args)
 
 # HBM opt
 bars = plt.bar(x - 1 * bar_width, times_hbm_opt,
-               hatch=hatches[1], label="HBM optimized", **bar_args)
+               hatch=hatches[1], label="HBM opt", **bar_args)
 for i, b in enumerate(bars[1:]):
     plt.text(b.get_x() + 0.02, b.get_height() + 0.05,
              f"{hbm_opt_diff[i]:+.2f}%", rotation=90, size=7)
@@ -84,12 +84,12 @@ plt.errorbar(x - 1 * bar_width, times_hbm_opt, yerr=stddev_hbm_opt, **errorbar_a
 
 # DDR unopt
 plt.bar(x + 0 * bar_width, times_ddr_unopt,
-        hatch=hatches[0], label="DDR sequential, unified memory banks", **bar_args)
+        hatch=hatches[0], label="DDR seq", **bar_args)
 plt.errorbar(x + 0 * bar_width, times_ddr_unopt, yerr=stddev_ddr_unopt, **errorbar_args)
 
 # DDR opt
 bars = plt.bar(x + 1 * bar_width, times_ddr_opt, hatch=hatches[1],
-               label="DDR optimized, unified memory banks", **bar_args)
+               label="DDR opt", **bar_args)
 for i, b in enumerate(bars[1:]):
     plt.text(b.get_x() + 0.02, b.get_height() + 0.05,
              f"{ddr_opt_diff[i]:+.2f}%", rotation=90, size=7)
@@ -97,7 +97,7 @@ plt.errorbar(x + 1 * bar_width, times_ddr_opt, yerr=stddev_ddr_opt, **errorbar_a
 
 # DDR opt + dualchannel
 bars = plt.bar(x + 2 * bar_width, times_ddr_dc, hatch=hatches[2],
-               label="DDR optimized, separate memory banks", **bar_args)
+               label="DDR opt + bank opt", **bar_args)
 for i, b in enumerate(bars[1:]):
     plt.text(b.get_x() + 0.02, b.get_height() + 0.05,
              f"{ddr_dc_diff[i]:+.2f}%", rotation=90, size=7)
@@ -109,7 +109,9 @@ plt.errorbar(x + 2 * bar_width, times_ddr_dc, yerr=stddev_ddr_dc, **errorbar_arg
 plt.xticks(x, app_names)
 plt.xlabel("Emulated FPGA memory capacity (MiB)")
 plt.ylabel("Data transfer + kernel time (s)")
-plt.legend(loc="lower center", fancybox=True, shadow=True, ncol=1)
+x_margin, y_margin = plt.margins()
+plt.margins(y=y_margin + 0.3)
+plt.legend(loc="upper left", fancybox=True, shadow=True, ncol=3, fontsize=8, bbox_to_anchor=(0.35, 1))
 plt.tight_layout()
 
 ax = plt.gca()

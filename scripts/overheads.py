@@ -33,7 +33,7 @@ plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
 
 plt.rcParams.update({'font.size': 12})
 width = 7.0
-aspect = 1.6
+aspect = 2.0
 height = width / aspect
 plt.figure(figsize=(width, height))
 
@@ -62,7 +62,7 @@ plt.errorbar(x + 2.5 * bar_width, times.iloc[2], yerr=times_stddevs.iloc[2], **e
 plt.xticks(x, x_labels, rotation=15)
 plt.ylabel("Time (ms)")
 plt.yscale("log")
-plt.legend(loc='upper right', fancybox=True, shadow=True, ncol=2, fontsize=6.5, bbox_to_anchor=(1, 0.97))
+plt.legend(loc='upper right', fancybox=True, shadow=True, ncol=2, fontsize=8, bbox_to_anchor=(1, 1))
 plt.tight_layout()
 
 ax = plt.gca()

@@ -55,7 +55,7 @@ plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
 
 plt.rcParams.update({'font.size': 12})
 width = 15.0
-aspect = 3
+aspect = 5
 height = width / aspect
 plt.figure(figsize=(width, height))
 
@@ -163,7 +163,7 @@ for i in range(3):
     proteus_overhead = ((dfs[i]["proteus"]["average"].values /
                         dfs[i]["native"]["average"].values) * 100) - 100
     for j, b in enumerate(bars):
-        plt.text(b.get_x() + 0.19 * bar_width, b.get_height() + 1,
+        plt.text(b.get_x() + 0.19 * bar_width, b.get_height() + 1.5,
                  f"{proteus_overhead[j]:.1f}%", rotation=90, size=8)
     plt.errorbar(x + x_offs * bar_width, dfs[i]["proteus"]["average"].values,
                  yerr=dfs[i]["proteus"]["stddev"].values, **errorbar_args)
@@ -196,7 +196,7 @@ for i in range(3):
     proteus_overhead = ((dfs[i]["proteus"]["transfer+kernel"].values /
                         dfs[i]["native"]["transfer+kernel"].values) * 100) - 100
     for j, b in enumerate(bars):
-        plt.text(b.get_x() + 0.19 * bar_width, b.get_height() + 0.5,
+        plt.text(b.get_x() + 0.19 * bar_width, b.get_height() + 1.5,
                  f"{proteus_overhead[j]:.1f}%", rotation=90, size=8)
     plt.errorbar(x + x_offs * bar_width, dfs[i]["proteus"]["transfer+kernel"].values,
                  yerr=dfs[i]["proteus"]["transfer+kernel_stddev"].values, **errorbar_args)
