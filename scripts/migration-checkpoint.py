@@ -86,8 +86,10 @@ ax.set_xticks((x_pos_r1+x_pos_r2+x_pos_r3+x_pos_r4)/4, labels)
 ax.set_xticklabels(labels, rotation=30, fontsize=6)
 ax.set_xlabel('Input/output data on FPGA [MiB]', labelpad=1.0)
 ax.set_ylabel('Time [s]')
+x_margin, y_margin = plt.margins()
+plt.margins(y=y_margin + 0.3)
 ax.legend(loc='upper left', fancybox=True, shadow=True,
-          ncol=2, fontsize=6.5, bbox_to_anchor=(0, 1.0))
+          ncol=3, fontsize=6.5)
 
 # define plot flames
 ax.spines['top'].set_visible(False)
