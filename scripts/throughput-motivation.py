@@ -87,6 +87,14 @@ for i in range(len(dfs)):
                     ["kernel_ocl_stddev"] ** 2 + dfs[i]["data_to_host_ocl_stddev"] ** 2) / 3
     dfs[i]["transfer+kernel_stddev"] = np.sqrt(avg_variance)
 
+    in_size = dfs[i]["kernel_input_data_size"] * dfs[i]["kernel_iterations"]
+    out_size = dfs[i]["kernel_output_data_size"] * dfs[i]["kernel_iterations"]
+    # Throughput in MB/s
+    dfs[i]["thrp_to_fpga"] = in_size / dfs[i]["data_to_fpga_ocl"] / 1_000_000
+    dfs[i]["thrp_kernel"] = in_size / dfs[i]["kernel_ocl"] / 1_000_000
+    dfs[i]["thrp_to_host"] = out_size / dfs[i]["data_to_host_ocl"] / 1_000_000
+    dfs[i]["thrp"] = (dfs[i]["thrp_to_fpga"] + dfs[i]["thrp_kernel"] + dfs[i]["thrp_to_host"]) / 3
+
     dfs_sel[i] = dfs[i][(dfs[i]["app_name"] == sel_apps[0]) | (dfs[i]["app_name"] == sel_apps[1]) |
                         (dfs[i]["app_name"] == sel_apps[2]) | (dfs[i]["app_name"] == sel_apps[3]) |
                         (dfs[i]["app_name"] == sel_apps[4])]
@@ -94,51 +102,28 @@ for i in range(len(dfs)):
 app_names = sel_apps
 # Remove cl_
 app_names = [s[3:] for s in app_names]
-# Remove _strm
+# Remove _strm, change hello_world name
 for i in range(len(app_names)):
     if app_names[i] == "wide_mem_rw_strm":
         app_names[i] = "wide_mem_rw"
+    elif app_names[i] == "helloworld":
+        app_names[i] = "vector_add"
 
 x = np.arange(len(app_names))
 
-# Total execution time ----------------------------------------------------------------------------------
-
 for i in range(6):
     x_offs = i - 2
-    plt.bar(x + x_offs * bar_width, dfs_sel[i]["average"].values,
+    plt.bar(x + x_offs * bar_width, dfs_sel[i]["thrp"].values,
             hatch=hatches[i % 2], label=labels[i], **bar_args)
-    plt.errorbar(x + x_offs * bar_width, dfs_sel[i]["average"].values,
-                 yerr=dfs_sel[i]["stddev"].values, **errorbar_args)
 
 plt.xticks(x, app_names, rotation=10)
-plt.ylabel("Total execution time (s)")
+plt.ylabel("Throughput (MB/s)")
 plt.legend(loc='upper left', fancybox=True, shadow=True,
            fontsize=8, ncol=1, bbox_to_anchor=(0, 0.98))
 plt.tight_layout()
 configure_ax()
 
-filename = f"../plots/native/time-motivation-total.pdf"
-print(f"Saving figure to {filename}")
-plt.savefig(filename, **savefig_args)
-plt.clf()
-
-# Data transfer + kernel time ---------------------------------------------------------------------------
-
-for i in range(6):
-    x_offs = i - 2
-    plt.bar(x + x_offs * bar_width, dfs_sel[i]["transfer+kernel"].values,
-            hatch=hatches[i % 2], label=labels[i], **bar_args)
-    plt.errorbar(x + x_offs * bar_width, dfs_sel[i]["transfer+kernel"].values,
-                 yerr=dfs_sel[i]["transfer+kernel_stddev"].values, **errorbar_args)
-
-plt.xticks(x, app_names, rotation=10)
-plt.ylabel("Data transfer + kernel time (s)")
-plt.legend(loc='upper left', fancybox=True, shadow=True,
-           fontsize=8, ncol=1, bbox_to_anchor=(0, 0.98))
-plt.tight_layout()
-configure_ax()
-
-filename = f"../plots/native/time-motivation-fpga.pdf"
+filename = f"../plots/native/throughput-motivation.pdf"
 print(f"Saving figure to {filename}")
 plt.savefig(filename, **savefig_args)
 plt.clf()
