@@ -89,10 +89,10 @@ for i in range(len(dfs)):
 
     in_size = dfs[i]["kernel_input_data_size"] * dfs[i]["kernel_iterations"]
     out_size = dfs[i]["kernel_output_data_size"] * dfs[i]["kernel_iterations"]
-    # Throughput in MB/s
-    dfs[i]["thrp_to_fpga"] = in_size / dfs[i]["data_to_fpga_ocl"] / 1_000_000
-    dfs[i]["thrp_kernel"] = in_size / dfs[i]["kernel_ocl"] / 1_000_000
-    dfs[i]["thrp_to_host"] = out_size / dfs[i]["data_to_host_ocl"] / 1_000_000
+    # Throughput in GB/s
+    dfs[i]["thrp_to_fpga"] = in_size / dfs[i]["data_to_fpga_ocl"] / 1_000_000_000
+    dfs[i]["thrp_kernel"] = in_size / dfs[i]["kernel_ocl"] / 1_000_000_000
+    dfs[i]["thrp_to_host"] = out_size / dfs[i]["data_to_host_ocl"] / 1_000_000_000
     dfs[i]["thrp"] = (dfs[i]["thrp_to_fpga"] + dfs[i]["thrp_kernel"] + dfs[i]["thrp_to_host"]) / 3
 
     dfs_sel[i] = dfs[i][(dfs[i]["app_name"] == sel_apps[0]) | (dfs[i]["app_name"] == sel_apps[1]) |
@@ -113,11 +113,11 @@ x = np.arange(len(app_names))
 
 for i in range(6):
     x_offs = i - 2
-    plt.bar(x + x_offs * bar_width, dfs_sel[i]["thrp"].values,
+    plt.bar(x + x_offs * bar_width, dfs_sel[i]["thrp_kernel"].values,
             hatch=hatches[i % 2], label=labels[i], **bar_args)
 
 plt.xticks(x, app_names, rotation=10)
-plt.ylabel("Throughput (MB/s)")
+plt.ylabel("Throughput kernel (GB/s)")
 plt.legend(loc='upper left', fancybox=True, shadow=True,
            fontsize=8, ncol=1, bbox_to_anchor=(0, 0.98))
 plt.tight_layout()
