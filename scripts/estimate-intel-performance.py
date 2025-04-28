@@ -33,7 +33,6 @@ df_s10_est = pd.DataFrame()
 df_s10_est["app_name"] = app_names
 
 # Time without fpga = average - data_to_fpga_ocl - kernel_ocl - data_to_host_ocl
-
 average_without_fpga = df_s10["average"] - df_s10["data_to_fpga_ocl"] - \
     df_s10["kernel_ocl"] - df_s10["data_to_host_ocl"]
 print("Average without FPGA:")
@@ -57,7 +56,7 @@ print(est_kernel)
 print("U280 kernel")
 print(df_u280_ddr_fast["kernel_ocl"])
 
-df_s10_est["average"] = 0.0
+df_s10_est["average"] = average_without_fpga + est_data_to_fpga + est_kernel + est_data_to_host
 df_s10_est["stddev"] = 0.0
 df_s10_est["kernel_input_data_size"] = df_s10["kernel_input_data_size"]
 df_s10_est["kernel_output_data_size"] = df_s10["kernel_output_data_size"]
