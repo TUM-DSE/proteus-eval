@@ -8,10 +8,6 @@ import common
 
 
 def estimate_intel_performance():
-    print("a")
-
-
-if __name__ == "__main__":
     data_subdir = "proteus"
 
     df_s10 = pd.read_csv(f"{common.data_rootdir}/{data_subdir}/s10-fast-measured.csv")
@@ -76,3 +72,7 @@ if __name__ == "__main__":
     est_filename = f"{common.data_rootdir}/{data_subdir}/s10-fast-estimated.csv"
     print(f"Saving performance estimation to {est_filename}")
     df_s10_est.to_csv(est_filename, index=False)
+
+
+if __name__ == "__main__":
+    estimate_intel_performance()
