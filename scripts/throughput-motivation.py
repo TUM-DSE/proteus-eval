@@ -52,33 +52,19 @@ aspect = 2
 height = width / aspect
 plt.figure(figsize=(width, height))
 
-df_u50_slow = pd.read_csv(f"../data/native/u50-slow.csv", skipinitialspace=True)
-df_u50_fast = pd.read_csv(f"../data/native/u50-fast.csv", skipinitialspace=True)
-df_u280_slow = pd.read_csv(f"../data/native/u280-slow.csv", skipinitialspace=True)
-df_u280_fast = pd.read_csv(f"../data/native/u280-fast.csv", skipinitialspace=True)
-df_u280_ddr_slow = pd.read_csv(f"../data/native/u280-ddr-slow.csv", skipinitialspace=True)
-df_u280_ddr_fast = pd.read_csv(f"../data/native/u280-ddr-fast.csv", skipinitialspace=True)
-
-# Data frames containing only apps selected for the plot
-df_u50_slow_sel = pd.DataFrame()
-df_u50_fast_sel = pd.DataFrame()
-df_u280_slow_sel = pd.DataFrame()
-df_u280_fast_sel = pd.DataFrame()
-df_u280_ddr_slow_sel = pd.DataFrame()
-df_u280_ddr_fast_sel = pd.DataFrame()
-
-sel_apps = ["cl_burst_rw", "cl_helloworld", "cl_gmem_2banks",
-            "cl_wide_mem_rw_strm", "cl_wide_mem_rw_2x"]
+df_u50_slow = pd.read_csv(f"../data/native/u50-300mhz.csv", skipinitialspace=True)
+df_u50_fast = pd.read_csv(f"../data/native/u50-400mhz.csv", skipinitialspace=True)
+df_u280_slow = pd.read_csv(f"../data/native/u280-300mhz.csv", skipinitialspace=True)
+df_u280_fast = pd.read_csv(f"../data/native/u280-400mhz.csv", skipinitialspace=True)
+df_u280_ddr_slow = pd.read_csv(f"../data/native/u280-ddr-300mhz.csv", skipinitialspace=True)
+df_u280_ddr_fast = pd.read_csv(f"../data/native/u280-ddr-400mhz.csv", skipinitialspace=True)
 
 dfs = [df_u50_slow, df_u50_fast, df_u280_slow, df_u280_fast, df_u280_ddr_slow, df_u280_ddr_fast]
-dfs_sel = [df_u50_slow_sel, df_u50_fast_sel, df_u280_slow_sel,
-           df_u280_fast_sel, df_u280_ddr_slow_sel, df_u280_ddr_fast_sel]
-labels = ["U50 HBM 200/300 MHz", "U50 HBM unlimited", "U280 HBM 200/300 MHz",
-          "U280 HBM unlimited", "U280 DDR 200/300 MHz", "U280 DDR unlimited"]
+labels = ["U50 HBM 300 MHz", "U50 HBM 400 MHz", "U280 HBM 300 MHz",
+          "U280 HBM 400 MHz", "U280 DDR 300 MHz", "U280 DDR 400 MHz"]
 
 # Sum up data transfer + kernel execution time,
 # time_cpu seems to be measured incorrectly for Proteus currently.
-# Also set selected apps.
 for i in range(len(dfs)):
     dfs[i]["transfer+kernel"] = dfs[i]["data_to_fpga_ocl"] + \
         dfs[i]["kernel_ocl"] + dfs[i]["data_to_host_ocl"]
@@ -95,11 +81,8 @@ for i in range(len(dfs)):
     dfs[i]["thrp_to_host"] = out_size / dfs[i]["data_to_host_ocl"] / 1_000_000_000
     dfs[i]["thrp"] = (dfs[i]["thrp_to_fpga"] + dfs[i]["thrp_kernel"] + dfs[i]["thrp_to_host"]) / 3
 
-    dfs_sel[i] = dfs[i][(dfs[i]["app_name"] == sel_apps[0]) | (dfs[i]["app_name"] == sel_apps[1]) |
-                        (dfs[i]["app_name"] == sel_apps[2]) | (dfs[i]["app_name"] == sel_apps[3]) |
-                        (dfs[i]["app_name"] == sel_apps[4])]
+app_names = df_u50_slow["app_name"].values
 
-app_names = sel_apps
 # Remove cl_
 app_names = [s[3:] for s in app_names]
 # Remove _strm, change hello_world name
@@ -113,7 +96,7 @@ x = np.arange(len(app_names))
 
 for i in range(6):
     x_offs = i - 2
-    plt.bar(x + x_offs * bar_width, dfs_sel[i]["thrp_kernel"].values,
+    plt.bar(x + x_offs * bar_width, dfs[i]["thrp_kernel"].values,
             hatch=hatches[i % 2], label=labels[i], **bar_args)
 
 plt.xticks(x, app_names, rotation=10)
