@@ -10,6 +10,7 @@ cd "$script_dir"
 ./time-compute.py
 ./time-memory.py
 ./time-breakdown.py
+./time-intel.py
 ./throughput-motivation.py
 ./throughput.py
 ./memory-channels-total.py

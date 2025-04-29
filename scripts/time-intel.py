@@ -1,0 +1,72 @@
+#!/usr/bin/env python3
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import statistics as stat
+import common
+# Python does not like filenames with dashes :(
+import importlib
+est_intel = importlib.import_module("estimate-intel-performance")
+
+
+# Make sure Intel csv file is up-to-date
+# est_intel.estimate_intel_performance()
+# print("Intel estimation done")
+# print("------------------------------------------------------------------------\n")
+
+df_s10_proteus = pd.read_csv(f"{common.data_rootdir}/proteus/s10-fast-estimated.csv")
+print(df_s10_proteus)
+df_s10_native = pd.read_csv(f"{common.data_rootdir}/native/s10-fast-estimated.csv")
+print(df_s10_native)
+
+colors = [common.bar_blue, common.bar_orange]
+plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
+
+bar_width = 0.25
+width = 7.0
+aspect = 2.0
+height = width / aspect
+plt.figure(figsize=(width, height))
+
+app_names = df_s10_proteus["app_name"].values
+# Remove cl_
+app_names = [s[3:] for s in app_names]
+x = np.arange(len(app_names))
+# Remove _strm, change hello_world name
+for i in range(len(app_names)):
+    if app_names[i] == "wide_mem_rw_strm":
+        app_names[i] = "wide_mem_rw"
+    elif app_names[i] == "helloworld":
+        app_names[i] = "vector_add"
+
+# TODO: Adjust label when real native numbers are available
+plt.bar(x - 0.5 * bar_width, df_s10_native["average"].values, bar_width,
+        label="S10 native (currently fake numbers!)", linewidth=1, edgecolor="k")
+bars = plt.bar(x + 0.5 * bar_width, df_s10_proteus["average"].values,
+               bar_width, label="S10 Proteus", linewidth=1, edgecolor="k", hatch="//")
+
+proteus_overhead = ((df_s10_proteus["average"].values /
+                    df_s10_native["average"].values) * 100) - 100
+for j, b in enumerate(bars):
+    plt.text(b.get_x() + 0.08, b.get_height() + 1.5,
+             f"{proteus_overhead[j]:.1f}%", rotation=90, size=8)
+
+plt.xticks(x, app_names, rotation=10)
+plt.ylabel("Total execution time (s)")
+x_margin, y_margin = plt.margins()
+plt.margins(y=y_margin + 0.1)
+plt.legend(loc="upper left", fancybox=True, shadow=True, ncol=1, fontsize=8)
+plt.tight_layout()
+
+ax = plt.gca()
+ax.spines['top'].set_visible(False)
+ax.spines['right'].set_visible(False)
+# ax.spines['bottom'].set_visible(False)
+ax.spines['left'].set_visible(False)
+ax.set_axisbelow(True)
+ax.grid(axis='y')
+
+filename = f"{common.plot_dir}/time-intel.pdf"
+print(f"Saving figure to {filename}")
+plt.savefig(filename, dpi=300, pad_inches=0.02, bbox_inches="tight", format="pdf")
