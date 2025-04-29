@@ -14,7 +14,7 @@ cl_wide_mem_rw,300,540.5,300,551.8,300,442.2,508
 cl_wide_mem_rw_strm,300,574.3,300,581.3,300,413.3,508
 cl_wide_mem_rw_2x,300,549.4,300,533.9,300,486.8,508
 cl_wide_mem_rw_4x,300,517,300,512.2,300,512,508
-3d-rendering,,,,,,,
-digit-recognition,,,,,,,
-optical-flow,,,,,,,
-spam-filter,,,,,,,
+3d-rendering,200,267.1,200,268.3,200,250,
+digit-recognition,200,304.2,200,250,200,250,
+optical-flow,200,376.3,200,367.5,200,346.3,
+spam-filter,200,526.3,200,460.1,200,438,
