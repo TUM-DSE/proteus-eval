@@ -82,19 +82,27 @@ for setting in ["native", "proteus"]:
 
     # Sum up data transfer + kernel execution time,
     # time_cpu seems to be measured incorrectly for Proteus currently
-    for df in dfs:
-        df[setting]["transfer+kernel"] = df[setting]["data_to_fpga_ocl"] + \
-            df[setting]["kernel_ocl"] + df[setting]["data_to_host_ocl"]
+    for i in range(len(dfs)):
+        dfs[i][setting]["transfer+kernel"] = dfs[i][setting]["data_to_fpga_ocl"] + \
+            dfs[i][setting]["kernel_ocl"] + dfs[i][setting]["data_to_host_ocl"]
         # Average standard deviation is the square root of the average variance, variance is stddev ** 2
-        avg_variance = (df[setting]["data_to_fpga_ocl_stddev"] ** 2 + df[setting]
-                        ["kernel_ocl_stddev"] ** 2 + df[setting]["data_to_host_ocl_stddev"] ** 2) / 3
-        df[setting]["transfer+kernel_stddev"] = np.sqrt(avg_variance)
+        avg_variance = (dfs[i][setting]["data_to_fpga_ocl_stddev"] ** 2 + dfs[i][setting]
+                        ["kernel_ocl_stddev"] ** 2 + dfs[i][setting]["data_to_host_ocl_stddev"] ** 2) / 3
+        dfs[i][setting]["transfer+kernel_stddev"] = np.sqrt(avg_variance)
+
+        # Ignore cl_wide_mem_rw
+        mask = dfs[i][setting]["app_name"].isin(["cl_wide_mem_rw"])
+        dfs[i][setting] = dfs[i][setting][~mask].reset_index(drop=True)
 
     bar_width = 0.12
     app_names = df_u50_slow[setting]["app_name"].values
     # Remove cl_
     app_names = [s[3:] for s in app_names]
     x = np.arange(len(app_names))
+    # Remove _strm
+    for i in range(len(app_names)):
+        if app_names[i] == "wide_mem_rw_strm":
+            app_names[i] = "wide_mem_rw"
 
     # Total execution time ----------------------------------------------------------------------------------
 
@@ -142,6 +150,11 @@ bar_width = 0.12
 app_names = df_u50_slow[setting]["app_name"].values
 # Remove cl_
 app_names = [s[3:] for s in app_names]
+# Remove _strm
+for i in range(len(app_names)):
+    if app_names[i] == "wide_mem_rw_strm":
+        app_names[i] = "wide_mem_rw"
+
 x = np.arange(len(app_names))
 dfs = [df_u50_fast, df_u280_fast, df_u280_ddr_fast]
 labels = ["U50 HBM native", "U50 HBM Proteus", "U280 HBM native",
