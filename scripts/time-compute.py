@@ -91,6 +91,10 @@ for setting in ["native", "proteus"]:
                         ["kernel_ocl_stddev"] ** 2 + df[setting]["data_to_host_ocl_stddev"] ** 2) / 3
         df[setting]["transfer+kernel_stddev"] = np.sqrt(avg_variance)
 
+        # Host only without transfer + kernel
+        df[setting]["average_host"] = df[setting]["average"] - df[setting]["transfer+kernel"]
+        print(df[setting])
+
     app_names = df_u50_slow[setting]["app_name"].values
     # Remove cl_
     app_names = [s[3:] for s in app_names]
