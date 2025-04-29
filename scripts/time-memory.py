@@ -85,10 +85,16 @@ for setting in ["native", "proteus"]:
     for i in range(len(dfs)):
         dfs[i][setting]["transfer+kernel"] = dfs[i][setting]["data_to_fpga_ocl"] + \
             dfs[i][setting]["kernel_ocl"] + dfs[i][setting]["data_to_host_ocl"]
-        # Average standard deviation is the square root of the average variance, variance is stddev ** 2
-        avg_variance = (dfs[i][setting]["data_to_fpga_ocl_stddev"] ** 2 + dfs[i][setting]
-                        ["kernel_ocl_stddev"] ** 2 + dfs[i][setting]["data_to_host_ocl_stddev"] ** 2) / 3
+        # Average standard deviation is the square root of the average variance,
+        # variance is stddev ** 2
+        avg_variance = (dfs[i][setting]["data_to_fpga_ocl_stddev"] ** 2 +
+                        dfs[i][setting]["kernel_ocl_stddev"] ** 2 +
+                        dfs[i][setting]["data_to_host_ocl_stddev"] ** 2) / 3
         dfs[i][setting]["transfer+kernel_stddev"] = np.sqrt(avg_variance)
+
+        # Host only without transfer + kernel
+        dfs[i][setting]["average_host"] = dfs[i][setting]["average"] - \
+            dfs[i][setting]["transfer+kernel"]
 
         # Ignore cl_wide_mem_rw
         mask = dfs[i][setting]["app_name"].isin(["cl_wide_mem_rw"])
@@ -162,21 +168,28 @@ labels = ["U50 HBM native", "U50 HBM Proteus", "U280 HBM native",
 
 # Total execution time --------------------------------------------------------------------------------------
 
+upper_bar_colors = ["#5783d4", "#de8a54", "#46b097"]
+
 x_offs = -2
 for i in range(3):
     # Native
-    plt.bar(x + x_offs * bar_width, dfs[i]["native"]["average"].values,
-            hatch=hatches[0], label=labels[2 * i], **bar_args)
+    plt.bar(x + x_offs * bar_width, dfs[i]["native"]["average_host"].values,
+            hatch=hatches[0], label=labels[2 * i], color=colors[2 * i], **bar_args)
+    plt.bar(x + x_offs * bar_width, dfs[i]["native"]["transfer+kernel"].values,
+            bottom=dfs[i]["native"]["average_host"].values, color=upper_bar_colors[i], **bar_args)
     plt.errorbar(x + x_offs * bar_width, dfs[i]["native"]["average"].values,
                  yerr=dfs[i]["native"]["stddev"].values, **errorbar_args)
     x_offs += 1
     # Proteus
-    bars = plt.bar(x + x_offs * bar_width, dfs[i]["proteus"]["average"].values,
-                   hatch=hatches[1], label=labels[2 * i + 1], **bar_args)
+    bars_low = plt.bar(x + x_offs * bar_width, dfs[i]["proteus"]["average_host"].values,
+                       hatch=hatches[1], label=labels[2 * i + 1], color=colors[2 * i], ** bar_args)
+    bars_high = plt.bar(x + x_offs * bar_width, dfs[i]["proteus"]["transfer+kernel"].values,
+                        bottom=dfs[i]["proteus"]["average_host"].values,
+                        hatch=hatches[1], color=upper_bar_colors[i], **bar_args)
     proteus_overhead = ((dfs[i]["proteus"]["average"].values / dfs[i]
                         ["native"]["average"].values) * 100) - 100
-    for j, b in enumerate(bars):
-        plt.text(b.get_x() + 0.02, b.get_height() + 0.6,
+    for j, (bl, bh) in enumerate(zip(bars_low, bars_high)):
+        plt.text(bl.get_x() + 0.03, bl.get_height() + bh.get_height() + 0.6,
                  f"{proteus_overhead[j]:.1f}%", rotation=90, size=8)
     plt.errorbar(x + x_offs * bar_width, dfs[i]["proteus"]["average"].values,
                  yerr=dfs[i]["proteus"]["stddev"].values, **errorbar_args)
