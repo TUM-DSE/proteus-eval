@@ -18,7 +18,6 @@ def configure_ax():
     ax.set_axisbelow(True)
     ax.grid(axis='y')
 
-
 bar_width = 0.12
 
 bar_args = {
@@ -40,17 +39,6 @@ savefig_args = {
     "bbox_inches": 'tight',
     "format": "pdf",
 }
-
-colors = [common.bar_blue, common.bar_blue, common.bar_orange,
-          common.bar_orange, common.bar_green, common.bar_green]
-hatches = ["", "//"]
-plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
-
-plt.rcParams.update({'font.size': 12})
-width = 7.0
-aspect = 2
-height = width / aspect
-plt.figure(figsize=(width, height))
 
 df_u50_slow = pd.read_csv(f"../data/native/u50-300mhz.csv", skipinitialspace=True)
 df_u50_fast = pd.read_csv(f"../data/native/u50-400mhz.csv", skipinitialspace=True)
@@ -81,32 +69,85 @@ for i in range(len(dfs)):
     dfs[i]["thrp_to_host"] = out_size / dfs[i]["data_to_host_ocl"] / 1_000_000_000
     dfs[i]["thrp"] = (dfs[i]["thrp_to_fpga"] + dfs[i]["thrp_kernel"] + dfs[i]["thrp_to_host"]) / 3
 
-app_names = df_u50_slow["app_name"].values
+### Split data into compute-bound and memory-bound apps 
+dfs_comp = []
+dfs_mem = []
+for df in dfs:
+    df_comp = df[:2]
+    dfs_comp.append(df_comp)
+    df_mem = df[2:]
+    dfs_mem.append(df_mem)
+
+comp_app_names = dfs_comp[0]["app_name"].values
+mem_app_names = dfs_mem[0]["app_name"].values
 
 # Remove cl_
-app_names = [s[3:] for s in app_names]
+comp_app_names = [s[3:] for s in comp_app_names]
+mem_app_names = [s[3:] for s in mem_app_names]
+
 # Remove _strm, change hello_world name
-for i in range(len(app_names)):
-    if app_names[i] == "wide_mem_rw_strm":
-        app_names[i] = "wide_mem_rw"
-    elif app_names[i] == "helloworld":
-        app_names[i] = "vector_add"
+for i in range(len(comp_app_names)):
+    if comp_app_names[i] == "helloworld":
+        comp_app_names[i] = "vector_add"
 
-x = np.arange(len(app_names))
+for i in range(len(mem_app_names)):
+    if mem_app_names[i] == "wide_mem_rw_strm":
+        mem_app_names[i] = "wide_mem_rw"
 
-for i in range(6):
+### Preparation to create plots
+width = 7.0
+height = 3.2
+# aspect = 2
+# height = width / aspect
+width_comp = width * (2.0/5)
+width_mem = width * (3.0/5)
+
+colors = [common.bar_blue, common.bar_blue, common.bar_orange,
+          common.bar_orange, common.bar_green, common.bar_green]
+hatches = ["", "//"]
+
+### For compute-bound apps
+plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
+plt.rcParams.update({'font.size': 12})
+plt.figure(figsize=(width_comp, height))
+
+x = np.arange(len(comp_app_names))
+for i in range(len(dfs_comp)):
     x_offs = i - 2
-    plt.bar(x + x_offs * bar_width, dfs[i]["thrp_kernel"].values,
+    plt.bar(x + x_offs * bar_width, dfs_comp[i]["thrp_kernel"].values,
             hatch=hatches[i % 2], label=labels[i], **bar_args)
 
-plt.xticks(x, app_names, rotation=10)
-plt.ylabel("Throughput kernel (GB/s)")
-plt.legend(loc='upper left', fancybox=True, shadow=True,
-           fontsize=8, ncol=1, bbox_to_anchor=(0, 0.98))
+plt.xticks(x, comp_app_names, rotation=10)
+plt.ylabel("Kernel's throughput (GB/s)")
+# plt.legend(loc='upper left', fancybox=True, shadow=True,
+#            fontsize=8, ncol=1, bbox_to_anchor=(0, 0.98))
 plt.tight_layout()
 configure_ax()
 
-filename = f"../plots/native/throughput-motivation.pdf"
-print(f"Saving figure to {filename}")
-plt.savefig(filename, **savefig_args)
+filename_comp = f"../plots/native/throughput-motivation-comp.pdf"
+print(f"Saving figure to {filename_comp}")
+plt.savefig(filename_comp, **savefig_args)
+plt.clf()
+
+### For memory-bound apps
+plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
+plt.rcParams.update({'font.size': 12})
+plt.figure(figsize=(width_mem, height))
+
+x2 = np.arange(len(mem_app_names))
+for i in range(len(dfs_mem)):
+    x2_offs = i - 2
+    plt.bar(x2 + x2_offs * bar_width, dfs_mem[i]["thrp_kernel"].values,
+            hatch=hatches[i % 2], label=labels[i], **bar_args)
+
+plt.xticks(x2, mem_app_names, rotation=10)
+plt.ylabel("Kernel's throughput (GB/s)")
+plt.legend(loc='upper left', fancybox=True, shadow=True,
+           fontsize=8, ncol=1, bbox_to_anchor=(0, 1.0))
+plt.tight_layout()
+configure_ax()
+
+filename_mem = f"../plots/native/throughput-motivation-mem.pdf"
+print(f"Saving figure to {filename_mem}")
+plt.savefig(filename_mem, **savefig_args)
 plt.clf()
