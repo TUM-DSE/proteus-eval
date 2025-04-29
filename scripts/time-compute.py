@@ -157,18 +157,18 @@ upper_bar_colors = ["#5783d4", "#de8a54", "#46b097"]
 x_offs = -2
 for i in range(3):
     # Native
-    plt.bar(x + x_offs * bar_width, dfs[i]["native"]["average_host"].values,
-            hatch=hatches[0], label=labels[2 * i], color=colors[2 * i], **bar_args)
     plt.bar(x + x_offs * bar_width, dfs[i]["native"]["transfer+kernel"].values,
-            bottom=dfs[i]["native"]["average_host"].values, color=upper_bar_colors[i], **bar_args)
+            hatch=hatches[0], label=labels[2 * i], color=colors[2 * i], **bar_args)
+    plt.bar(x + x_offs * bar_width, dfs[i]["native"]["average_host"].values,
+            bottom=dfs[i]["native"]["transfer+kernel"].values, color=upper_bar_colors[i], **bar_args)
     plt.errorbar(x + x_offs * bar_width, dfs[i]["native"]["average"].values,
                  yerr=dfs[i]["native"]["stddev"].values, **errorbar_args)
     x_offs += 1
     # Proteus
-    bars_low = plt.bar(x + x_offs * bar_width, dfs[i]["proteus"]["average_host"].values,
+    bars_low = plt.bar(x + x_offs * bar_width, dfs[i]["proteus"]["transfer+kernel"].values,
                        hatch=hatches[1], label=labels[2 * i + 1], color=colors[2 * i], **bar_args)
-    bars_high = plt.bar(x + x_offs * bar_width, dfs[i]["proteus"]["transfer+kernel"].values,
-                        bottom=dfs[i]["proteus"]["average_host"].values,
+    bars_high = plt.bar(x + x_offs * bar_width, dfs[i]["proteus"]["average_host"].values,
+                        bottom=dfs[i]["proteus"]["transfer+kernel"].values,
                         hatch=hatches[1], color=upper_bar_colors[i], **bar_args)
     proteus_overhead = ((dfs[i]["proteus"]["average"].values /
                         dfs[i]["native"]["average"].values) * 100) - 100
