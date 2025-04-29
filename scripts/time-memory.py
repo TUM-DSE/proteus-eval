@@ -185,7 +185,7 @@ for i in range(3):
 plt.xticks(x, app_names, rotation=10)
 plt.ylabel("Total execution time (s)")
 x_margin, y_margin = plt.margins()
-plt.margins(y=y_margin + 0.3)
+plt.margins(y=y_margin + 0.23)
 plt.legend(fancybox=True, shadow=True, ncol=3, fontsize=8)
 plt.tight_layout()
 configure_ax()
