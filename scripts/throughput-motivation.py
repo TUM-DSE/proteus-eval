@@ -40,6 +40,8 @@ savefig_args = {
     "format": "pdf",
 }
 
+gib = 1024 * 1024 * 1024
+
 df_u50_slow = pd.read_csv(f"../data/native/u50-300mhz.csv", skipinitialspace=True)
 df_u50_fast = pd.read_csv(f"../data/native/u50-400mhz.csv", skipinitialspace=True)
 df_u280_slow = pd.read_csv(f"../data/native/u280-300mhz.csv", skipinitialspace=True)
@@ -48,8 +50,8 @@ df_u280_ddr_slow = pd.read_csv(f"../data/native/u280-ddr-300mhz.csv", skipinitia
 df_u280_ddr_fast = pd.read_csv(f"../data/native/u280-ddr-400mhz.csv", skipinitialspace=True)
 
 dfs = [df_u50_slow, df_u50_fast, df_u280_slow, df_u280_fast, df_u280_ddr_slow, df_u280_ddr_fast]
-labels = ["U50 HBM 300 MHz", "U50 HBM 400 MHz", "U280 HBM 300 MHz",
-          "U280 HBM 400 MHz", "U280 DDR 300 MHz", "U280 DDR 400 MHz"]
+labels = ["U50-loclk", "U50-hiclk", "U280-loclk",
+          "U280-hiclk", "U280-loclk(DDR)", "U280-hiclk(DDR)"]
 
 # Sum up data transfer + kernel execution time,
 # time_cpu seems to be measured incorrectly for Proteus currently.
@@ -64,12 +66,12 @@ for i in range(len(dfs)):
     in_size = dfs[i]["kernel_input_data_size"] * dfs[i]["kernel_iterations"]
     out_size = dfs[i]["kernel_output_data_size"] * dfs[i]["kernel_iterations"]
     # Throughput in GB/s
-    dfs[i]["thrp_to_fpga"] = in_size / dfs[i]["data_to_fpga_ocl"] / 1_000_000_000
-    dfs[i]["thrp_kernel"] = in_size / dfs[i]["kernel_ocl"] / 1_000_000_000
-    dfs[i]["thrp_to_host"] = out_size / dfs[i]["data_to_host_ocl"] / 1_000_000_000
-    dfs[i]["thrp"] = (dfs[i]["thrp_to_fpga"] + dfs[i]["thrp_kernel"] + dfs[i]["thrp_to_host"]) / 3
+    dfs[i]["thrp_to_fpga"] = in_size / dfs[i]["data_to_fpga_ocl"] / gib
+    dfs[i]["thrp_kernel"] = (in_size + out_size) / dfs[i]["kernel_ocl"] / gib
+    dfs[i]["thrp_to_host"] = out_size / dfs[i]["data_to_host_ocl"] / gib
+    dfs[i]["thrp"] = (in_size + out_size) / dfs[i]["transfer+kernel"] / gib
 
-### Split data into compute-bound and memory-bound apps 
+### Split data into compute-bound and memory-bound apps
 dfs_comp = []
 dfs_mem = []
 for df in dfs:
@@ -118,7 +120,7 @@ for i in range(len(dfs_comp)):
             hatch=hatches[i % 2], label=labels[i], **bar_args)
 
 plt.xticks(x, comp_app_names, rotation=10)
-plt.ylabel("Kernel's throughput (GB/s)")
+plt.ylabel("Kernel's throughput (GiB/s)")
 # plt.legend(loc='upper left', fancybox=True, shadow=True,
 #            fontsize=8, ncol=1, bbox_to_anchor=(0, 0.98))
 plt.tight_layout()
@@ -141,9 +143,9 @@ for i in range(len(dfs_mem)):
             hatch=hatches[i % 2], label=labels[i], **bar_args)
 
 plt.xticks(x2, mem_app_names, rotation=10)
-plt.ylabel("Kernel's throughput (GB/s)")
+plt.ylabel("Kernel's throughput (GiB/s)")
 plt.legend(loc='upper left', fancybox=True, shadow=True,
-           fontsize=8, ncol=1, bbox_to_anchor=(0, 1.0))
+           fontsize=7, ncol=2, bbox_to_anchor=(-0.01, 1.0))
 plt.tight_layout()
 configure_ax()
 
