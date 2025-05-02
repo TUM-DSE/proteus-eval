@@ -15,7 +15,7 @@ df_u280_ddr_fast = pd.read_csv(f"../data/proteus/u280-ddr-fast.csv", skipinitial
 # dfs = [df_u50_slow, df_u50_fast, df_u280_slow, df_u280_fast, df_u280_ddr_slow, df_u280_ddr_fast]
 # dfs = [df_u50_slow, df_u280_slow, df_u280_ddr_slow, df_u50_fast, df_u280_fast, df_u280_ddr_fast]
 dfs = [df_u50_fast, df_u280_fast, df_u280_ddr_fast]
-df_labels = ["u50-fast", "u280-fast", "u280-ddr-fast"]
+df_labels = ["u50_fast", "u280_fast", "u280_ddr_fast"]
 
 df_app_name = dfs[0]["app_name"].copy()
 app_names = df_app_name.values
