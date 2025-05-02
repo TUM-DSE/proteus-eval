@@ -63,19 +63,19 @@ plt.figure(figsize=(width, height))
 
 for setting in ["native", "proteus"]:
 
-    # First 10 rows compute intensive applications, remaining rows memory intensive applications
+    # First 12 rows are the Vitis Accel Examples
     df_u50_slow[setting] = pd.read_csv(
-        f"../data/{setting}/u50-slow.csv", skipinitialspace=True).iloc[:10]
+        f"../data/{setting}/u50-slow.csv", skipinitialspace=True).iloc[:13]
     df_u50_fast[setting] = pd.read_csv(
-        f"../data/{setting}/u50-fast.csv", skipinitialspace=True).iloc[:10]
+        f"../data/{setting}/u50-fast.csv", skipinitialspace=True).iloc[:13]
     df_u280_slow[setting] = pd.read_csv(
-        f"../data/{setting}/u280-slow.csv", skipinitialspace=True).iloc[:10]
+        f"../data/{setting}/u280-slow.csv", skipinitialspace=True).iloc[:13]
     df_u280_fast[setting] = pd.read_csv(
-        f"../data/{setting}/u280-fast.csv", skipinitialspace=True).iloc[:10]
+        f"../data/{setting}/u280-fast.csv", skipinitialspace=True).iloc[:13]
     df_u280_ddr_slow[setting] = pd.read_csv(
-        f"../data/{setting}/u280-ddr-slow.csv", skipinitialspace=True).iloc[:10]
+        f"../data/{setting}/u280-ddr-slow.csv", skipinitialspace=True).iloc[:13]
     df_u280_ddr_fast[setting] = pd.read_csv(
-        f"../data/{setting}/u280-ddr-fast.csv", skipinitialspace=True).iloc[:10]
+        f"../data/{setting}/u280-ddr-fast.csv", skipinitialspace=True).iloc[:13]
 
     dfs = [df_u50_slow, df_u280_slow, df_u280_ddr_slow, df_u50_fast, df_u280_fast, df_u280_ddr_fast]
     labels = ["U50 HBM 200 MHz", "U280 HBM 200 MHz", "U280 DDR 200 MHz",
@@ -83,16 +83,21 @@ for setting in ["native", "proteus"]:
 
     # Sum up data transfer + kernel execution time,
     # time_cpu seems to be measured incorrectly for Proteus currently
-    for df in dfs:
-        df[setting]["transfer+kernel"] = df[setting]["data_to_fpga_ocl"] + \
-            df[setting]["kernel_ocl"] + df[setting]["data_to_host_ocl"]
+    for i in range(len(dfs)):
+        dfs[i][setting]["transfer+kernel"] = dfs[i][setting]["data_to_fpga_ocl"] + \
+            dfs[i][setting]["kernel_ocl"] + dfs[i][setting]["data_to_host_ocl"]
         # Average standard deviation is the square root of the average variance, variance is stddev ** 2
-        avg_variance = (df[setting]["data_to_fpga_ocl_stddev"] ** 2 + df[setting]
-                        ["kernel_ocl_stddev"] ** 2 + df[setting]["data_to_host_ocl_stddev"] ** 2) / 3
-        df[setting]["transfer+kernel_stddev"] = np.sqrt(avg_variance)
+        avg_variance = (dfs[i][setting]["data_to_fpga_ocl_stddev"] ** 2 + dfs[i][setting]
+                        ["kernel_ocl_stddev"] ** 2 + dfs[i][setting]["data_to_host_ocl_stddev"] ** 2) / 3
+        dfs[i][setting]["transfer+kernel_stddev"] = np.sqrt(avg_variance)
 
         # Host only without transfer + kernel
-        df[setting]["average_host"] = df[setting]["average"] - df[setting]["transfer+kernel"]
+        dfs[i][setting]["average_host"] = dfs[i][setting]["average"] - \
+            dfs[i][setting]["transfer+kernel"]
+
+        # Ignore cl_wide_mem_rw
+        mask = dfs[i][setting]["app_name"].isin(["cl_wide_mem_rw"])
+        dfs[i][setting] = dfs[i][setting][~mask].reset_index(drop=True)
 
     app_names = df_u50_slow[setting]["app_name"].values
     # Remove cl_
@@ -114,7 +119,7 @@ for setting in ["native", "proteus"]:
     plt.tight_layout()
     configure_ax()
 
-    filename = f"../plots/{setting}/time-compute-total.pdf"
+    filename = f"../plots/{setting}/time-xilinx-total.pdf"
     print(f"Saving figure to {filename}")
     plt.savefig(filename, **savefig_args)
     plt.clf()
@@ -134,7 +139,7 @@ for setting in ["native", "proteus"]:
     plt.tight_layout()
     configure_ax()
 
-    filename = f"../plots/{setting}/time-compute-fpga.pdf"
+    filename = f"../plots/{setting}/time-xilinx-fpga.pdf"
     print(f"Saving figure to {filename}")
     plt.savefig(filename, **savefig_args)
     plt.clf()
@@ -185,7 +190,7 @@ plt.legend(loc='upper left', fancybox=True, shadow=True, ncol=3, bbox_to_anchor=
 plt.tight_layout()
 configure_ax()
 
-filename = f"../plots/time-compute-total.pdf"
+filename = f"../plots/time-xilinx-total.pdf"
 print(f"Saving figure to {filename}")
 plt.savefig(filename, **savefig_args)
 plt.clf()
@@ -218,7 +223,7 @@ plt.legend(loc='upper left', fancybox=True, shadow=True, ncol=3, bbox_to_anchor=
 plt.tight_layout()
 configure_ax()
 
-filename = f"../plots/time-compute-fpga.pdf"
+filename = f"../plots/time-xilinx-fpga.pdf"
 print(f"Saving figure to {filename}")
 plt.savefig(filename, **savefig_args)
 plt.clf()
