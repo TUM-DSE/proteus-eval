@@ -150,6 +150,10 @@ bar_width = 0.12
 app_names = df_u50_slow[setting]["app_name"].values
 # Remove cl_
 app_names = [s[3:] for s in app_names]
+# Remove _strm
+for i in range(len(app_names)):
+    if app_names[i] == "wide_mem_rw_strm":
+        app_names[i] = "wide_mem_rw"
 x = np.arange(len(app_names))
 dfs = [df_u50_fast, df_u280_fast, df_u280_ddr_fast]
 labels = ["U50 HBM native", "U50 HBM Proteus", "U280 HBM native",
