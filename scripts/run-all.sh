@@ -8,7 +8,6 @@ cd "$script_dir"
 ./scheduler.py # scheduler produces a csv file read by speedup, keep this order
 ./speedup.py
 ./time-compute.py
-./time-memory.py
 ./time-breakdown.py
 ./time-intel.py
 ./throughput-motivation.py
