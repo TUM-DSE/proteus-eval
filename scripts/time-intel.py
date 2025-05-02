@@ -11,14 +11,13 @@ est_intel = importlib.import_module("estimate-intel-performance")
 
 
 # Make sure Intel csv file is up-to-date
-# est_intel.estimate_intel_performance()
-# print("Intel estimation done")
-# print("------------------------------------------------------------------------\n")
+est_intel.estimate_intel_performance()
+print("Intel estimation done")
+print("------------------------------------------------------------------------\n")
 
-df_s10_proteus = pd.read_csv(f"{common.data_rootdir}/proteus/s10-fast-estimated.csv")
-print(df_s10_proteus)
 df_s10_native = pd.read_csv(f"{common.data_rootdir}/native/s10-fast-estimated.csv")
-print(df_s10_native)
+df_s10_proteus = pd.read_csv(f"{common.data_rootdir}/proteus/s10-fast-estimated.csv")
+dfs = [df_s10_native, df_s10_proteus]
 
 colors = [common.bar_blue, common.bar_orange]
 plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
@@ -40,9 +39,8 @@ for i in range(len(app_names)):
     elif app_names[i] == "helloworld":
         app_names[i] = "vector_add"
 
-# TODO: Adjust label when real native numbers are available
-plt.bar(x - 0.5 * bar_width, df_s10_native["average"].values, bar_width,
-        label="S10 native (currently fake numbers!)", linewidth=1, edgecolor="k")
+plt.bar(x - 0.5 * bar_width, df_s10_native["average"].values,
+        bar_width, label="S10 native", linewidth=1, edgecolor="k")
 bars = plt.bar(x + 0.5 * bar_width, df_s10_proteus["average"].values,
                bar_width, label="S10 Proteus", linewidth=1, edgecolor="k", hatch="//")
 
