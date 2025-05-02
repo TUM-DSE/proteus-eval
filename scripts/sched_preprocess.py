@@ -15,7 +15,7 @@ df_u280_ddr_fast = pd.read_csv(f"../data/proteus/u280-ddr-fast.csv", skipinitial
 # dfs = [df_u50_slow, df_u50_fast, df_u280_slow, df_u280_fast, df_u280_ddr_slow, df_u280_ddr_fast]
 # dfs = [df_u50_slow, df_u280_slow, df_u280_ddr_slow, df_u50_fast, df_u280_fast, df_u280_ddr_fast]
 dfs = [df_u50_fast, df_u280_fast, df_u280_ddr_fast]
-df_labels = ["u50-hbm", "u280-hbm", "u280-ddr"]
+df_labels = ["u50-fast", "u280-fast", "u280-ddr-fast"]
 
 df_app_name = dfs[0]["app_name"].copy()
 app_names = df_app_name.values
@@ -33,7 +33,6 @@ for app in app_names:
     for df in dfs: 
         row = df[df["app_name"] == app]
         row.loc[:, "app_name"] = df_labels[i] # clarify that we modify only the filtered df
-        # row["app_name"] = df_labels[i]
         found_rows.append(row)
         i+=1
 
@@ -47,26 +46,7 @@ for app in app_names:
         app_file = "wide_mem_rw"
 
     filename = f"../sched_sim/{app_file}.csv"
-
+    df_app = df_app.rename(columns={"app_name": "fpgas"})
     df_app.to_csv(filename, index=False)
     print(df_app)
-
-# exit(0)
-
-# Remove cl_wide_mem_rw and cl_
-# for i in range(len(app_names)): 
-#     if app_names[i] == "cl_wide_mem_rw":
-#         matched_id = i
-#     else:
-#         app_names[i] = app_names[i][3:]
-# app_names = np.delete(app_names, matched_id)
-# print(app_names)
-# print(df_u50_slow)
-
-# Remove _strm, change hello_world name
-# for i in range(len(app_names)):
-#     if app_names[i] == "helloworld":
-#         app_names[i] = "vector_add"
-#     if app_names[i] == "wide_mem_rw_strm":
-#         app_names[i] = "wide_mem_rw"
 

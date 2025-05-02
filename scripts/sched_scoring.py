@@ -256,6 +256,26 @@ df_new_scores = pd.DataFrame({"fpgas": fpgas})
 df_new_scores = scoring_new(df_new_scores)
 print(df_new_scores)
 
+### Update app names
+app_names = [key for key in kernels.keys()]
+for i in range(len(app_names)):
+    app_names[i] = app_names[i][3:]
+    if app_names[i] == "helloworld":
+        app_names[i] = "vector_add"
+    if app_names[i] == "wide_mem_rw_strm":
+        app_names[i] = "wide_mem_rw"
+print(app_names)
+
+for i, key in enumerate(kernels.keys()):
+    # range(len(app_names))
+    df_old_scores = df_old_scores.rename(columns={key: app_names[i]})
+    df_freq_scores = df_freq_scores.rename(columns={key: app_names[i]})
+    df_new_scores = df_new_scores.rename(columns={key: app_names[i]})
+
+print(df_old_scores)
+print(df_freq_scores)
+print(df_new_scores)
+
 ### Export the result to csv
 filename_old  = "../sched_sim/scores_old.csv"
 filename_freq = "../sched_sim/scores_freq.csv"
