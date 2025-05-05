@@ -126,7 +126,7 @@ def scoring_old(df_scores):
 
 ### Freq-only scoring function
 def scoring_freq(df_scores):
-    df_freq = pd.read_csv("../data/frequencies.csv", skipinitialspace=True)
+    df_freq = pd.read_csv("../data/frequencies_round_down.csv", skipinitialspace=True)
     df_max_freq = df_freq.iloc[:, 1:].max(axis=1)
 
     for i, app in enumerate(kernels.keys()):
@@ -163,7 +163,7 @@ def scoring_freq(df_scores):
 
 ### New scoring functions
 def scoring_new(df_scores):
-    df_freq = pd.read_csv("../data/frequencies.csv", skipinitialspace=True)
+    df_freq = pd.read_csv("../data/frequencies_round_down.csv", skipinitialspace=True)
     df_max_freq = df_freq.iloc[:, 1:].max(axis=1)
 
     for i, app in enumerate(kernels.keys()):
