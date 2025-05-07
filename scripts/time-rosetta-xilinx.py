@@ -144,8 +144,8 @@ bar_width = 0.12
 app_names = df_u50_slow[setting]["app_name"].values
 x = np.arange(len(app_names))
 dfs = [df_u50_fast, df_u280_fast, df_u280_ddr_fast]
-labels = ["U50 HBM native", "U50 HBM Proteus", "U280 HBM native",
-          "U280 HBM Proteus", "U280 DDR native", "U280 DDR Proteus"]
+labels = ["U50 native", "U50 Proteus", "U280 native",
+          "U280 Proteus", "U280-DDR native", "U280-DDR Proteus"]
 
 # Total execution time --------------------------------------------------------------------------------------
 
@@ -170,16 +170,18 @@ for i in range(3):
     proteus_overhead = ((dfs[i]["proteus"]["average"].values /
                         dfs[i]["native"]["average"].values) * 100) - 100
     for j, (bl, bh) in enumerate(zip(bars_low, bars_high)):
-        plt.text(bl.get_x() + 0.2 * bar_width, bl.get_height() + bh.get_height() + 1.5,
+        plt.text(bl.get_x() + 0.012, bl.get_height() + bh.get_height() + 1.5,
                  f"{proteus_overhead[j]:.1f}%", rotation=90, size=8)
     plt.errorbar(x + x_offs * bar_width, dfs[i]["proteus"]["average"].values,
                  yerr=dfs[i]["proteus"]["stddev"].values, **errorbar_args)
     x_offs += 1
 
 plt.xticks(x, app_names, rotation=10)
+x_margin, y_margin = plt.margins()
+plt.margins(y=y_margin + 0.37)
 plt.ylabel("Total execution time (s)")
 plt.legend(loc='upper left', fancybox=True, shadow=True,
-           fontsize=8, ncol=2, bbox_to_anchor=(0, 1.0))
+           fontsize=7.8, ncol=3, bbox_to_anchor=(0, 1.0))
 plt.tight_layout()
 configure_ax()
 
@@ -211,6 +213,8 @@ for i in range(3):
     x_offs += 1
 
 plt.xticks(x, app_names, rotation=10)
+x_margin, y_margin = plt.margins()
+plt.margins(y=y_margin + 0.6)
 plt.ylabel("Total data transfer + kernel time (s)")
 plt.legend(loc='upper left', fancybox=True, shadow=True, ncol=3, bbox_to_anchor=(0, 1.0))
 plt.tight_layout()
