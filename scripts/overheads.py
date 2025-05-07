@@ -7,9 +7,16 @@ import common
 
 
 df = pd.read_csv(f"../data/overheads.csv", skipinitialspace=True)
-times = df[["kernel_alloc", "kernel_setarg", "kernel_enqueue", "buf_alloc", "transfer", "finish"]]
-times_stddevs = df[["kernel_alloc_stddev", "kernel_setarg_stddev",
-                    "kernel_enqueue_stddev", "buf_alloc_stddev", "transfer_stddev", "finish_stddev"]]
+
+times = pd.DataFrame()
+times["kernel_exec"] = df["kernel_enqueue"] + df["init_transfer"] + 2 * df["transfer"]
+times["worker_init"] = df["worker_init"]
+times["unikernel_boot"] = df["unikernel_boot"]
+times["finish"] = df["finish"]
+print(times)
+# times = df[["kernel_alloc", "kernel_setarg", "kernel_enqueue", "buf_alloc", "transfer", "finish"]]
+# times_stddevs = df[["kernel_alloc_stddev", "kernel_setarg_stddev",
+#                     "kernel_enqueue_stddev", "buf_alloc_stddev", "transfer_stddev", "finish_stddev"]]
 
 bar_width = 0.12
 
@@ -19,12 +26,12 @@ bar_args = {
     "edgecolor": "k",
 }
 
-errorbar_args = {
-    "fmt": "none",
-    "color": "k",
-    "elinewidth": 1,
-    "capsize": 2,
-}
+# errorbar_args = {
+#     "fmt": "none",
+#     "color": "k",
+#     "elinewidth": 1,
+#     "capsize": 2,
+# }
 
 colors = [common.bar_blue, common.bar_blue, common.bar_orange,
           common.bar_orange, common.bar_green, common.bar_green]
@@ -37,27 +44,26 @@ aspect = 2.0
 height = width / aspect
 plt.figure(figsize=(width, height))
 
-x_labels = ["Allocate kernel", "Set kernel args",
-            "Enqueue kernel", "Allocate buffer", "Data transfer", "Finish"]
+x_labels = ["Kernel exec", "Platform init", "Unikernel boot", "Sync"]
 x = np.arange(len(x_labels))
 
-plt.bar(x - 2.5 * bar_width, times.iloc[3], hatch=hatches[0], label="U50 HBM native", **bar_args)
-plt.errorbar(x - 2.5 * bar_width, times.iloc[3], yerr=times_stddevs.iloc[3], **errorbar_args)
+plt.bar(x - 2.5 * bar_width, times.iloc[3], hatch=hatches[0], label="U50 native", **bar_args)
+# plt.errorbar(x - 2.5 * bar_width, times.iloc[3], yerr=times_stddevs.iloc[3], **errorbar_args)
 
-plt.bar(x - 1.5 * bar_width, times.iloc[0], hatch=hatches[1], label="U50 HBM Proteus", **bar_args)
-plt.errorbar(x - 1.5 * bar_width, times.iloc[0], yerr=times_stddevs.iloc[0], **errorbar_args)
+plt.bar(x - 1.5 * bar_width, times.iloc[0], hatch=hatches[1], label="U50 Proteus", **bar_args)
+# plt.errorbar(x - 1.5 * bar_width, times.iloc[0], yerr=times_stddevs.iloc[0], **errorbar_args)
 
-plt.bar(x - 0.5 * bar_width, times.iloc[4], hatch=hatches[0], label="U280 HBM native", **bar_args)
-plt.errorbar(x - 0.5 * bar_width, times.iloc[4], yerr=times_stddevs.iloc[4], **errorbar_args)
+plt.bar(x - 0.5 * bar_width, times.iloc[4], hatch=hatches[0], label="U280 native", **bar_args)
+# plt.errorbar(x - 0.5 * bar_width, times.iloc[4], yerr=times_stddevs.iloc[4], **errorbar_args)
 
-plt.bar(x + 0.5 * bar_width, times.iloc[1], hatch=hatches[1], label="U280 HBM Proteus", **bar_args)
-plt.errorbar(x + 0.5 * bar_width, times.iloc[1], yerr=times_stddevs.iloc[1], **errorbar_args)
+plt.bar(x + 0.5 * bar_width, times.iloc[1], hatch=hatches[1], label="U280 Proteus", **bar_args)
+# plt.errorbar(x + 0.5 * bar_width, times.iloc[1], yerr=times_stddevs.iloc[1], **errorbar_args)
 
-plt.bar(x + 1.5 * bar_width, times.iloc[5], hatch=hatches[0], label="U280 DDR native", **bar_args)
-plt.errorbar(x + 1.5 * bar_width, times.iloc[5], yerr=times_stddevs.iloc[5], **errorbar_args)
+plt.bar(x + 1.5 * bar_width, times.iloc[5], hatch=hatches[0], label="U280-DDR native", **bar_args)
+# plt.errorbar(x + 1.5 * bar_width, times.iloc[5], yerr=times_stddevs.iloc[5], **errorbar_args)
 
-plt.bar(x + 2.5 * bar_width, times.iloc[2], hatch=hatches[1], label="U280 DDR Proteus", **bar_args)
-plt.errorbar(x + 2.5 * bar_width, times.iloc[2], yerr=times_stddevs.iloc[2], **errorbar_args)
+plt.bar(x + 2.5 * bar_width, times.iloc[2], hatch=hatches[1], label="U280-DDR Proteus", **bar_args)
+# plt.errorbar(x + 2.5 * bar_width, times.iloc[2], yerr=times_stddevs.iloc[2], **errorbar_args)
 
 plt.xticks(x, x_labels, rotation=15)
 plt.ylabel("Time (ms)")
