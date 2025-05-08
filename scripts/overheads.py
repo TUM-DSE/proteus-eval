@@ -9,7 +9,11 @@ import common
 df = pd.read_csv(f"../data/overheads.csv", skipinitialspace=True)
 
 times = pd.DataFrame()
-times["kernel_exec"] = df["kernel_enqueue"] + df["init_transfer"] + 2 * df["transfer"]
+times["buf_alloc"] = df["buf_alloc"]
+times["kernel_create"] = df["kernel_alloc"] + df["kernel_setarg"]
+# CPU timer - ocl profiling timer = host overhead
+times["kernel_exec"] = (df["kernel_enqueue"] + df["init_transfer"] + 2 * df["transfer"]) - \
+    (df["data_to_fpga_time_ocl"] + df["kernel_time_ocl"] + df["data_to_host_time_ocl"])
 times["worker_init"] = df["worker_init"]
 times["unikernel_boot"] = df["unikernel_boot"]
 times["finish"] = df["finish"]
@@ -44,7 +48,10 @@ aspect = 2.0
 height = width / aspect
 plt.figure(figsize=(width, height))
 
-x_labels = ["Kernel exec", "Platform init", "Unikernel boot", "Sync"]
+# Kernel exec: time cpu - ocl
+
+x_labels = ["Allocate buffers", "Create kernel",
+            "Exec kernel", "Init platform", "Boot unikernel", "Sync"]
 x = np.arange(len(x_labels))
 
 plt.bar(x - 2.5 * bar_width, times.iloc[3], hatch=hatches[0], label="U50 native", **bar_args)
