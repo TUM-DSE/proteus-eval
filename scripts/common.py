@@ -31,6 +31,7 @@ app_names_abb = {
         "systolic_array": "sys_ar",
         "gmem_2banks": "gmem",
         "wide_mem_rw": "wmem",
+        "wide_mem_rw_strm": "wmem_st",
         "3d-rendering": "3d-rndr",
         "digit-recognition": "dgt-rc",
         "optical-flow": "opt-fl",
@@ -40,6 +41,7 @@ app_names_abb = {
         "gmem_2banks_2x": "gmem_2x",
         "gmem_2banks_4x": "gmem_4x",
         "vector_add": "vadd",
+        "average": "avg",
         }
 
 def get_value(filename, x):

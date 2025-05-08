@@ -26,7 +26,7 @@ df_u280_fast = {}
 df_u280_ddr_slow = {}
 df_u280_ddr_fast = {}
 
-bar_width = 0.12
+bar_width = 0.14
 
 bar_args = {
     "width": bar_width,
@@ -54,7 +54,7 @@ hatches = ["", "//"]
 plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
 
 plt.rcParams.update({'font.size': 12})
-width = 15.0
+width = 14.0
 aspect = 4
 height = width / aspect
 plt.figure(figsize=(width, height))
@@ -113,7 +113,13 @@ for setting in ["native", "proteus"]:
     app_names = df_u50_slow[setting]["app_name"].values
     # Remove cl_
     app_names = [s[3:] for s in app_names]
-    x = np.arange(len(app_names))
+
+    # use abbreviations as app names
+    xlabel_names = []
+    for app in app_names:
+        xlabel_names.append(common.app_names_abb[app])
+
+    x = np.arange(len(xlabel_names))
 
     # Total execution time ----------------------------------------------------------------------------------
 
@@ -124,7 +130,7 @@ for setting in ["native", "proteus"]:
         plt.errorbar(x + x_offs * bar_width, dfs[i][setting]["average"].values,
                      yerr=dfs[i][setting]["stddev"].values, **errorbar_args)
 
-    plt.xticks(x, app_names, rotation=10)
+    plt.xticks(x, xlabel_names, rotation=10)
     plt.ylabel("Total execution time (s)")
     plt.legend(loc='upper left', fancybox=True, shadow=True, ncol=3, bbox_to_anchor=(0, 1.0))
     plt.tight_layout()
@@ -132,6 +138,7 @@ for setting in ["native", "proteus"]:
 
     filename = f"../plots/{setting}/time-xilinx-total.pdf"
     print(f"Saving figure to {filename}")
+    plt.margins(x=0.01, tight=True)
     plt.savefig(filename, **savefig_args)
     plt.clf()
 
@@ -144,7 +151,7 @@ for setting in ["native", "proteus"]:
         plt.errorbar(x + x_offs * bar_width, dfs[i][setting]["transfer+kernel"].values,
                      yerr=dfs[i][setting]["transfer+kernel_stddev"].values, **errorbar_args)
 
-    plt.xticks(x, app_names, rotation=10)
+    plt.xticks(x, xlabel_names, rotation=10)
     plt.ylabel("Total data transfer + kernel time (s)")
     plt.legend(loc='upper left', fancybox=True, shadow=True, ncol=3, bbox_to_anchor=(0, 1.0))
     plt.tight_layout()
@@ -152,6 +159,7 @@ for setting in ["native", "proteus"]:
 
     filename = f"../plots/{setting}/time-xilinx-fpga.pdf"
     print(f"Saving figure to {filename}")
+    plt.margins(x=0.01, tight=True)
     plt.savefig(filename, **savefig_args)
     plt.clf()
 
@@ -165,10 +173,15 @@ app_names = [s[3:] for s in app_names]
 for i in range(len(app_names)):
     if app_names[i] == "wide_mem_rw_strm":
         app_names[i] = "wide_mem_rw"
-x = np.arange(len(app_names))
+
+xlabel_names = []
+for app in app_names:
+    xlabel_names.append(common.app_names_abb[app])
+
+x = np.arange(len(xlabel_names))
 dfs = [df_u50_fast, df_u280_fast, df_u280_ddr_fast]
-labels = ["U50 HBM native", "U50 HBM Proteus", "U280 HBM native",
-          "U280 HBM Proteus", "U280 DDR native", "U280 DDR Proteus"]
+labels = ["U50 native", "U50 Proteus", "U280-HBM native",
+          "U280-HBM Proteus", "U280-DDR native", "U280-DDR Proteus"]
 
 # Total execution time --------------------------------------------------------------------------------------
 
@@ -193,13 +206,13 @@ for i in range(3):
     proteus_overhead = ((dfs[i]["proteus"]["average"].values /
                         dfs[i]["native"]["average"].values) * 100) - 100
     for j, (bl, bh) in enumerate(zip(bars_low, bars_high)):
-        plt.text(bl.get_x() + 0.2 * bar_width, bl.get_height() + bh.get_height() + 1.5,
-                 f"{proteus_overhead[j]:.1f}%", rotation=90, size=8)
+        plt.text(bl.get_x() + 0.0 * bar_width, bl.get_height() + bh.get_height(),
+                 f"  {proteus_overhead[j]:.1f}%", rotation=90, size=9)
     plt.errorbar(x + x_offs * bar_width, dfs[i]["proteus"]["average"].values,
                  yerr=dfs[i]["proteus"]["stddev"].values, **errorbar_args)
     x_offs += 1
 
-plt.xticks(x, app_names, rotation=10)
+plt.xticks(x, xlabel_names, rotation=0)
 plt.ylabel("Total execution time (s)")
 plt.legend(loc='upper left', fancybox=True, shadow=True, ncol=3, bbox_to_anchor=(0, 1.0))
 plt.tight_layout()
@@ -207,6 +220,7 @@ configure_ax()
 
 filename = f"../plots/time-xilinx-total.pdf"
 print(f"Saving figure to {filename}")
+plt.margins(x=0.01, tight=True)
 plt.savefig(filename, **savefig_args)
 plt.clf()
 
@@ -232,7 +246,7 @@ for i in range(3):
                  yerr=dfs[i]["proteus"]["transfer+kernel_stddev"].values, **errorbar_args)
     x_offs += 1
 
-plt.xticks(x, app_names, rotation=10)
+plt.xticks(x, xlabel_names, rotation=10)
 plt.ylabel("Total data transfer + kernel time (s)")
 plt.legend(loc='upper left', fancybox=True, shadow=True, ncol=3, bbox_to_anchor=(0, 1.0))
 plt.tight_layout()
@@ -240,5 +254,6 @@ configure_ax()
 
 filename = f"../plots/time-xilinx-fpga.pdf"
 print(f"Saving figure to {filename}")
+plt.margins(x=0.01, tight=True)
 plt.savefig(filename, **savefig_args)
 plt.clf()
