@@ -26,7 +26,7 @@ df_u280_fast = {}
 df_u280_ddr_slow = {}
 df_u280_ddr_fast = {}
 
-bar_width = 0.12
+bar_width = 0.13
 
 bar_args = {
     "width": bar_width,
@@ -53,10 +53,11 @@ colors = [common.bar_blue, common.bar_blue, common.bar_orange,
 hatches = ["", "//"]
 plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
 
-plt.rcParams.update({'font.size': 12})
-width = 7.2
-aspect = 2
-height = width / aspect
+plt.rcParams.update({'font.size': 8})
+width = 4.2
+height = 3.0
+# aspect = 1.8
+# height = width / aspect
 plt.figure(figsize=(width, height))
 
 # Individual plots ------------------------------------------------------------------------------------------
@@ -96,7 +97,13 @@ for setting in ["native", "proteus"]:
             dfs[i][setting]["transfer+kernel"]
 
     app_names = df_u50_slow[setting]["app_name"].values
-    x = np.arange(len(app_names))
+
+    # use abbreviations as app names
+    xlabel_names = []
+    for app in app_names:
+        xlabel_names.append(common.app_names_abb[app])
+
+    x = np.arange(len(xlabel_names))
 
     # Total execution time ----------------------------------------------------------------------------------
 
@@ -107,9 +114,9 @@ for setting in ["native", "proteus"]:
         plt.errorbar(x + x_offs * bar_width, dfs[i][setting]["average"].values,
                      yerr=dfs[i][setting]["stddev"].values, **errorbar_args)
 
-    plt.xticks(x, app_names, rotation=10)
+    plt.xticks(x, xlabel_names, rotation=0)
     plt.ylabel("Total execution time (s)")
-    plt.legend(loc='upper left', fancybox=True, shadow=True, ncol=3, bbox_to_anchor=(0, 1.0))
+    plt.legend(loc='upper left', fancybox=True, shadow=True, ncol=3, prop={'size': 6}, bbox_to_anchor=(0, 1.0))
     plt.tight_layout()
     configure_ax()
 
@@ -127,9 +134,9 @@ for setting in ["native", "proteus"]:
         plt.errorbar(x + x_offs * bar_width, dfs[i][setting]["transfer+kernel"].values,
                      yerr=dfs[i][setting]["transfer+kernel_stddev"].values, **errorbar_args)
 
-    plt.xticks(x, app_names, rotation=10)
+    plt.xticks(x, xlabel_names, rotation=0)
     plt.ylabel("Total data transfer + kernel time (s)")
-    plt.legend(loc='upper left', fancybox=True, shadow=True, ncol=3, bbox_to_anchor=(0, 1.0))
+    plt.legend(loc='upper left', fancybox=True, shadow=True, ncol=3, prop={'size': 6}, bbox_to_anchor=(0, 1.0))
     plt.tight_layout()
     configure_ax()
 
@@ -140,12 +147,18 @@ for setting in ["native", "proteus"]:
 
 # Native vs Proteus plot ------------------------------------------------------------------------------------
 
-bar_width = 0.12
+# bar_width = 0.12
 app_names = df_u50_slow[setting]["app_name"].values
-x = np.arange(len(app_names))
+
+# use abbreviations as app names
+xlabel_names = []
+for app in app_names:
+    xlabel_names.append(common.app_names_abb[app])
+
+x = np.arange(len(xlabel_names))
 dfs = [df_u50_fast, df_u280_fast, df_u280_ddr_fast]
-labels = ["U50 native", "U50 Proteus", "U280-HBM native",
-          "U280-HBM Proteus", "U280-DDR native", "U280-DDR Proteus"]
+labels = ["U50 native", "U50 Proteus", "U280 native",
+          "U280 Proteus", "U280-DDR native", "U280-DDR Proteus"]
 
 # Total execution time --------------------------------------------------------------------------------------
 
@@ -170,23 +183,24 @@ for i in range(3):
     proteus_overhead = ((dfs[i]["proteus"]["average"].values /
                         dfs[i]["native"]["average"].values) * 100) - 100
     for j, (bl, bh) in enumerate(zip(bars_low, bars_high)):
-        plt.text(bl.get_x() + 0.012, bl.get_height() + bh.get_height() + 1.5,
-                 f"{proteus_overhead[j]:.1f}%", rotation=90, size=8)
+        plt.text(bl.get_x() + 0.0, bl.get_height() + bh.get_height(),
+                 f"  {proteus_overhead[j]:.1f}%", rotation=90, size=6.5)
     plt.errorbar(x + x_offs * bar_width, dfs[i]["proteus"]["average"].values,
                  yerr=dfs[i]["proteus"]["stddev"].values, **errorbar_args)
     x_offs += 1
 
-plt.xticks(x, app_names, rotation=10)
-x_margin, y_margin = plt.margins()
-plt.margins(y=y_margin + 0.33)
+plt.xticks(x, xlabel_names, rotation=0)
+# x_margin, y_margin = plt.margins()
+# plt.margins(y=y_margin + 0.33)
 plt.ylabel("Total execution time (s)")
 plt.legend(loc='upper left', fancybox=True, shadow=True,
-           fontsize=7, ncol=3, bbox_to_anchor=(0, 1.0))
+           ncol=3, prop={'size': 6.8}, bbox_to_anchor=(-0.05, 1.34))
 plt.tight_layout()
 configure_ax()
 
 filename = f"../plots/time-rosetta-total.pdf"
 print(f"Saving figure to {filename}")
+plt.margins(x=0.01, tight=True)
 plt.savefig(filename, **savefig_args)
 plt.clf()
 
@@ -212,15 +226,16 @@ for i in range(3):
                  yerr=dfs[i]["proteus"]["transfer+kernel_stddev"].values, **errorbar_args)
     x_offs += 1
 
-plt.xticks(x, app_names, rotation=10)
-x_margin, y_margin = plt.margins()
-plt.margins(y=y_margin + 0.6)
+plt.xticks(x, xlabel_names, rotation=0)
+# x_margin, y_margin = plt.margins()
+# plt.margins(y=y_margin + 0.6)
 plt.ylabel("Total data transfer + kernel time (s)")
-plt.legend(loc='upper left', fancybox=True, shadow=True, ncol=3, bbox_to_anchor=(0, 1.0))
+plt.legend(loc='upper left', fancybox=True, shadow=True, ncol=3, prop={'size': 6.5}, bbox_to_anchor=(0, 1.0))
 plt.tight_layout()
 configure_ax()
 
 filename = f"../plots/time-rosetta-fpga.pdf"
 print(f"Saving figure to {filename}")
+plt.margins(x=0.01, tight=True)
 plt.savefig(filename, **savefig_args)
 plt.clf()
