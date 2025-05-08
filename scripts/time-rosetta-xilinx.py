@@ -144,8 +144,8 @@ bar_width = 0.12
 app_names = df_u50_slow[setting]["app_name"].values
 x = np.arange(len(app_names))
 dfs = [df_u50_fast, df_u280_fast, df_u280_ddr_fast]
-labels = ["U50 native", "U50 Proteus", "U280 native",
-          "U280 Proteus", "U280-DDR native", "U280-DDR Proteus"]
+labels = ["U50 native", "U50 Proteus", "U280-HBM native",
+          "U280-HBM Proteus", "U280-DDR native", "U280-DDR Proteus"]
 
 # Total execution time --------------------------------------------------------------------------------------
 
@@ -178,10 +178,10 @@ for i in range(3):
 
 plt.xticks(x, app_names, rotation=10)
 x_margin, y_margin = plt.margins()
-plt.margins(y=y_margin + 0.37)
+plt.margins(y=y_margin + 0.33)
 plt.ylabel("Total execution time (s)")
 plt.legend(loc='upper left', fancybox=True, shadow=True,
-           fontsize=7.8, ncol=3, bbox_to_anchor=(0, 1.0))
+           fontsize=7, ncol=3, bbox_to_anchor=(0, 1.0))
 plt.tight_layout()
 configure_ax()
 
