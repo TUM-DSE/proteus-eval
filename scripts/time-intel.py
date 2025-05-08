@@ -22,7 +22,7 @@ dfs = [df_s10_native, df_s10_proteus]
 colors = [common.bar_blue, common.bar_orange]
 plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
 
-plt.rcParams.update({'font.size': 8})
+plt.rcParams.update({'font.size': 9})
 bar_width = 0.3
 width = 4.2
 height = 3.0
@@ -62,7 +62,7 @@ plt.xticks(x, xlabel_names, rotation=0)
 plt.ylabel("Total execution time (s)")
 x_margin, y_margin = plt.margins()
 # plt.margins(y=y_margin + 0.1)
-plt.legend(loc='upper left', fancybox=True, shadow=True, ncol=1, prop={'size': 8}, bbox_to_anchor=(0, 1.05))
+plt.legend(loc='upper left', fancybox=True, shadow=True, ncol=1, prop={'size': 8}, bbox_to_anchor=(0, 1.15))
 plt.tight_layout()
 
 ax = plt.gca()

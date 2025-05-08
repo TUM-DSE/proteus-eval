@@ -42,7 +42,7 @@ colors = [common.bar_blue, common.bar_blue, common.bar_orange,
 hatches = ["", "//"]
 plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
 
-plt.rcParams.update({'font.size': 8})
+plt.rcParams.update({'font.size': 9})
 width = 4.2
 height = 3.0
 # width = 7.0
@@ -77,8 +77,8 @@ ax3.plot([0, 1], [1, 1], transform=ax3.transAxes, **kwargs)
 
 # x_labels = ["Boot unikernel", "Init platform",
 #             "Create buffers", "Create kernel", "Exec kernel", "Sync"]
-x_labels = ["boot OS", "init platform",
-            "add buffers", "add kernel", "exec", "sync"]
+x_labels = ["Boot\nOS", "Init\nplatform",
+            "Create\nbuffers", "Create\nkernel", "Execute", "Sync"]
 x = np.arange(len(x_labels))
 
 axs = [ax1, ax2, ax3]
@@ -91,12 +91,12 @@ for ax in axs:
     ax.bar(x + 1.5 * bar_width, times.iloc[5], hatch=hatches[0], label="U280-DDR native", **bar_args)
     ax.bar(x + 2.5 * bar_width, times.iloc[2], hatch=hatches[1], label="U280-DDR Proteus", **bar_args)
 
-plt.xticks(x, x_labels, rotation=15)
+plt.xticks(x, x_labels, rotation=0)
 ax2.set_ylabel("Time (ms)")
 # ax2.yaxis.set_label_coords(-0.07, 0.7)
 ax2.yaxis.set_label_coords(-0.09, 0.7)
 ax1.legend(loc='upper right', fancybox=True, shadow=True,
-           ncol=3, prop={'size': 7}, bbox_to_anchor=(1, 1.7))
+           ncol=3, prop={'size': 7.5}, bbox_to_anchor=(1, 1.7))
 plt.tight_layout()
 # FIXME: plt.margiins() doesn't change margins for some reason...
 plt.margins(x=0.0, tight=True) 

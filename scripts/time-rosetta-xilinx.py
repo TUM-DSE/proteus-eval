@@ -53,7 +53,7 @@ colors = [common.bar_blue, common.bar_blue, common.bar_orange,
 hatches = ["", "//"]
 plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
 
-plt.rcParams.update({'font.size': 8})
+plt.rcParams.update({'font.size': 9})
 width = 4.2
 height = 3.0
 # aspect = 1.8
@@ -194,7 +194,7 @@ plt.xticks(x, xlabel_names, rotation=0)
 # plt.margins(y=y_margin + 0.33)
 plt.ylabel("Total execution time (s)")
 plt.legend(loc='upper left', fancybox=True, shadow=True,
-           ncol=3, prop={'size': 6.8}, bbox_to_anchor=(-0.05, 1.34))
+           ncol=3, prop={'size': 6.8}, bbox_to_anchor=(-0.12, 1.34))
 plt.tight_layout()
 configure_ax()
 
