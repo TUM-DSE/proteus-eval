@@ -17,7 +17,7 @@ def configure_ax():
     ax.set_axisbelow(True)
     ax.grid(axis='y')
 
-bar_width = 0.16
+bar_width = 0.18
 
 bar_args = {
     "width": bar_width,
@@ -50,12 +50,30 @@ app_names = [item for item in df_score_new.columns]
 del app_names[0]
 print(app_names)
 
+# mem_app_names = ["wide_mem_rw", "wide_mem_rw_2x", "wide_mem_rw_4x", 
+#                  "gmem_2banks", "gmem_2banks_2x", "gmem_2banks_4x"]
+
+mem_app_patterns = ["wide_mem_rw", "gmem_2banks"]
+
 # Get app dfs
 dfs = []
+dfs_mem = []
+cmp_app_names = []
+mem_app_names = []
 for app in app_names:
     df_app = pd.read_csv(f"../sched_sim/{app}.csv", skipinitialspace=True)
+    if any(mem_app in app for mem_app in mem_app_patterns):
+        mem_app_names.append(app)
+        # app_names.remove(app)
+    else: 
+        cmp_app_names.append(app)
+        # dfs_mem.append(df_app.copy()) 
+        # print(f"{app} detected")
     dfs.append(df_app.copy())
+
 # print(dfs)
+# print(dfs_mem)
+# exit(0)
 
 # Sum up data transfer + kernel execution time,
 # time_cpu seems to be measured incorrectly for Proteus currently.
@@ -82,8 +100,6 @@ worst_rows = []
 for i, df_app in enumerate(dfs):
     idx = df_app["thrp"].idxmin()
     worst_rows.append(df_app.iloc[[idx]])
-    # print(f"{app_names[i]}: {idx}")
-    # print(f"{df_app.iloc[idx]['thrp']}")
 
 df_worst = pd.concat(worst_rows, ignore_index=True)
 print(df_worst)
@@ -149,8 +165,10 @@ print(f"Proteus (freq): {freq_improve.mean()}")
 print(f"Proteus       : {proteus_improve.mean()}")
 
 ### Preparation to create plots
-width = 15.0
-aspect = 4.2
+# width = 15.0
+# aspect = 4.2
+width = 14.0
+aspect = 4.0
 height = width / aspect
 
 colors = [common.bar_blue, common.bar_orange, common.bar_green, common.bar_green]
@@ -159,31 +177,43 @@ hatches = ["", "", "", "//"]
 plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
 plt.rcParams.update({'font.size': 12})
 plt.figure(figsize=(width, height))
-# plt.yscale("log")
 
+xlabel_names = []
+xlabel_mem_names = []
+mem_app_num = 0
+for app in app_names:
+    # if any(mem_app in app for mem_app in mem_app_patterns):
+    #     mem_app_num+=1
+    #     xlabel_mem_names.append(common.app_names_abb[app])
+    # else: 
+    #     xlabel_names.append(common.app_names_abb[app])
+    xlabel_names.append(common.app_names_abb[app])
 
 # Total throughput --------------------------------------------------------------------------------------
+# x = np.arange(len(app_names)-mem_app_num)
 x = np.arange(len(app_names))
 for i in range(len(dfs_plot)):
     x_offs = i - 2
+    print(f"position: {x}, {x+x_offs*bar_width}")
     bars = plt.bar(x + x_offs * bar_width, dfs_plot[i]["thrp"].values,
             hatch=hatches[i], label=labels[i], **bar_args)
 
-    if i == 0:
+    # skip the worst case (no numbers)
+    if i == 0: 
         continue
 
     for j, b in enumerate(bars):
         plt.text(b.get_x() + 0.19 * bar_width, b.get_height(),
-                 f"  {improves[i-1][j]:.1f}%", rotation=90, size=8)
+                 f"  {improves[i-1][j]:.1f}%", rotation=90, size=8.5)
 
-plt.xticks(x, app_names, rotation=18)
+plt.xticks(x, xlabel_names, rotation=12)
 plt.ylabel("Throughput (GiB/s)")
-plt.legend(loc='upper left', fancybox=True, shadow=True, ncol=4, bbox_to_anchor=(0, 1.16))
+plt.legend(loc='upper left', fancybox=True, shadow=True, ncol=4, bbox_to_anchor=(0.0, 1.1))
 plt.tight_layout()
 configure_ax()
 
 filename = f"../plots/scheduler-thrp.pdf"
 print(f"Saving figure to {filename}")
+plt.margins(x=0.01, tight=True)
 plt.savefig(filename, **savefig_args)
 plt.clf()
-
