@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import common
 
 
-bar_width = 0.15
+bar_width = 0.22
 
 bar_args = {
     "width": bar_width,
@@ -26,10 +26,12 @@ colors = [common.bar_blue, common.bar_blue, common.bar_orange,
 hatches = ["", "//", "--"]
 plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
 
-plt.rcParams.update({'font.size': 12})
-width = 7.0
-aspect = 2
-height = width / aspect
+plt.rcParams.update({'font.size': 9})
+# width = 7.0
+# aspect = 2
+# height = width / aspect
+width = 4.2
+height = 3.0
 plt.figure(figsize=(width, height))
 
 df_u280_fast = pd.read_csv(f"../data/native/oversub-u280-fast.csv", skipinitialspace=True)
@@ -108,8 +110,8 @@ plt.xlabel("Emulated FPGA memory capacity (MiB)")
 plt.ylabel("Data transfer + kernel time (s)")
 x_margin, y_margin = plt.margins()
 plt.margins(y=y_margin + 0.1)
-plt.legend(loc="upper left", fancybox=True, shadow=True,
-           ncol=4, fontsize=8, bbox_to_anchor=(0, 1))
+plt.legend(loc="upper left", fancybox=True, shadow=True, fontsize=7.5, 
+           ncol=4, prop={'size': 7.4}, bbox_to_anchor=(-0.1, 1.08))
 plt.tight_layout()
 
 ax = plt.gca()
@@ -122,4 +124,5 @@ ax.grid(axis='y')
 
 filename = f"../plots/native/oversub.pdf"
 print(f"Saving figure to {filename}")
+plt.margins(x=0.01, tight=True)
 plt.savefig(filename, dpi=300, pad_inches=0.02, bbox_inches='tight', format="pdf")
