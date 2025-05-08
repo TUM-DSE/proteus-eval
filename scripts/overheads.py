@@ -9,13 +9,13 @@ import common
 df = pd.read_csv(f"../data/overheads.csv", skipinitialspace=True)
 
 times = pd.DataFrame()
+times["unikernel_boot"] = df["unikernel_boot"]
+times["worker_init"] = df["worker_init"]
 times["buf_alloc"] = df["buf_alloc"]
 times["kernel_create"] = df["kernel_alloc"] + df["kernel_setarg"]
 # CPU timer - ocl profiling timer = host overhead
 times["kernel_exec"] = (df["kernel_enqueue"] + df["init_transfer"] + 2 * df["transfer"]) - \
     (df["data_to_fpga_time_ocl"] + df["kernel_time_ocl"] + df["data_to_host_time_ocl"])
-times["worker_init"] = df["worker_init"]
-times["unikernel_boot"] = df["unikernel_boot"]
 times["finish"] = df["finish"]
 print(times)
 # times = df[["kernel_alloc", "kernel_setarg", "kernel_enqueue", "buf_alloc", "transfer", "finish"]]
@@ -46,45 +46,65 @@ plt.rcParams.update({'font.size': 12})
 width = 7.0
 aspect = 2.0
 height = width / aspect
-plt.figure(figsize=(width, height))
+fig, (ax1, ax2, ax3) = plt.subplots(3, 1, sharex=True, figsize=(width, height))
 
-# Kernel exec: time cpu - ocl
+ax1.set_ylim(70, 450)
+ax2.set_ylim(1, 24)
+ax3.set_ylim(0, 0.01)
 
-x_labels = ["Allocate buffers", "Create kernel",
-            "Exec kernel", "Init platform", "Boot unikernel", "Sync"]
+# Hide the spines between plots
+ax1.spines.bottom.set_visible(False)
+ax2.spines.top.set_visible(False)
+ax2.spines.bottom.set_visible(False)
+ax3.spines.top.set_visible(False)
+
+# Hide top spine
+ax1.spines.top.set_visible(False)
+
+# Hide the x axis from the upper plots
+ax1.get_xaxis().set_visible(False)
+ax2.get_xaxis().set_visible(False)
+
+d = .5  # Proportion of vertical to horizontal extent of the slanted line
+kwargs = dict(marker=[(-1, -d), (1, d)], markersize=10,
+              linestyle="none", color='k', mec='k', mew=2, clip_on=False)
+ax1.plot([0, 1], [0, 0], transform=ax1.transAxes, **kwargs)
+ax2.plot([0, 1], [1, 1], transform=ax2.transAxes, **kwargs)
+ax2.plot([0, 1], [0, 0], transform=ax2.transAxes, **kwargs)
+ax3.plot([0, 1], [1, 1], transform=ax3.transAxes, **kwargs)
+
+x_labels = ["Boot unikernel", "Init platform",
+            "Create buffers", "Create kernel", "Exec kernel", "Sync"]
 x = np.arange(len(x_labels))
 
-plt.bar(x - 2.5 * bar_width, times.iloc[3], hatch=hatches[0], label="U50 native", **bar_args)
-# plt.errorbar(x - 2.5 * bar_width, times.iloc[3], yerr=times_stddevs.iloc[3], **errorbar_args)
+axs = [ax1, ax2, ax3]
 
-plt.bar(x - 1.5 * bar_width, times.iloc[0], hatch=hatches[1], label="U50 Proteus", **bar_args)
-# plt.errorbar(x - 1.5 * bar_width, times.iloc[0], yerr=times_stddevs.iloc[0], **errorbar_args)
-
-plt.bar(x - 0.5 * bar_width, times.iloc[4], hatch=hatches[0], label="U280 native", **bar_args)
-# plt.errorbar(x - 0.5 * bar_width, times.iloc[4], yerr=times_stddevs.iloc[4], **errorbar_args)
-
-plt.bar(x + 0.5 * bar_width, times.iloc[1], hatch=hatches[1], label="U280 Proteus", **bar_args)
-# plt.errorbar(x + 0.5 * bar_width, times.iloc[1], yerr=times_stddevs.iloc[1], **errorbar_args)
-
-plt.bar(x + 1.5 * bar_width, times.iloc[5], hatch=hatches[0], label="U280-DDR native", **bar_args)
-# plt.errorbar(x + 1.5 * bar_width, times.iloc[5], yerr=times_stddevs.iloc[5], **errorbar_args)
-
-plt.bar(x + 2.5 * bar_width, times.iloc[2], hatch=hatches[1], label="U280-DDR Proteus", **bar_args)
-# plt.errorbar(x + 2.5 * bar_width, times.iloc[2], yerr=times_stddevs.iloc[2], **errorbar_args)
+for ax in axs:
+    ax.bar(x - 2.5 * bar_width, times.iloc[3], hatch=hatches[0], label="U50 native", **bar_args)
+    ax.bar(x - 1.5 * bar_width, times.iloc[0], hatch=hatches[1], label="U50 Proteus", **bar_args)
+    ax.bar(x - 0.5 * bar_width, times.iloc[4], hatch=hatches[0], label="U280 native", **bar_args)
+    ax.bar(x + 0.5 * bar_width, times.iloc[1], hatch=hatches[1], label="U280 Proteus", **bar_args)
+    ax.bar(x + 1.5 * bar_width, times.iloc[5], hatch=hatches[0], label="U280-DDR native", **bar_args)
+    ax.bar(x + 2.5 * bar_width, times.iloc[2], hatch=hatches[1], label="U280-DDR Proteus", **bar_args)
 
 plt.xticks(x, x_labels, rotation=15)
-plt.ylabel("Time (ms)")
-plt.yscale("log")
-plt.legend(loc='upper right', fancybox=True, shadow=True, ncol=2, fontsize=8, bbox_to_anchor=(1, 1))
+ax2.set_ylabel("Time (ms)")
+ax2.yaxis.set_label_coords(-0.07, 0.7)
+ax1.legend(loc='upper right', fancybox=True, shadow=True,
+           ncol=3, fontsize=7.5, bbox_to_anchor=(1, 1))
 plt.tight_layout()
+plt.subplots_adjust(wspace=0, hspace=0.05)
 
-ax = plt.gca()
-ax.spines['top'].set_visible(False)
-ax.spines['right'].set_visible(False)
+for ax in axs:
+    ax.set_axisbelow(True)
+    ax.yaxis.grid()
+
+# ax.spines['top'].set_visible(False)
+# ax.spines['right'].set_visible(False)
 # ax.spines['bottom'].set_visible(False)
-ax.spines['left'].set_visible(False)
-ax.set_axisbelow(True)
-ax.grid(axis='y')
+# ax.spines['left'].set_visible(False)
+# ax.set_axisbelow(True)
+# ax.grid(axis='y')
 
 filename = f"../plots/overheads.pdf"
 print(f"Saving figure to {filename}")
