@@ -7,7 +7,7 @@ from common import (
 
 
 def add_line(ax, xpos, ypos):
-    line = plt.Line2D([xpos, xpos], [ypos+0.194, ypos], transform=ax.transAxes, color='black')
+    line = plt.Line2D([xpos, xpos], [ypos+0.194, ypos-0.05], transform=ax.transAxes, color='black', linewidth=0.7)
     line.set_clip_on(False)
     ax.add_line(line)
 
@@ -27,22 +27,21 @@ df_mig = pd.read_csv(csvfile, sep=",")
 fpgas = ["u50-fast", "u280-fast", "u280-ddr-fast"]
 labels = [
     "U50",
-    "U280-HBM",
-    "U280-DDR",
+    "U280",
+    "U280-\nDDR",
     "U50",
-    "U280-HBM",
-    "U280-DDR",
+    "U280",
+    "U280-\nDDR",
     "U50",
-    "U280-HBM",
-    "U280-DDR",
+    "U280",
+    "U280-\nDDR",
 ]
 
 # Initialize a plot
-plt.rcParams.update({'font.size': 8})
-width = 5
-aspect = 2
-height = width/aspect
-bar_width = 0.15
+plt.rcParams.update({'font.size': 9})
+bar_width = 0.18
+width = 4.2
+height = 3.0
 fig, ax = plt.subplots(figsize=(width, height))
 
 np_save_fpga_cp = df_cp["save_fpga[s]"].to_numpy(dtype=float)
@@ -89,12 +88,12 @@ ax.bar(x_pos_r4, np_load_vm_cp,   bar_width, bottom=np_load_fpga_cp,
 
 # define x/y labels and legends
 ax.set_xticks((x_pos_r1+x_pos_r2+x_pos_r3+x_pos_r4)/4, labels)
-ax.set_xticklabels(labels, rotation=0, fontsize=6)
+ax.set_xticklabels(labels, rotation=0, fontsize=6.5)
 ax.set_ylabel('Time [s]')
 x_margin, y_margin = plt.margins()
-plt.margins(y=y_margin + 0.3)
-ax.legend(loc='upper left', fancybox=True, shadow=True,
-          ncol=3, fontsize=6.5)
+# plt.margins(y=y_margin + 0.3)
+ax.legend(loc='upper left', fancybox=True, shadow=True, # fontsize=6.5,
+          ncol=3, prop={'size': 7.3}, bbox_to_anchor=(-0.03, 1.2))
 
 # define plot flames
 ax.spines['top'].set_visible(False)
@@ -104,13 +103,13 @@ ax.spines['left'].set_visible(False)
 ax.grid(axis='y', zorder=1)
 
 add_line(ax, 0, -.2)
-add_line(ax, 0.34, -.2)
-add_line(ax, 0.68, -.2)
+add_line(ax, 0.333, -.2)
+add_line(ax, 0.666, -.2)
 add_line(ax, 1, -.2)
 
-plt.text(0.6, -2, "Source U50")
-plt.text(3.19, -2, "Source U280-HBM")
-plt.text(6.2, -2, "Source U280-DDR")
+plt.text(0.4, -1.6,  "Source U50",      fontsize=8)
+plt.text(3.3, -1.6,  "Source U280",     fontsize=8)
+plt.text(6.00, -1.6, "Source U280-DDR", fontsize=8)
 
 # save the plot as pdf
 plt.tight_layout()

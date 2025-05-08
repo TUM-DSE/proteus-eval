@@ -31,7 +31,7 @@ plt.rcParams.update({'font.size': 9})
 # aspect = 2
 # height = width / aspect
 width = 4.2
-height = 3.0
+height = 2.9
 plt.figure(figsize=(width, height))
 
 df_u280_fast = pd.read_csv(f"../data/native/oversub-u280-fast.csv", skipinitialspace=True)
