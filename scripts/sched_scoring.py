@@ -37,7 +37,8 @@ class Kernel:
 
 kernels = {
     "cl_array_partition": Kernel([32, 32], [32]),
-    "cl_burst_rw": Kernel([32], []),  # Result written back to input port
+    # "cl_burst_rw": Kernel([32], []),  # Result written back to input port
+    "cl_burst_rw": Kernel([32], [32]),  # Result written back to input port
     "cl_dataflow_func": Kernel([32], [32]),
     "cl_dataflow_subfunc": Kernel([32], [32]),
     "cl_helloworld": Kernel([32, 32], [32]),
@@ -47,10 +48,16 @@ kernels = {
     "cl_shift_register": Kernel([32, 32], [32]),
     "cl_systolic_array": Kernel([32, 32], [32]),
     "cl_gmem_2banks": Kernel([512], [512]),
+    # "cl_gmem_2banks_2x": Kernel([512, 512], [512, 512]),
+    # "cl_gmem_2banks_4x": Kernel([512, 512, 512, 512], [512, 512, 512, 512]),
     # "cl_wide_mem_rw": Kernel([512, 512], [512]),
     "cl_wide_mem_rw_strm": Kernel([512, 512], [512]),
-    "cl_wide_mem_rw_2x": Kernel([512, 512], [512]),
-    "cl_wide_mem_rw_4x": Kernel([512, 512], [512]),
+    "cl_wide_mem_rw_2x": Kernel([512, 512, 512, 512], [512, 512]),
+    "cl_wide_mem_rw_4x": Kernel([512, 512, 512, 512, 512, 512, 512, 512], [512, 512, 512, 512]),
+    "3d-rendering": Kernel([32], [32]),
+    "digit-recognition": Kernel([512, 512], [128]),
+    "optical-flow": Kernel([512], [512]),
+    "spam-filter": Kernel([512, 32], [512]),
 }
 
 ### Define FPGA types
@@ -167,11 +174,15 @@ def scoring_new(df_scores):
     df_max_freq = df_freq.iloc[:, 1:].max(axis=1)
 
     for i, app in enumerate(kernels.keys()):
-        # print(f"{app} -----------------------------------------------------------------------")
+        print(f"{app} -----------------------------------------------------------------------")
         # max_freq = df_max_freq.iloc[i]
         # max_freq = 200
         port_widths = kernels[app].in_ports + kernels[app].out_ports
+        in_port_widths = kernels[app].in_ports
+        out_port_widths = kernels[app].out_ports 
         thrps = {}
+        kernel_lats = {}
+        score_lats = {}
         score_thrps = {}
         score_freqs = {}
     
@@ -193,23 +204,58 @@ def scoring_new(df_scores):
             freq = df_freq[f"{fpga}_freq"].iloc[i]
 
             # In MB/s
-            port_bandwidths = [(width * freq) / 8 for width in port_widths]
-            max_ports_per_channel = math.ceil(len(port_widths) / channels)
-            congestion_factors = [min(
-                1, channel_bandwidth / (max_ports_per_channel * pbw)) for pbw in port_bandwidths]
+            # port_bandwidths = [(width * freq) / 8 for width in port_widths]
+            # max_ports_per_channel = math.ceil(len(port_widths) / channels)
+
+            # CF for inputs
+            in_port_bandwidths = [(width * freq) / 8 for width in in_port_widths]
+            max_input_ports_per_channel = math.ceil(len(in_port_widths) / channels)
+            in_congestion_factors = [min(
+                1, channel_bandwidth / (max_input_ports_per_channel * pbw)) for pbw in in_port_bandwidths]
+
+            # CF for outputs
+            out_port_bandwidths = [(width * freq) / 8 for width in out_port_widths]
+            max_output_ports_per_channel = math.ceil(len(out_port_widths) / channels)
+            out_congestion_factors = [min(
+                1, channel_bandwidth / (max_output_ports_per_channel * pbw)) for pbw in out_port_bandwidths]
     
-            port_thrps = [cf * pbw for cf,
-                          pbw in zip(congestion_factors, port_bandwidths)]
-            total_thrp = sum(port_thrps)
+            # throughputs for each port
+            in_port_thrps = [cf * pbw for cf,
+                          pbw in zip(in_congestion_factors, in_port_bandwidths)]
+            out_port_thrps = [cf * pbw for cf,
+                          pbw in zip(out_congestion_factors, out_port_bandwidths)]
+
+            # print(in_port_thrps)
+            # print(out_port_thrps)
+
+            # Latencies for each port
+            in_port_lats = [x / y for x, y in zip(in_port_widths, in_port_thrps)] 
+            out_port_lats = [x / y for x, y in zip(out_port_widths, out_port_thrps)]
+
+            # print(in_port_lats)
+            # print(out_port_lats)
+
+            # get the max latency
+            max_input_lat = max(in_port_lats)
+            max_output_lat = max(out_port_lats)
+            kernel_lats[fpga] = max(max_input_lat, max_output_lat)
+
+            total_thrp = sum(in_port_thrps) + sum(out_port_thrps)
             thrps[fpga] = total_thrp
     
             # print(f"{fpga}:")
-            # print(f"- freq: {freq} MHz")
+            print(f"- freq: {freq} MHz")
             # print(f"- port widths (bits): {port_widths}")
-            # print(f"- port bandwidths (MB/s): {port_bandwidths}")
-            # print(f"- max ports per channel: {max_ports_per_channel}")
-            # print(f"- congestion factors: {congestion_factors}")
-            # print(f"- port throughputs (MB/s): {port_thrps}")
+            print(f"-  input port bandwidths (MB/s): {in_port_bandwidths}")
+            print(f"- output port bandwidths (MB/s): {out_port_bandwidths}")
+            print(f"- max input ports per channel: {max_input_ports_per_channel}")
+            print(f"- max output ports per channel: {max_output_ports_per_channel}")
+            print(f"-  input congestion factors: {in_congestion_factors}")
+            print(f"- output congestion factors: {out_congestion_factors}")
+            print(f"-  input port throughputs (MB/s): {in_port_thrps}")
+            print(f"- output port throughputs (MB/s): {out_port_thrps}")
+            print(f"-  input port latency (s): {in_port_lats}")
+            print(f"- output port latency (s): {out_port_lats}")
             # print(f"- total throughput (MB/s): {total_thrp}")
     
         max_thrp = max(thrps.values())
@@ -224,8 +270,9 @@ def scoring_new(df_scores):
         # (non-stream processing only for now)
         # (1/PCIe write thrp.) + (1/kernel thrp.) + (1/PCIe read thrp.)
         for fpga in fpgas:
-            final_score = W_INPUT * (1/float(pcie_wr_bandwidth)) + W_KERNEL * (1/float(thrps[fpga])) + W_OUTPUT * (1/float(pcie_rd_bandwidth))
-            # print(f"- {fpga}: ", final_score)
+            # final_score = W_INPUT * (1/float(pcie_wr_bandwidth)) + W_KERNEL * (1/float(thrps[fpga])) + W_OUTPUT * (1/float(pcie_rd_bandwidth))
+            final_score = (sum(in_port_widths)/float(pcie_wr_bandwidth)) + (kernel_lats[fpga]) + (sum(out_port_widths)/float(pcie_rd_bandwidth))
+            print(f"- {fpga}: ", final_score)
             # print(f"{fpga}: ", score_freqs[fpga] * W_FREQ + score_thrps[fpga] * W_THRP)
             tmp_list.insert(len(tmp_list), final_score)
             if final_score > highest_score: # lower is better
@@ -259,6 +306,10 @@ print(df_new_scores)
 ### Update app names
 app_names = [key for key in kernels.keys()]
 for i in range(len(app_names)):
+    # skip Rosetta apps
+    if app_names[i] == "3d-rendering":
+        break
+
     app_names[i] = app_names[i][3:]
     if app_names[i] == "helloworld":
         app_names[i] = "vector_add"

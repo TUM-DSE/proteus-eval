@@ -17,7 +17,7 @@ def configure_ax():
     ax.set_axisbelow(True)
     ax.grid(axis='y')
 
-bar_width = 0.12
+bar_width = 0.16
 
 bar_args = {
     "width": bar_width,
@@ -159,7 +159,7 @@ hatches = ["", "", "", "//"]
 plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
 plt.rcParams.update({'font.size': 12})
 plt.figure(figsize=(width, height))
-plt.yscale("log")
+# plt.yscale("log")
 
 
 # Total throughput --------------------------------------------------------------------------------------
@@ -176,7 +176,7 @@ for i in range(len(dfs_plot)):
         plt.text(b.get_x() + 0.19 * bar_width, b.get_height(),
                  f"  {improves[i-1][j]:.1f}%", rotation=90, size=8)
 
-plt.xticks(x, app_names, rotation=15)
+plt.xticks(x, app_names, rotation=18)
 plt.ylabel("Throughput (GiB/s)")
 plt.legend(loc='upper left', fancybox=True, shadow=True, ncol=4, bbox_to_anchor=(0, 1.16))
 plt.tight_layout()
