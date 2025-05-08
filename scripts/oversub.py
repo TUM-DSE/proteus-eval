@@ -71,45 +71,45 @@ stddev_ddr_dc = np.insert(stddev_ddr_dc, 0, 0.0)
 ddr_dc_diff = (times_ddr_dc[1:] / times_ddr_opt[1:] * 100) - 100
 
 # HBM unopt
-plt.bar(x - 2 * bar_width, times_hbm_unopt, hatch=hatches[0], label="HBM seq", **bar_args)
-plt.errorbar(x - 2 * bar_width, times_hbm_unopt, yerr=stddev_hbm_unopt, **errorbar_args)
+plt.bar(x - 1.5 * bar_width, times_hbm_unopt, hatch=hatches[0], label="HBM seq", **bar_args)
+plt.errorbar(x - 1.5 * bar_width, times_hbm_unopt, yerr=stddev_hbm_unopt, **errorbar_args)
 
 # HBM opt
-bars = plt.bar(x - 1 * bar_width, times_hbm_opt,
+bars = plt.bar(x - 0.5 * bar_width, times_hbm_opt,
                hatch=hatches[1], label="HBM opt", **bar_args)
 for i, b in enumerate(bars[1:]):
     plt.text(b.get_x() + 0.03, b.get_height() + 0.05,
              f"{hbm_opt_diff[i]:+.2f}%", rotation=90, size=7)
-plt.errorbar(x - 1 * bar_width, times_hbm_opt, yerr=stddev_hbm_opt, **errorbar_args)
+plt.errorbar(x - 0.5 * bar_width, times_hbm_opt, yerr=stddev_hbm_opt, **errorbar_args)
 
 # DDR unopt
-plt.bar(x + 0 * bar_width, times_ddr_unopt,
+plt.bar(x + 0.5 * bar_width, times_ddr_unopt,
         hatch=hatches[0], label="DDR seq", **bar_args)
-plt.errorbar(x + 0 * bar_width, times_ddr_unopt, yerr=stddev_ddr_unopt, **errorbar_args)
+plt.errorbar(x + 0.5 * bar_width, times_ddr_unopt, yerr=stddev_ddr_unopt, **errorbar_args)
 
 # DDR opt
-bars = plt.bar(x + 1 * bar_width, times_ddr_opt, hatch=hatches[1],
+# bars = plt.bar(x + 1 * bar_width, times_ddr_opt, hatch=hatches[1],
+#                label="DDR opt", **bar_args)
+# for i, b in enumerate(bars[1:]):
+#     plt.text(b.get_x() + 0.03, b.get_height() + 0.05,
+#              f"{ddr_opt_diff[i]:+.2f}%", rotation=90, size=7)
+# plt.errorbar(x + 1 * bar_width, times_ddr_opt, yerr=stddev_ddr_opt, **errorbar_args)
+
+# DDR opt + dualchannel
+bars = plt.bar(x + 1.5 * bar_width, times_ddr_dc, hatch=hatches[1],
                label="DDR opt", **bar_args)
 for i, b in enumerate(bars[1:]):
     plt.text(b.get_x() + 0.03, b.get_height() + 0.05,
-             f"{ddr_opt_diff[i]:+.2f}%", rotation=90, size=7)
-plt.errorbar(x + 1 * bar_width, times_ddr_opt, yerr=stddev_ddr_opt, **errorbar_args)
-
-# DDR opt + dualchannel
-bars = plt.bar(x + 2 * bar_width, times_ddr_dc, hatch=hatches[2],
-               label="DDR opt + bank opt", **bar_args)
-for i, b in enumerate(bars[1:]):
-    plt.text(b.get_x() + 0.03, b.get_height() + 0.05,
              f"{ddr_dc_diff[i]:+.2f}%", rotation=90, size=7)
-plt.errorbar(x + 2 * bar_width, times_ddr_dc, yerr=stddev_ddr_dc, **errorbar_args)
+plt.errorbar(x + 1.5 * bar_width, times_ddr_dc, yerr=stddev_ddr_dc, **errorbar_args)
 
 plt.xticks(x, app_names)
 plt.xlabel("Emulated FPGA memory capacity (MiB)")
 plt.ylabel("Data transfer + kernel time (s)")
 x_margin, y_margin = plt.margins()
-plt.margins(y=y_margin + 0.3)
+plt.margins(y=y_margin + 0.1)
 plt.legend(loc="upper left", fancybox=True, shadow=True,
-           ncol=3, fontsize=8, bbox_to_anchor=(0.35, 1))
+           ncol=4, fontsize=8, bbox_to_anchor=(0, 1))
 plt.tight_layout()
 
 ax = plt.gca()
