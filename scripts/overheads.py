@@ -22,7 +22,7 @@ print(times)
 # times_stddevs = df[["kernel_alloc_stddev", "kernel_setarg_stddev",
 #                     "kernel_enqueue_stddev", "buf_alloc_stddev", "transfer_stddev", "finish_stddev"]]
 
-bar_width = 0.12
+bar_width = 0.14
 
 bar_args = {
     "width": bar_width,
@@ -42,10 +42,12 @@ colors = [common.bar_blue, common.bar_blue, common.bar_orange,
 hatches = ["", "//"]
 plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
 
-plt.rcParams.update({'font.size': 12})
-width = 7.0
-aspect = 2.0
-height = width / aspect
+plt.rcParams.update({'font.size': 8})
+width = 4.2
+height = 3.0
+# width = 7.0
+# aspect = 2.0
+# height = width / aspect
 fig, (ax1, ax2, ax3) = plt.subplots(3, 1, sharex=True, figsize=(width, height))
 
 ax1.set_ylim(70, 450)
@@ -73,8 +75,10 @@ ax2.plot([0, 1], [1, 1], transform=ax2.transAxes, **kwargs)
 ax2.plot([0, 1], [0, 0], transform=ax2.transAxes, **kwargs)
 ax3.plot([0, 1], [1, 1], transform=ax3.transAxes, **kwargs)
 
-x_labels = ["Boot unikernel", "Init platform",
-            "Create buffers", "Create kernel", "Exec kernel", "Sync"]
+# x_labels = ["Boot unikernel", "Init platform",
+#             "Create buffers", "Create kernel", "Exec kernel", "Sync"]
+x_labels = ["boot OS", "init platform",
+            "add buffers", "add kernel", "exec", "sync"]
 x = np.arange(len(x_labels))
 
 axs = [ax1, ax2, ax3]
@@ -89,10 +93,13 @@ for ax in axs:
 
 plt.xticks(x, x_labels, rotation=15)
 ax2.set_ylabel("Time (ms)")
-ax2.yaxis.set_label_coords(-0.07, 0.7)
+# ax2.yaxis.set_label_coords(-0.07, 0.7)
+ax2.yaxis.set_label_coords(-0.09, 0.7)
 ax1.legend(loc='upper right', fancybox=True, shadow=True,
-           ncol=3, fontsize=7.5, bbox_to_anchor=(1, 1))
+           ncol=3, prop={'size': 7}, bbox_to_anchor=(1, 1.7))
 plt.tight_layout()
+# FIXME: plt.margiins() doesn't change margins for some reason...
+plt.margins(x=0.0, tight=True) 
 plt.subplots_adjust(wspace=0, hspace=0.05)
 
 for ax in axs:
