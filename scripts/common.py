@@ -18,6 +18,29 @@ script_dir = os.path.dirname(script_path)
 plot_dir = f"{script_dir}/../plots"
 data_rootdir = f"{script_dir}/../data"
 
+app_names_abb = {
+        "array_partition": "ar_part",
+        "burst_rw": "b_rw",
+        "dataflow_func": "df_func",
+        "dataflow_subfunc": "df_subf",
+        "helloworld": "gmem",
+        "lmem_2rw": "lmem",
+        "loop_reorder": "loop_rr",
+        "partition_cyclicblock": "par_cyc",
+        "shift_register": "sft_reg",
+        "systolic_array": "sys_ar",
+        "gmem_2banks": "gmem",
+        "wide_mem_rw": "wmem",
+        "3d-rendering": "3d-rndr",
+        "digit-recognition": "dgt-rc",
+        "optical-flow": "opt-fl",
+        "spam-filter": "sp-fltr",
+        "wide_mem_rw_2x": "wmem_2x",
+        "wide_mem_rw_4x": "wmem_4x",
+        "gmem_2banks_2x": "gmem_2x",
+        "gmem_2banks_4x": "gmem_4x",
+        "vector_add": "vadd",
+        }
 
 def get_value(filename, x):
     fileObj = open(filename, "r")  # opens the file in read mode
