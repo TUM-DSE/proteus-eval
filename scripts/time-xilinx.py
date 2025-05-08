@@ -99,6 +99,17 @@ for setting in ["native", "proteus"]:
         mask = dfs[i][setting]["app_name"].isin(["cl_wide_mem_rw"])
         dfs[i][setting] = dfs[i][setting][~mask].reset_index(drop=True)
 
+        avg_all_apps = dfs[i][setting].loc[:, "average"].mean()
+        avg_tk_all_apps = dfs[i][setting].loc[:, "transfer+kernel"].mean()
+        avg_host = (dfs[i][setting].loc[:, "average"] - dfs[i][setting].loc[:, "transfer+kernel"]).mean()
+        new_idx = len(dfs[i][setting])
+        dfs[i][setting].loc[new_idx] = {""
+            "app_name": "cl_average",
+            "average": avg_all_apps,
+            "stddev": 0.0, # TODO: average of stddev?
+            "transfer+kernel": avg_tk_all_apps,
+            "average_host": avg_host}
+
     app_names = df_u50_slow[setting]["app_name"].values
     # Remove cl_
     app_names = [s[3:] for s in app_names]
