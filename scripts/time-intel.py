@@ -22,16 +22,17 @@ dfs = [df_s10_native, df_s10_proteus]
 colors = [common.bar_blue, common.bar_orange]
 plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
 
-bar_width = 0.25
-width = 7.0
-aspect = 2.0
-height = width / aspect
+plt.rcParams.update({'font.size': 8})
+bar_width = 0.3
+width = 4.2
+height = 3.0
+# aspect = 2.0
+# height = width / aspect
 plt.figure(figsize=(width, height))
 
 app_names = df_s10_proteus["app_name"].values
 # Remove cl_
 app_names = [s[3:] for s in app_names]
-x = np.arange(len(app_names))
 # Remove _strm, change hello_world name
 for i in range(len(app_names)):
     if app_names[i] == "wide_mem_rw_strm":
@@ -39,22 +40,29 @@ for i in range(len(app_names)):
     elif app_names[i] == "helloworld":
         app_names[i] = "vector_add"
 
+# use abbreviations as app names
+xlabel_names = []
+for app in app_names:
+    xlabel_names.append(common.app_names_abb[app])
+
+x = np.arange(len(xlabel_names))
+
 plt.bar(x - 0.5 * bar_width, df_s10_native["average"].values,
-        bar_width, label="S10 native", linewidth=1, edgecolor="k")
+        bar_width, label="S10-emu native", linewidth=1, edgecolor="k")
 bars = plt.bar(x + 0.5 * bar_width, df_s10_proteus["average"].values,
-               bar_width, label="S10 Proteus", linewidth=1, edgecolor="k", hatch="//")
+               bar_width, label="S10-emu Proteus", linewidth=1, edgecolor="k", hatch="//")
 
 proteus_overhead = ((df_s10_proteus["average"].values /
                     df_s10_native["average"].values) * 100) - 100
 for j, b in enumerate(bars):
-    plt.text(b.get_x() + 0.08, b.get_height() + 1.5,
-             f"{proteus_overhead[j]:.1f}%", rotation=90, size=8)
+    plt.text(b.get_x()+0.08, b.get_height(),
+             f"  {proteus_overhead[j]:.1f}%", rotation=90, size=8)
 
-plt.xticks(x, app_names, rotation=10)
+plt.xticks(x, xlabel_names, rotation=0)
 plt.ylabel("Total execution time (s)")
 x_margin, y_margin = plt.margins()
-plt.margins(y=y_margin + 0.1)
-plt.legend(loc="upper left", fancybox=True, shadow=True, ncol=1, fontsize=8)
+# plt.margins(y=y_margin + 0.1)
+plt.legend(loc='upper left', fancybox=True, shadow=True, ncol=1, prop={'size': 8}, bbox_to_anchor=(0, 1.05))
 plt.tight_layout()
 
 ax = plt.gca()
@@ -67,4 +75,5 @@ ax.grid(axis='y')
 
 filename = f"{common.plot_dir}/time-intel.pdf"
 print(f"Saving figure to {filename}")
+plt.margins(x=0.01, tight=True)
 plt.savefig(filename, dpi=300, pad_inches=0.02, bbox_inches="tight", format="pdf")
