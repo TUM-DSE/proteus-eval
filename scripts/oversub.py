@@ -51,26 +51,17 @@ times_hbm_unopt = df_u280_fast["time_total"][:unopt_end].values
 stddev_hbm_unopt = df_u280_fast["time_total_stddev"][:unopt_end].values
 times_hbm_opt = df_u280_fast["time_total"][unopt_end:].values
 stddev_hbm_opt = df_u280_fast["time_total_stddev"][unopt_end:].values
-# Index 0 is no mem limit, no chunking, no optimization
-times_hbm_opt = np.insert(times_hbm_opt, 0, 0.0)
-stddev_hbm_opt = np.insert(stddev_hbm_opt, 0, 0.0)
-hbm_opt_diff = (times_hbm_opt[1:] / times_hbm_unopt[1:] * 100) - 100
+hbm_opt_diff = (times_hbm_opt / times_hbm_unopt * 100) - 100
 
 times_ddr_unopt = df_u280_ddr_fast["time_total"][:unopt_end].values
 stddev_ddr_unopt = df_u280_ddr_fast["time_total_stddev"][:unopt_end].values
 times_ddr_opt = df_u280_ddr_fast["time_total"][unopt_end:].values
 stddev_ddr_opt = df_u280_ddr_fast["time_total_stddev"][unopt_end:].values
-# Index 0 is no mem limit, no chunking, no optimization
-times_ddr_opt = np.insert(times_ddr_opt, 0, 0.0)
-stddev_ddr_opt = np.insert(stddev_ddr_opt, 0, 0.0)
-ddr_opt_diff = (times_ddr_opt[1:] / times_ddr_unopt[1:] * 100) - 100
+ddr_opt_diff = (times_ddr_opt / times_ddr_unopt * 100) - 100
 
 times_ddr_dc = df_u280_ddr_dc_fast["time_total"].values
 stddev_ddr_dc = df_u280_ddr_dc_fast["time_total_stddev"].values
-# Index 0 is no mem limit, no chunking, no optimization
-times_ddr_dc = np.insert(times_ddr_dc, 0, 0.0)
-stddev_ddr_dc = np.insert(stddev_ddr_dc, 0, 0.0)
-ddr_dc_diff = (times_ddr_dc[1:] / times_ddr_opt[1:] * 100) - 100
+ddr_dc_diff = (times_ddr_dc / times_ddr_opt * 100) - 100
 
 # HBM unopt
 plt.bar(x - 1.5 * bar_width, times_hbm_unopt, hatch=hatches[0], label="HBM seq", **bar_args)
