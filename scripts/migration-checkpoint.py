@@ -28,20 +28,23 @@ fpgas = ["u50-fast", "u280-fast", "u280-ddr-fast"]
 labels = [
     "U50",
     "U280",
-    "U280-\nDDR",
+    # "U280-\nDDR",
+    "DDR",
     "U50",
     "U280",
-    "U280-\nDDR",
+    # "U280-\nDDR",
+    "DDR",
     "U50",
     "U280",
-    "U280-\nDDR",
+    # "U280-\nDDR",
+    "DDR",
 ]
 
 # Initialize a plot
-plt.rcParams.update({'font.size': 9})
-bar_width = 0.18
-width = 4.2
-height = 3.0
+plt.rcParams.update({'font.size': 10})
+bar_width = 0.19
+width = 4.0
+height = 2.8
 fig, ax = plt.subplots(figsize=(width, height))
 
 np_save_fpga_cp = df_cp["save_fpga[s]"].to_numpy(dtype=float)
@@ -73,27 +76,28 @@ x_pos_r4 = x_pos_r3 + bar_width
 # NOTE: keep the order of the following ax.bar() to fix the order of items shown in the legend.
 ax.bar(x_pos_r1, np_save_fpga_mig, bar_width, color=fp.bar_blue,
        edgecolor='k', label='FPGA evict', zorder=2)
+ax.bar(x_pos_r2, np_load_fpga_mig, bar_width, color=fp.bar_orange,
+       edgecolor='k', label='FPGA resume', zorder=2)
 ax.bar(x_pos_r1, np_save_vm_mig,   bar_width, bottom=np_save_fpga_mig,
-       color=fp.bar_green,  edgecolor='k', hatch='//', label='VM save (mig)', zorder=2)
+       color=fp.bar_green,  edgecolor='k', hatch='//', label='VM save-mig', zorder=2)
+ax.bar(x_pos_r2, np_load_vm_mig,   bar_width, bottom=np_load_fpga_mig,
+       color=fp.bar_brown,  edgecolor='k', hatch='..', label='VM load-mig', zorder=2)
 ax.bar(x_pos_r3, np_save_fpga_cp, bar_width, color=fp.bar_blue,   edgecolor='k', zorder=2)
 ax.bar(x_pos_r3, np_save_vm_cp,   bar_width, bottom=np_save_fpga_cp,
        color=fp.bar_purple,  edgecolor='k', hatch='//', label='Checkpoint', zorder=2)
-ax.bar(x_pos_r2, np_load_fpga_mig, bar_width, color=fp.bar_orange,
-       edgecolor='k', label='FPGA resume', zorder=2)
-ax.bar(x_pos_r2, np_load_vm_mig,   bar_width, bottom=np_load_fpga_mig,
-       color=fp.bar_brown,  edgecolor='k', hatch='..', label='VM load (mig)', zorder=2)
 ax.bar(x_pos_r4, np_load_fpga_cp, bar_width, color=fp.bar_orange, edgecolor='k', zorder=2)
 ax.bar(x_pos_r4, np_load_vm_cp,   bar_width, bottom=np_load_fpga_cp,
        color=fp.bar_grey,  edgecolor='k', hatch='..', label='Restore', zorder=2)
 
 # define x/y labels and legends
 ax.set_xticks((x_pos_r1+x_pos_r2+x_pos_r3+x_pos_r4)/4, labels)
-ax.set_xticklabels(labels, rotation=0, fontsize=6.5)
-ax.set_ylabel('Time [s]')
-x_margin, y_margin = plt.margins()
+ax.set_xticklabels(labels, rotation=0, fontsize=8.5)
+plt.ylim(0,9)
+ax.set_ylabel('Time (s)')
+# x_margin, y_margin = plt.margins()
 # plt.margins(y=y_margin + 0.3)
 ax.legend(loc='upper left', fancybox=True, shadow=True, # fontsize=6.5,
-          ncol=3, prop={'size': 7.3}, bbox_to_anchor=(-0.03, 1.2))
+          ncol=3, prop={'size': 8}, bbox_to_anchor=(-0.13, 1.05))
 
 # define plot flames
 ax.spines['top'].set_visible(False)
@@ -107,9 +111,9 @@ add_line(ax, 0.333, -.2)
 add_line(ax, 0.666, -.2)
 add_line(ax, 1, -.2)
 
-plt.text(0.4, -1.6,  "Source U50",      fontsize=8)
-plt.text(3.3, -1.6,  "Source U280",     fontsize=8)
-plt.text(6.00, -1.6, "Source U280-DDR", fontsize=8)
+plt.text(0.5, -1.8,  "Src: U50",       fontsize=9.5)
+plt.text(3.35, -1.8,  "Src: U280",       fontsize=9.5)
+plt.text(5.9, -1.8, "Src: U280-DDR",    fontsize=9.5)
 
 # save the plot as pdf
 plt.tight_layout()

@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import common
 
 
-bar_width = 0.22
+bar_width = 0.20
 
 bar_args = {
     "width": bar_width,
@@ -26,12 +26,12 @@ colors = [common.bar_blue, common.bar_blue, common.bar_orange,
 hatches = ["", "//", "--"]
 plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
 
-plt.rcParams.update({'font.size': 9})
+plt.rcParams.update({'font.size': 10})
 # width = 7.0
 # aspect = 2
 # height = width / aspect
-width = 4.2
-height = 2.9
+width = 4.0
+height = 2.8
 plt.figure(figsize=(width, height))
 
 df_u280_fast = pd.read_csv(f"../data/native/oversub-u280-fast.csv", skipinitialspace=True)
@@ -44,7 +44,7 @@ dfs = [df_u280_fast, df_u280_ddr_fast]
 unopt_end = 6
 
 app_names = df_u280_fast["mem_limit"][:unopt_end]
-app_names[0] = "unlimited"
+app_names[0] = "no-limit"
 x = np.arange(len(app_names))
 
 times_hbm_unopt = df_u280_fast["time_total"][:unopt_end].values
@@ -79,9 +79,9 @@ plt.errorbar(x - 1.5 * bar_width, times_hbm_unopt, yerr=stddev_hbm_unopt, **erro
 # HBM opt
 bars = plt.bar(x - 0.5 * bar_width, times_hbm_opt,
                hatch=hatches[1], label="HBM opt", **bar_args)
-for i, b in enumerate(bars[1:]):
-    plt.text(b.get_x() + 0.03, b.get_height() + 0.05,
-             f"{hbm_opt_diff[i]:+.2f}%", rotation=90, size=7)
+# for i, b in enumerate(bars[1:]):
+#     plt.text(b.get_x() + 0.03, b.get_height() + 0.05,
+#              f"{hbm_opt_diff[i]:+.1f}%", rotation=90, size=8)
 plt.errorbar(x - 0.5 * bar_width, times_hbm_opt, yerr=stddev_hbm_opt, **errorbar_args)
 
 # DDR unopt
@@ -100,18 +100,19 @@ plt.errorbar(x + 0.5 * bar_width, times_ddr_unopt, yerr=stddev_ddr_unopt, **erro
 # DDR opt + dualchannel
 bars = plt.bar(x + 1.5 * bar_width, times_ddr_dc, hatch=hatches[1],
                label="DDR opt", **bar_args)
-for i, b in enumerate(bars[1:]):
-    plt.text(b.get_x() + 0.03, b.get_height() + 0.05,
-             f"{ddr_dc_diff[i]:+.2f}%", rotation=90, size=7)
+# for i, b in enumerate(bars[1:]):
+#     plt.text(b.get_x() + 0.03, b.get_height() + 0.05,
+#              f"{ddr_dc_diff[i]:+.1f}%", rotation=90, size=8)
 plt.errorbar(x + 1.5 * bar_width, times_ddr_dc, yerr=stddev_ddr_dc, **errorbar_args)
 
 plt.xticks(x, app_names)
 plt.xlabel("Emulated FPGA memory capacity (MiB)")
+plt.ylim(0,1.4)
 plt.ylabel("Data transfer + kernel time (s)")
-x_margin, y_margin = plt.margins()
-plt.margins(y=y_margin + 0.1)
-plt.legend(loc="upper left", fancybox=True, shadow=True, fontsize=7.5, 
-           ncol=4, prop={'size': 7.4}, bbox_to_anchor=(-0.1, 1.08))
+# x_margin, y_margin = plt.margins()
+# plt.margins(y=y_margin + 0.1)
+plt.legend(loc="upper left", fancybox=True, shadow=True, # fontsize=7.5, 
+           ncol=2, prop={'size': 8}, bbox_to_anchor=(0, 1.08))
 plt.tight_layout()
 
 ax = plt.gca()

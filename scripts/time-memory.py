@@ -23,7 +23,7 @@ df_u280_fast = {}
 df_u280_ddr_slow = {}
 df_u280_ddr_fast = {}
 
-bar_width = 0.14
+bar_width = 0.13
 
 bar_args = {
     "width": bar_width,
@@ -50,9 +50,9 @@ colors = [common.bar_blue, common.bar_blue, common.bar_orange,
 hatches = ["", "//"]
 plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
 
-plt.rcParams.update({'font.size': 9})
-width = 4.2
-height = 3.0
+plt.rcParams.update({'font.size': 10})
+width = 4.0
+height = 2.8
 plt.figure(figsize=(width, height))
 
 # Individual plots ------------------------------------------------------------------------------------------
@@ -114,8 +114,8 @@ for app in app_names:
 
 x = np.arange(len(xlabel_names))
 dfs = [df_u50_fast, df_u280_fast, df_u280_ddr_fast]
-labels = ["U50 native", "U50 Proteus", "U280 native",
-          "U280 Proteus", "U280-DDR native", "U280-DDR Proteus"]
+labels = ["U50 native", "U50 Proteus", "U280 nat.",
+          "U280 Pro.", "U280-DDR nat.", "U280-DDR Pro."]
 
 # Total execution time --------------------------------------------------------------------------------------
 
@@ -147,10 +147,11 @@ for i in range(3):
     x_offs += 1
 
 plt.xticks(x, xlabel_names, rotation=0)
+plt.ylim(0,19.9)
 plt.ylabel("Total execution time (s)")
 # x_margin, y_margin = plt.margins()
 # plt.margins(y=y_margin + 0.23)
-plt.legend(loc='upper left', fancybox=True, shadow=True, ncol=3, prop={'size': 7.6}, bbox_to_anchor=(-0.15, 1.2))
+plt.legend(loc='upper left', fancybox=True, shadow=True, ncol=3, prop={'size': 8}, bbox_to_anchor=(-0.14, 1.18))
 plt.tight_layout()
 configure_ax()
 
