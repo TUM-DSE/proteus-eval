@@ -41,7 +41,7 @@ df_u280_ddr_dc_fast = pd.read_csv(
 dfs = [df_u280_fast, df_u280_ddr_fast]
 
 # Runs for HBM and DDR without -o option until this index, DDR dual channel always uses -o option
-unopt_end = 6
+unopt_end = 5
 
 app_names = df_u280_fast["mem_limit"][:unopt_end]
 app_names[0] = "no-limit"
@@ -111,7 +111,7 @@ plt.ylim(0,1.4)
 plt.ylabel("Data transfer + kernel time (s)")
 # x_margin, y_margin = plt.margins()
 # plt.margins(y=y_margin + 0.1)
-plt.legend(loc="upper left", fancybox=True, shadow=True, # fontsize=7.5, 
+plt.legend(loc="upper left", fancybox=True, shadow=True, # fontsize=7.5,
            ncol=2, prop={'size': 8}, bbox_to_anchor=(0, 1.08))
 plt.tight_layout()
 
