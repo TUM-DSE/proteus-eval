@@ -23,7 +23,7 @@ app_names_abb = {
         "burst_rw": "b_rw",
         "dataflow_func": "df_func",
         "dataflow_subfunc": "df_subf",
-        "helloworld": "gmem",
+        "helloworld": "vadd",
         "lmem_2rw": "lmem",
         "loop_reorder": "loop_rr",
         "partition_cyclicblock": "par_cyc",
