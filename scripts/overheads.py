@@ -42,7 +42,7 @@ colors = [common.bar_blue, common.bar_blue, common.bar_orange,
 hatches = ["", "//"]
 plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
 
-plt.rcParams.update({'font.size': 9})
+plt.rcParams.update({'font.size': 9.4})
 width = 4.2
 height = 3.0
 # width = 7.0
@@ -77,8 +77,10 @@ ax3.plot([0, 1], [1, 1], transform=ax3.transAxes, **kwargs)
 
 # x_labels = ["Boot unikernel", "Init platform",
 #             "Create buffers", "Create kernel", "Exec kernel", "Sync"]
-x_labels = ["Boot\nOS", "Init\nplatform",
-            "Create\nbuffers", "Create\nkernel", "Execute", "Sync"]
+# [x_labels = ["Boot\nOS", "Init\nplatform",
+# [            "Create\nbuffers", "Create\nkernel", "Execute", "Sync"]
+x_labels = ["boot\nOS", "init\nplatform",
+            "create\nbuffer", "create\nkernel", "execute", "sync"]
 x = np.arange(len(x_labels))
 
 axs = [ax1, ax2, ax3]
@@ -86,17 +88,17 @@ axs = [ax1, ax2, ax3]
 for ax in axs:
     ax.bar(x - 2.5 * bar_width, times.iloc[3], hatch=hatches[0], label="U50 native", **bar_args)
     ax.bar(x - 1.5 * bar_width, times.iloc[0], hatch=hatches[1], label="U50 Proteus", **bar_args)
-    ax.bar(x - 0.5 * bar_width, times.iloc[4], hatch=hatches[0], label="U280 native", **bar_args)
-    ax.bar(x + 0.5 * bar_width, times.iloc[1], hatch=hatches[1], label="U280 Proteus", **bar_args)
-    ax.bar(x + 1.5 * bar_width, times.iloc[5], hatch=hatches[0], label="U280-DDR native", **bar_args)
-    ax.bar(x + 2.5 * bar_width, times.iloc[2], hatch=hatches[1], label="U280-DDR Proteus", **bar_args)
+    ax.bar(x - 0.5 * bar_width, times.iloc[4], hatch=hatches[0], label="U280 nat.", **bar_args)
+    ax.bar(x + 0.5 * bar_width, times.iloc[1], hatch=hatches[1], label="U280 Pro.", **bar_args)
+    ax.bar(x + 1.5 * bar_width, times.iloc[5], hatch=hatches[0], label="U280-DDR nat.", **bar_args)
+    ax.bar(x + 2.5 * bar_width, times.iloc[2], hatch=hatches[1], label="U280-DDR Pro.", **bar_args)
 
 plt.xticks(x, x_labels, rotation=0)
 ax2.set_ylabel("Time (ms)")
 # ax2.yaxis.set_label_coords(-0.07, 0.7)
-ax2.yaxis.set_label_coords(-0.09, 0.7)
+ax2.yaxis.set_label_coords(-0.11, 0.7)
 ax1.legend(loc='upper right', fancybox=True, shadow=True,
-           ncol=3, prop={'size': 7.5}, bbox_to_anchor=(1, 1.7))
+           ncol=3, prop={'size': 8.2}, bbox_to_anchor=(1, 1.8))
 plt.tight_layout()
 # FIXME: plt.margiins() doesn't change margins for some reason...
 plt.margins(x=0.0, tight=True) 
