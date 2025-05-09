@@ -24,8 +24,8 @@ plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
 
 plt.rcParams.update({'font.size': 10})
 bar_width = 0.28
-width = 4.2
-height = 3.0
+width = 4.0
+height = 2.8
 # aspect = 2.0
 # height = width / aspect
 plt.figure(figsize=(width, height))
@@ -55,14 +55,14 @@ bars = plt.bar(x + 0.5 * bar_width, df_s10_proteus["average"].values,
 proteus_overhead = ((df_s10_proteus["average"].values /
                     df_s10_native["average"].values) * 100) - 100
 for j, b in enumerate(bars):
-    plt.text(b.get_x()+0.07, b.get_height(),
-             f"  {proteus_overhead[j]:.1f}%", rotation=90, size=8.5) #, fontweight='bold')
+    plt.text(b.get_x()+0.07, b.get_height()+0.4,
+             f" {proteus_overhead[j]:.1f}%", rotation=90, size=8) #, fontweight='bold')
 
 plt.xticks(x, xlabel_names, rotation=0)
 plt.ylabel("Total execution time (s)")
 x_margin, y_margin = plt.margins()
 # plt.margins(y=y_margin + 0.1)
-plt.legend(loc='upper left', fancybox=True, shadow=True, ncol=1, prop={'size': 8.2}, bbox_to_anchor=(0, 1.15))
+plt.legend(loc='upper left', fancybox=True, shadow=True, ncol=1, prop={'size': 8}, bbox_to_anchor=(0, 1.13))
 plt.tight_layout()
 
 ax = plt.gca()

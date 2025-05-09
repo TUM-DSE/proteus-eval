@@ -54,8 +54,8 @@ hatches = ["", "//"]
 plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
 
 plt.rcParams.update({'font.size': 10})
-width = 4.2
-height = 3.0
+width = 4.0
+height = 2.8
 # aspect = 1.8
 # height = width / aspect
 plt.figure(figsize=(width, height))
@@ -183,8 +183,8 @@ for i in range(3):
     proteus_overhead = ((dfs[i]["proteus"]["average"].values /
                         dfs[i]["native"]["average"].values) * 100) - 100
     for j, (bl, bh) in enumerate(zip(bars_low, bars_high)):
-        plt.text(bl.get_x() + 0.015, bl.get_height() + bh.get_height(),
-                 f"  {proteus_overhead[j]:.1f}%", rotation=90, size=7.5) #, fontweight='bold')
+        plt.text(bl.get_x() + 0.015, bl.get_height() + bh.get_height() + 0.4,
+                 f" {proteus_overhead[j]:.1f}%", rotation=90, size=8) #, fontweight='bold')
     plt.errorbar(x + x_offs * bar_width, dfs[i]["proteus"]["average"].values,
                  yerr=dfs[i]["proteus"]["stddev"].values, **errorbar_args)
     x_offs += 1
@@ -192,10 +192,10 @@ for i in range(3):
 plt.xticks(x, xlabel_names, rotation=0)
 # x_margin, y_margin = plt.margins()
 # plt.margins(y=y_margin + 0.33)
-plt.ylim(0,49)
+plt.ylim(0,49.5)
 plt.ylabel("Total execution time (s)")
 plt.legend(loc='upper left', fancybox=True, shadow=True,
-           ncol=3, prop={'size': 8}, bbox_to_anchor=(-0.10, 1.22))
+           ncol=3, prop={'size': 8}, bbox_to_anchor=(-0.13, 1.26))
 plt.tight_layout()
 configure_ax()
 
