@@ -55,6 +55,7 @@ kernels = {
     "cl_wide_mem_rw_2x": Kernel([512, 512, 512, 512], [512, 512]),
     "cl_wide_mem_rw_4x": Kernel([512, 512, 512, 512, 512, 512, 512, 512], [512, 512, 512, 512]),
     "3d-rendering": Kernel([32], [32]),
+    # "digit-recognition": Kernel([512, 512], [128]),
     "digit-recognition": Kernel([512, 512], [128]),
     "optical-flow": Kernel([512], [512]),
     "spam-filter": Kernel([512, 32], [512]),
@@ -137,7 +138,7 @@ def scoring_freq(df_scores):
     df_max_freq = df_freq.iloc[:, 1:].max(axis=1)
 
     for i, app in enumerate(kernels.keys()):
-        # print(f"{app} -----------------------------------------------------------------------")
+        print(f"{app} -----------------------------------------------------------------------")
         max_freq = df_max_freq.iloc[i]
         # max_freq = 200
         port_widths = kernels[app].in_ports + kernels[app].out_ports
@@ -150,8 +151,9 @@ def scoring_freq(df_scores):
             freq = df_freq[f"{fpga}_freq"].iloc[i]
             score_freqs[fpga] = freq / max_freq
     
-            # print(f"{fpga}:")
-            # print(f"- freq: {freq} MHz")
+            print(f"{fpga}:")
+            print(f"- freq: {freq} MHz")
+            print(f"- best: {max_freq} MHz")
     
         # print(f"Final scores (score_freq only):")
         tmp_list = []
@@ -212,12 +214,16 @@ def scoring_new(df_scores):
             max_input_ports_per_channel = math.ceil(len(in_port_widths) / channels)
             in_congestion_factors = [min(
                 1, channel_bandwidth / (max_input_ports_per_channel * pbw)) for pbw in in_port_bandwidths]
+            # if app == "digit-recognition" and fpga == "u280_ddr_fast":
+            #     in_congestion_factors = [min(
+            #         1, channel_bandwidth / (2 * pbw)) for pbw in in_port_bandwidths]
 
             # CF for outputs
             out_port_bandwidths = [(width * freq) / 8 for width in out_port_widths]
             max_output_ports_per_channel = math.ceil(len(out_port_widths) / channels)
             out_congestion_factors = [min(
                 1, channel_bandwidth / (max_output_ports_per_channel * pbw)) for pbw in out_port_bandwidths]
+
     
             # throughputs for each port
             in_port_thrps = [cf * pbw for cf,
@@ -272,6 +278,9 @@ def scoring_new(df_scores):
         for fpga in fpgas:
             # final_score = W_INPUT * (1/float(pcie_wr_bandwidth)) + W_KERNEL * (1/float(thrps[fpga])) + W_OUTPUT * (1/float(pcie_rd_bandwidth))
             final_score = (sum(in_port_widths)/float(pcie_wr_bandwidth)) + (kernel_lats[fpga]) + (sum(out_port_widths)/float(pcie_rd_bandwidth))
+            # output_size_factor = sum(in_port_widths)/(640000/2000) if app == "digit-recognition" else sum(out_port_widths) # hints for digit-recognition (in_buf, out_buf) = (640000, 2000)
+
+            # final_score = (sum(in_port_widths)/float(pcie_wr_bandwidth)) + (kernel_lats[fpga]) + (sum(out_port_widths)/float(pcie_rd_bandwidth))
             print(f"- {fpga}: ", final_score)
             # print(f"{fpga}: ", score_freqs[fpga] * W_FREQ + score_thrps[fpga] * W_THRP)
             tmp_list.insert(len(tmp_list), final_score)
