@@ -62,14 +62,13 @@ cmp_app_names = []
 mem_app_names = []
 for app in app_names:
     df_app = pd.read_csv(f"../sched_sim/{app}.csv", skipinitialspace=True)
+    dfs.append(df_app.copy())
     if any(mem_app in app for mem_app in mem_app_patterns):
         mem_app_names.append(app)
-        # app_names.remove(app)
     else: 
         cmp_app_names.append(app)
         # dfs_mem.append(df_app.copy()) 
         # print(f"{app} detected")
-    dfs.append(df_app.copy())
 
 # print(dfs)
 # print(dfs_mem)
@@ -97,26 +96,56 @@ for i in range(len(dfs)):
 # Worst case
 print("----------Worst----------")
 worst_rows = []
+worst_cmp_rows = []
+worst_mem_rows = []
 for i, df_app in enumerate(dfs):
     idx = df_app["thrp"].idxmin()
     worst_rows.append(df_app.iloc[[idx]])
+    
+    # For separate plots
+    if any(app_names[i] == mem_app for mem_app in mem_app_names):
+        worst_mem_rows.append(df_app.iloc[[idx]])
+    else:
+        worst_cmp_rows.append(df_app.iloc[[idx]])
 
 df_worst = pd.concat(worst_rows, ignore_index=True)
-print(df_worst)
+# print(df_worst)
+
+# dfs for separate plots
+df_worst_cmp = pd.concat(worst_cmp_rows, ignore_index=True)
+df_worst_mem = pd.concat(worst_mem_rows, ignore_index=True)
+print(df_worst_cmp)
+print(df_worst_mem)
 
 # Best case
 best_rows = []
+best_cmp_rows = []
+best_mem_rows = []
 print("----------Best-----------")
 for i, df_app in enumerate(dfs):
     idx = df_app["thrp"].idxmax()
     best_rows.append(df_app.iloc[[idx]])
 
+    # For separate plots
+    if any(app_names[i] == mem_app for mem_app in mem_app_names):
+        best_mem_rows.append(df_app.iloc[[idx]])
+    else:
+        best_cmp_rows.append(df_app.iloc[[idx]])
+
 df_best = pd.concat(best_rows, ignore_index=True)
-print(df_best)
+# print(df_best)
+
+# dfs for separate plots
+df_best_cmp = pd.concat(best_cmp_rows, ignore_index=True)
+df_best_mem = pd.concat(best_mem_rows, ignore_index=True)
+print(df_best_cmp)
+print(df_best_mem)
     
 # Proteus (freq-only)
 print("----------Freq-----------")
 freq_rows = []
+freq_cmp_rows = []
+freq_mem_rows = []
 for i, df_app in enumerate(dfs):
     # choose the FPGA(s) with the highest (best) score
     best_score = df_score_freq[app_names[i]].max()
@@ -128,12 +157,26 @@ for i, df_app in enumerate(dfs):
     idx = df_best_fpgas['thrp'].idxmax()
     freq_rows.append(df_app.iloc[[idx]])
 
+    # For separate plots
+    if any(app_names[i] == mem_app for mem_app in mem_app_names):
+        freq_mem_rows.append(df_app.iloc[[idx]])
+    else:
+        freq_cmp_rows.append(df_app.iloc[[idx]])
+
 df_freq = pd.concat(freq_rows, ignore_index=True)
-print(df_freq)
+# print(df_freq)
+
+# dfs for separate plots
+df_freq_cmp = pd.concat(freq_cmp_rows, ignore_index=True)
+df_freq_mem = pd.concat(freq_mem_rows, ignore_index=True)
+print(df_freq_cmp)
+print(df_freq_mem)
 
 # Proteus 
 print("---------Proteus---------")
 proteus_rows = []
+proteus_cmp_rows = []
+proteus_mem_rows = []
 for i, df_app in enumerate(dfs):
     # choose the FPGA(s) with the highest (best) score
     best_score = df_score_new[app_names[i]].min()
@@ -145,20 +188,44 @@ for i, df_app in enumerate(dfs):
     idx = df_best_fpgas['thrp'].idxmin()
     proteus_rows.append(df_app.iloc[[idx]])
 
+    # For separate plots
+    if any(app_names[i] == mem_app for mem_app in mem_app_names):
+        proteus_mem_rows.append(df_app.iloc[[idx]])
+    else:
+        proteus_cmp_rows.append(df_app.iloc[[idx]])
+
 df_proteus = pd.concat(proteus_rows, ignore_index=True)
-print(df_proteus)
+# print(df_proteus)
+
+# dfs for separate plots
+df_proteus_cmp = pd.concat(proteus_cmp_rows, ignore_index=True)
+df_proteus_mem = pd.concat(proteus_mem_rows, ignore_index=True)
+print(df_proteus_cmp)
+print(df_proteus_mem)
 
 dfs_plot = [df_worst, df_best, df_freq, df_proteus]
-labels = ["Worst", "Best", "Proteus (fmax-only)", "Proteus"]
+dfs_plot_mem = [df_worst_mem, df_best_mem, df_freq_mem, df_proteus_mem]
+dfs_plot_cmp = [df_worst_cmp, df_best_cmp, df_freq_cmp, df_proteus_cmp]
+labels = ["Worst", "Best", "Proteus (Fmax)", "Proteus"]
 # labels = ["Best", "Worst", "Proteus"]
           # "Freq-only(2nd)", "Proteus", "Proteus(2nd)"]
 
 ### Calculate the average performance gain compared to the worst case
-best_improve = 100.0 * (df_best['thrp'] - df_worst['thrp']) / df_worst['thrp']
-freq_improve = 100.0 * (df_freq['thrp'] - df_worst['thrp']) / df_worst['thrp']
+best_improve    = 100.0 * (df_best['thrp']    - df_worst['thrp']) / df_worst['thrp']
+freq_improve    = 100.0 * (df_freq['thrp']    - df_worst['thrp']) / df_worst['thrp']
 proteus_improve = 100.0 * (df_proteus['thrp'] - df_worst['thrp']) / df_worst['thrp']
 
+best_improve_cmp    = 100.0 * (df_best_cmp['thrp']    - df_worst_cmp['thrp']) / df_worst_cmp['thrp']
+freq_improve_cmp    = 100.0 * (df_freq_cmp['thrp']    - df_worst_cmp['thrp']) / df_worst_cmp['thrp']
+proteus_improve_cmp = 100.0 * (df_proteus_cmp['thrp'] - df_worst_cmp['thrp']) / df_worst_cmp['thrp']
+
+best_improve_mem    = 100.0 * (df_best_mem['thrp']    - df_worst_mem['thrp']) / df_worst_mem['thrp']
+freq_improve_mem    = 100.0 * (df_freq_mem['thrp']    - df_worst_mem['thrp']) / df_worst_mem['thrp']
+proteus_improve_mem = 100.0 * (df_proteus_mem['thrp'] - df_worst_mem['thrp']) / df_worst_mem['thrp']
+
 improves = [best_improve, freq_improve, proteus_improve]
+improves_cmp = [best_improve_cmp, freq_improve_cmp, proteus_improve_cmp]
+improves_mem = [best_improve_mem, freq_improve_mem, proteus_improve_mem]
 
 print(f"Best          : {best_improve.mean()}")
 print(f"Proteus (freq): {freq_improve.mean()}")
@@ -168,32 +235,37 @@ print(f"Proteus       : {proteus_improve.mean()}")
 # width = 15.0
 # aspect = 4.2
 width = 14.0
-aspect = 4.0
-height = width / aspect
+height = 3.5
+# aspect = 4.0
+# height = width / aspect
+width_cmp = width * (13.3/18)
+width_mem = width * (4.7/18)
+
 
 colors = [common.bar_blue, common.bar_orange, common.bar_green, common.bar_green]
 hatches = ["", "", "", "//"]
 
+xlabel_names = []
+xlabel_names_mem = []
+xlabel_names_cmp = []
+mem_app_num = 0
+for app in app_names:
+    xlabel_names.append(common.app_names_abb[app])
+    # For separate plots
+    if any(app == mem_app for mem_app in mem_app_names):
+        xlabel_names_mem.append(common.app_names_abb[app])
+    else:
+        xlabel_names_cmp.append(common.app_names_abb[app])
+
+# Total throughput --------------------------------------------------------------------------------------
 plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
 plt.rcParams.update({'font.size': 12})
 plt.figure(figsize=(width, height))
 
-xlabel_names = []
-xlabel_mem_names = []
-mem_app_num = 0
-for app in app_names:
-    # if any(mem_app in app for mem_app in mem_app_patterns):
-    #     mem_app_num+=1
-    #     xlabel_mem_names.append(common.app_names_abb[app])
-    # else: 
-    #     xlabel_names.append(common.app_names_abb[app])
-    xlabel_names.append(common.app_names_abb[app])
-
-# Total throughput --------------------------------------------------------------------------------------
 # x = np.arange(len(app_names)-mem_app_num)
-x = np.arange(len(app_names))
+x = np.arange(len(xlabel_names))
 for i in range(len(dfs_plot)):
-    x_offs = i - 2
+    x_offs = i - 1.5
     print(f"position: {x}, {x+x_offs*bar_width}")
     bars = plt.bar(x + x_offs * bar_width, dfs_plot[i]["thrp"].values,
             hatch=hatches[i], label=labels[i], **bar_args)
@@ -217,3 +289,72 @@ print(f"Saving figure to {filename}")
 plt.margins(x=0.01, tight=True)
 plt.savefig(filename, **savefig_args)
 plt.clf()
+
+# Total throughput (compute)  --------------------------------------------------------------------------------------
+plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
+plt.rcParams.update({'font.size': 12})
+plt.figure(figsize=(width_cmp, height))
+
+# x = np.arange(len(app_names)-mem_app_num)
+x2 = np.arange(len(xlabel_names_cmp))
+for i in range(len(dfs_plot_cmp)):
+    x_offs = i - 1.5
+    print(f"position: {x2}, {x2+x_offs*bar_width}")
+    bars = plt.bar(x2 + x_offs * bar_width, dfs_plot_cmp[i]["thrp"].values,
+            hatch=hatches[i], label=labels[i], **bar_args)
+
+    # skip the worst case (no numbers)
+    if i == 0: 
+        continue
+
+    for j, b in enumerate(bars):
+        plt.text(b.get_x() + 0.19 * bar_width, b.get_height(),
+                 f"  {improves_cmp[i-1][j]:.1f}%", rotation=90, size=8.5)
+
+plt.xticks(x2, xlabel_names_cmp, rotation=12)
+plt.ylim(0,2.8)
+plt.ylabel("Throughput (GiB/s)")
+plt.legend(loc='upper left', fancybox=True, shadow=True, ncol=4, prop={'size': 11}, bbox_to_anchor=(0.28, 1.08))
+plt.tight_layout()
+configure_ax()
+
+filename_cmp = f"../plots/scheduler-thrp-cmp.pdf"
+print(f"Saving figure to {filename_cmp}")
+plt.margins(x=0.01, tight=True)
+plt.savefig(filename_cmp, **savefig_args)
+plt.clf()
+
+# Total throughput (memory)  --------------------------------------------------------------------------------------
+plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
+plt.rcParams.update({'font.size': 12})
+plt.figure(figsize=(width_mem, height))
+
+# x = np.arange(len(app_names)-mem_app_num)
+x3 = np.arange(len(xlabel_names_mem))
+for i in range(len(dfs_plot_mem)):
+    x_offs = i - 1.5
+    print(f"position: {x3}, {x3+x_offs*bar_width}")
+    bars = plt.bar(x3 + x_offs * bar_width, dfs_plot_mem[i]["thrp"].values,
+            hatch=hatches[i], label=labels[i], **bar_args)
+
+    # skip the worst case (no numbers)
+    if i == 0: 
+        continue
+
+    for j, b in enumerate(bars):
+        plt.text(b.get_x() + 0.19 * bar_width, b.get_height(),
+                 f"  {improves_mem[i-1][j]:.1f}%", rotation=90, size=8.5)
+
+plt.xticks(x3, xlabel_names_mem, rotation=12)
+plt.ylim(0,8.0)
+plt.ylabel("Throughput (GiB/s)")
+# plt.legend(loc='upper left', fancybox=True, shadow=True, ncol=4, bbox_to_anchor=(0.0, 1.1))
+plt.tight_layout()
+configure_ax()
+
+filename_mem = f"../plots/scheduler-thrp-mem.pdf"
+print(f"Saving figure to {filename_mem}")
+plt.margins(x=0.01, tight=True)
+plt.savefig(filename_mem, **savefig_args)
+plt.clf()
+
