@@ -108,7 +108,7 @@ for app in mem_app_names:
 
 ### Preparation to create plots
 width = 4.4
-height = 2.7
+height = 2.4
 # aspect = 2
 # height = width / aspect
 width_comp = width * (2.2/5)
@@ -120,7 +120,7 @@ hatches = ["", "//"]
 
 ### For compute-bound apps
 plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
-plt.rcParams.update({'font.size': 10})
+plt.rcParams.update({'font.size': 9})
 plt.figure(figsize=(width_comp, height))
 
 x = np.arange(len(cmp_xlabel_names))
@@ -144,7 +144,7 @@ plt.clf()
 
 ### For memory-bound apps
 plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
-plt.rcParams.update({'font.size': 9})
+plt.rcParams.update({'font.size': 8})
 plt.figure(figsize=(width_mem, height))
 
 x2 = np.arange(len(mem_xlabel_names))
@@ -157,7 +157,7 @@ plt.xticks(x2, mem_xlabel_names, rotation=0)
 plt.ylim(0,53)
 plt.ylabel("Kernel's throughput (GiB/s)")
 plt.legend(loc='upper left', fancybox=True, shadow=True, # fontsize=7, 
-           ncol=2, prop={'size': 7.5}, bbox_to_anchor=(-0.17, 1.24))
+           ncol=2, prop={'size': 6.8}, bbox_to_anchor=(-0.03, 1.24))
 plt.tight_layout()
 configure_ax()
 
