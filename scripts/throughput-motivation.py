@@ -18,7 +18,7 @@ def configure_ax():
     ax.set_axisbelow(True)
     ax.grid(axis='y')
 
-bar_width = 0.12
+bar_width = 0.14
 
 bar_args = {
     "width": bar_width,
@@ -50,8 +50,10 @@ df_u280_ddr_slow = pd.read_csv(f"../data/native/u280-ddr-300mhz.csv", skipinitia
 df_u280_ddr_fast = pd.read_csv(f"../data/native/u280-ddr-400mhz.csv", skipinitialspace=True)
 
 dfs = [df_u50_slow, df_u50_fast, df_u280_slow, df_u280_fast, df_u280_ddr_slow, df_u280_ddr_fast]
-labels = ["U50-loclk", "U50-hiclk", "U280-loclk",
-          "U280-hiclk", "U280-loclk(DDR)", "U280-hiclk(DDR)"]
+labels = ["U50 lo", "U50 hi", "U280 lo",
+          "U280 hi", "U280-DDR lo", "U280-DDR hi"]
+# labels = ["U50 loclk", "U50 hiclk", "U280 loclk",
+#           "U280 hiclk", "U280-DDR loclk", "U280-DDR hiclk"]
 
 # Sum up data transfer + kernel execution time,
 # time_cpu seems to be measured incorrectly for Proteus currently.
@@ -96,13 +98,21 @@ for i in range(len(mem_app_names)):
     if mem_app_names[i] == "wide_mem_rw_strm":
         mem_app_names[i] = "wide_mem_rw"
 
+# use abbreviations as app names
+cmp_xlabel_names = []
+mem_xlabel_names = []
+for app in comp_app_names:
+    cmp_xlabel_names.append(common.app_names_abb[app])
+for app in mem_app_names:
+    mem_xlabel_names.append(common.app_names_abb[app])
+
 ### Preparation to create plots
-width = 7.0
-height = 3.2
+width = 4.4
+height = 2.7
 # aspect = 2
 # height = width / aspect
-width_comp = width * (2.0/5)
-width_mem = width * (3.0/5)
+width_comp = width * (2.2/5)
+width_mem = width * (2.8/5)
 
 colors = [common.bar_blue, common.bar_blue, common.bar_orange,
           common.bar_orange, common.bar_green, common.bar_green]
@@ -110,16 +120,17 @@ hatches = ["", "//"]
 
 ### For compute-bound apps
 plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
-plt.rcParams.update({'font.size': 12})
+plt.rcParams.update({'font.size': 10})
 plt.figure(figsize=(width_comp, height))
 
-x = np.arange(len(comp_app_names))
+x = np.arange(len(cmp_xlabel_names))
 for i in range(len(dfs_comp)):
     x_offs = i - 2
     plt.bar(x + x_offs * bar_width, dfs_comp[i]["thrp_kernel"].values,
             hatch=hatches[i % 2], label=labels[i], **bar_args)
 
-plt.xticks(x, comp_app_names, rotation=10)
+plt.xticks(x, cmp_xlabel_names, rotation=0)
+plt.margins(x=0.01, tight=True)
 plt.ylabel("Kernel's throughput (GiB/s)")
 # plt.legend(loc='upper left', fancybox=True, shadow=True,
 #            fontsize=8, ncol=1, bbox_to_anchor=(0, 0.98))
@@ -133,23 +144,25 @@ plt.clf()
 
 ### For memory-bound apps
 plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
-plt.rcParams.update({'font.size': 12})
+plt.rcParams.update({'font.size': 9})
 plt.figure(figsize=(width_mem, height))
 
-x2 = np.arange(len(mem_app_names))
+x2 = np.arange(len(mem_xlabel_names))
 for i in range(len(dfs_mem)):
     x2_offs = i - 2
     plt.bar(x2 + x2_offs * bar_width, dfs_mem[i]["thrp_kernel"].values,
             hatch=hatches[i % 2], label=labels[i], **bar_args)
 
-plt.xticks(x2, mem_app_names, rotation=10)
+plt.xticks(x2, mem_xlabel_names, rotation=0)
+plt.ylim(0,53)
 plt.ylabel("Kernel's throughput (GiB/s)")
-plt.legend(loc='upper left', fancybox=True, shadow=True,
-           fontsize=7, ncol=2, bbox_to_anchor=(-0.01, 1.0))
+plt.legend(loc='upper left', fancybox=True, shadow=True, # fontsize=7, 
+           ncol=2, prop={'size': 7.5}, bbox_to_anchor=(-0.17, 1.24))
 plt.tight_layout()
 configure_ax()
 
 filename_mem = f"../plots/native/throughput-motivation-mem.pdf"
 print(f"Saving figure to {filename_mem}")
+plt.margins(x=0.01, tight=True)
 plt.savefig(filename_mem, **savefig_args)
 plt.clf()
