@@ -50,7 +50,7 @@ app_names = [item for item in df_score_new.columns]
 del app_names[0]
 print(app_names)
 
-# mem_app_names = ["wide_mem_rw", "wide_mem_rw_2x", "wide_mem_rw_4x", 
+# mem_app_names = ["wide_mem_rw", "wide_mem_rw_2x", "wide_mem_rw_4x",
 #                  "gmem_2banks", "gmem_2banks_2x", "gmem_2banks_4x"]
 
 mem_app_patterns = ["wide_mem_rw", "gmem_2banks"]
@@ -69,9 +69,9 @@ for app in app_names:
     dfs.append(df_app.copy())
     if any(mem_app in app for mem_app in mem_app_patterns):
         mem_app_names.append(app)
-    else: 
+    else:
         cmp_app_names.append(app)
-        # dfs_mem.append(df_app.copy()) 
+        # dfs_mem.append(df_app.copy())
         # print(f"{app} detected")
 
 # print(dfs)
@@ -106,7 +106,7 @@ worst_ros_rows = []
 for i, df_app in enumerate(dfs):
     idx = df_app["thrp"].idxmin()
     worst_rows.append(df_app.iloc[[idx]])
-    
+
     # For separate plots
     if any(app_names[i] == mem_app for mem_app in mem_app_names):
         worst_mem_rows.append(df_app.iloc[[idx]])
@@ -154,7 +154,7 @@ df_best_ros = pd.concat(best_ros_rows, ignore_index=True)
 print(df_best_cmp)
 print(df_best_mem)
 print(df_best_ros)
-    
+
 # Proteus (freq-only)
 print("----------Freq-----------")
 freq_rows = []
@@ -191,7 +191,7 @@ print(df_freq_cmp)
 print(df_freq_mem)
 print(df_freq_ros)
 
-# Proteus 
+# Proteus
 print("---------Proteus---------")
 proteus_rows = []
 proteus_cmp_rows = []
@@ -305,7 +305,7 @@ for i in range(len(dfs_plot)):
             hatch=hatches[i], label=labels[i], **bar_args)
 
     # skip the worst case (no numbers)
-    if i == 0: 
+    if i == 0:
         continue
 
     for j, b in enumerate(bars):
@@ -337,7 +337,7 @@ for i in range(len(dfs_plot_cmp)):
             hatch=hatches[i], label=labels[i], **bar_args)
 
     # skip the worst case (no numbers)
-    if i == 0: 
+    if i == 0:
         continue
 
     for j, b in enumerate(bars):
@@ -370,7 +370,7 @@ for i in range(len(dfs_plot_mem)):
             hatch=hatches[i], label=labels[i], **bar_args)
 
     # skip the worst case (no numbers)
-    if i == 0: 
+    if i == 0:
         continue
 
     for j, b in enumerate(bars):
@@ -393,33 +393,106 @@ plt.clf()
 # Total throughput (Rosetta)  --------------------------------------------------------------------------------------
 plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
 plt.rcParams.update({'font.size': 12})
-plt.figure(figsize=(width_ros, height))
+# plt.figure(figsize=(width_ros, height))
+fig, (ax1, ax2, ax3) = plt.subplots(3, 1, sharex=True, figsize=(width_ros, height))
+
+ax1.set_ylim(0.2, 3.0)
+ax2.set_ylim(0.002, 0.12)
+ax3.set_ylim(0.0, 0.0012)
+
+# Hide the spines between plots
+ax1.spines.bottom.set_visible(False)
+ax2.spines.top.set_visible(False)
+ax2.spines.bottom.set_visible(False)
+ax3.spines.top.set_visible(False)
+
+# Hide the top spine
+ax1.spines.top.set_visible(False)
+
+# Hide the x axis from the upper plots
+ax1.get_xaxis().set_visible(False)
+ax2.get_xaxis().set_visible(False)
+
+ax1.set_axisbelow(True)
+ax1.yaxis.grid()
+ax2.set_axisbelow(True)
+ax2.yaxis.grid()
+ax3.set_axisbelow(True)
+ax3.yaxis.grid()
+
+d = .5  # Proportion of vertical to horizontal extent of the slanted line
+kwargs = dict(marker=[(-1, -d), (1, d)], markersize=10,
+              linestyle="none", color='k', mec='k', mew=2, clip_on=False)
+ax1.plot([0, 1], [0, 0], transform=ax1.transAxes, **kwargs)
+ax2.plot([0, 1], [1, 1], transform=ax2.transAxes, **kwargs)
+ax2.plot([0, 1], [0, 0], transform=ax2.transAxes, **kwargs)
+ax3.plot([0, 1], [1, 1], transform=ax3.transAxes, **kwargs)
+
+# ax1_pos = ax1.get_position()
+# ax1_pos.y0 += 0.5
+# ax1.set_position(ax1_pos)
 
 x3 = np.arange(len(xlabel_names_ros))
+
+# Upper figure
 for i in range(len(dfs_plot_ros)):
     x_offs = i - 1.5
     print(f"position: {x3}, {x3+x_offs*bar_width}")
-    bars = plt.bar(x3 + x_offs * bar_width, dfs_plot_ros[i]["thrp"].values,
+    bars = ax1.bar(x3 + x_offs * bar_width, dfs_plot_ros[i]["thrp"].values,
             hatch=hatches[i], label=labels[i], **bar_args)
 
     # skip the worst case (no numbers)
-    if i == 0: 
+    if i == 0:
         continue
 
-    for j, b in enumerate(bars):
-        plt.text(b.get_x() + 0.19 * bar_width, b.get_height(),
-                 f"  {improves_ros[i-1][j]:.1f}%", rotation=90, size=8.5)
+    # text for other bars is shown in the lower figures
+    for j in [2, 3]:
+        b = bars[j]
+        ax1.text(b.get_x() - 0.002, b.get_height(),
+            f"  {improves_ros[i-1][j]:.1f}%", rotation=90, size=8.5)
+
+# Middle figure
+for i in range(len(dfs_plot_ros)):
+    x_offs = i - 1.5
+    print(f"position: {x3}, {x3+x_offs*bar_width}")
+    bars = ax2.bar(x3 + x_offs * bar_width, dfs_plot_ros[i]["thrp"].values,
+            hatch=hatches[i], label=labels[i], **bar_args)
+
+    # skip the worst case (no numbers)
+    if i == 0:
+        continue
+
+    j = 0
+    b = bars[j]
+    ax2.text(b.get_x() - 0.002, b.get_height(),
+        f"  {improves_ros[i-1][j]:.1f}%", rotation=90, size=8.5)
+
+# Lower figure
+for i in range(len(dfs_plot_ros)):
+    x_offs = i - 1.5
+    print(f"position: {x3}, {x3+x_offs*bar_width}")
+    bars = ax3.bar(x3 + x_offs * bar_width, dfs_plot_ros[i]["thrp"].values,
+            hatch=hatches[i], label=labels[i], **bar_args)
+
+    # skip the worst case (no numbers)
+    if i == 0:
+        continue
+
+    j = 1
+    b = bars[j]
+    ax3.text(b.get_x() - 0.002, b.get_height(),
+        f"  {improves_ros[i-1][j]:.1f}%", rotation=90, size=8.5)
 
 plt.xticks(x3, xlabel_names_ros, rotation=12)
-plt.ylim(0,2.6)
 # plt.ylim(0,8.0)
-plt.ylabel("Throughput (GiB/s)")
+ax2.set_ylabel("Throughput (GiB/s)")
+ax2.yaxis.set_label_coords(-0.22, 1.1)
 # plt.legend(loc='upper left', fancybox=True, shadow=True, ncol=4, bbox_to_anchor=(0.0, 1.1))
 plt.tight_layout()
-configure_ax()
 
 filename_ros = f"../plots/scheduler-thrp-ros.pdf"
 print(f"Saving figure to {filename_ros}")
+plt.subplots_adjust(wspace=0, hspace=0.05)
 plt.margins(x=0.01, tight=True)
 plt.savefig(filename_ros, **savefig_args)
 plt.clf()
