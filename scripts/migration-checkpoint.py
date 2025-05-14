@@ -73,6 +73,13 @@ x_pos_r2 = x_pos_r1 + bar_width
 x_pos_r3 = x_pos_r2 + bar_width
 x_pos_r4 = x_pos_r3 + bar_width
 
+print("% of FPGA evict in eviction:")
+print(np_save_fpga_mig / (np_save_fpga_mig + np_save_vm_mig) * 100)
+print(np_save_fpga_cp / (np_save_fpga_cp + np_save_vm_cp) * 100)
+print("% of FPGA resume in resuming:")
+print(np_load_fpga_mig / (np_load_fpga_mig + np_load_vm_mig) * 100)
+print(np_load_fpga_cp / (np_load_fpga_cp + np_load_vm_cp) * 100)
+
 # NOTE: keep the order of the following ax.bar() to fix the order of items shown in the legend.
 ax.bar(x_pos_r1, np_save_fpga_mig, bar_width, color=fp.bar_blue,
        edgecolor='k', label='FPGA evict', zorder=2)
