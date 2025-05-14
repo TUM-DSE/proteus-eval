@@ -63,6 +63,28 @@ times_ddr_dc = df_u280_ddr_dc_fast["time_total"].values
 stddev_ddr_dc = df_u280_ddr_dc_fast["time_total_stddev"].values
 ddr_dc_diff = (times_ddr_dc / times_ddr_opt * 100) - 100
 
+print("Overheads:")
+print("HBM mem:")
+print(times_hbm_unopt[1] / times_hbm_unopt[0])
+print(times_hbm_unopt[2] / times_hbm_unopt[0])
+print(times_hbm_unopt[3] / times_hbm_unopt[0])
+print(times_hbm_unopt[4] / times_hbm_unopt[0])
+print("DDR mem:")
+print(times_ddr_unopt[1] / times_ddr_unopt[0])
+print(times_ddr_unopt[2] / times_ddr_unopt[0])
+print(times_ddr_unopt[3] / times_ddr_unopt[0])
+print(times_ddr_unopt[4] / times_ddr_unopt[0])
+print("HBM strm:")
+print(times_hbm_opt[1] / times_hbm_opt[0])
+print(times_hbm_opt[2] / times_hbm_opt[0])
+print(times_hbm_opt[3] / times_hbm_opt[0])
+print(times_hbm_opt[4] / times_hbm_opt[0])
+print("DDR strm:")
+print(times_ddr_dc[1] / times_ddr_dc[0])
+print(times_ddr_dc[2] / times_ddr_dc[0])
+print(times_ddr_dc[3] / times_ddr_dc[0])
+print(times_ddr_dc[4] / times_ddr_dc[0])
+
 # HBM unopt
 plt.bar(x - 1.5 * bar_width, times_hbm_unopt, hatch=hatches[0], label="HBM mem", **bar_args)
 plt.errorbar(x - 1.5 * bar_width, times_hbm_unopt, yerr=stddev_hbm_unopt, **errorbar_args)
