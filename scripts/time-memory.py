@@ -42,12 +42,12 @@ df_u280_ddr = pd.read_csv(f"../data/native/memory-u280-ddr-300mhz.csv")
 
 print("Speedups 2x HBM bank-opt:\n", df_u280_hbm["time_loop"].loc[0] / df_u280_hbm["time_loop"].loc[1])
 print("Speedups 2x HBM +strm:\n", df_u280_hbm["time_loop"].loc[0] / df_u280_hbm["time_loop"].loc[2])
-print("Speedups 4x HBM bank-opt:\n", df_u280_hbm["time_loop"].loc[1] / df_u280_hbm["time_loop"].loc[4])
-print("Speedups 4x HBM +strm:\n", df_u280_hbm["time_loop"].loc[1] / df_u280_hbm["time_loop"].loc[5])
+print("Speedups 4x HBM bank-opt:\n", df_u280_hbm["time_loop"].loc[3] / df_u280_hbm["time_loop"].loc[4])
+print("Speedups 4x HBM +strm:\n", df_u280_hbm["time_loop"].loc[3] / df_u280_hbm["time_loop"].loc[5])
 print("Speedups 2x DDR bank-opt:\n", df_u280_ddr["time_loop"].loc[0] / df_u280_ddr["time_loop"].loc[1])
 print("Speedups 2x DDR +strm:\n", df_u280_ddr["time_loop"].loc[0] / df_u280_ddr["time_loop"].loc[2])
-print("Speedups 4x DDR bank-opt:\n", df_u280_ddr["time_loop"].loc[1] / df_u280_ddr["time_loop"].loc[4])
-print("Speedups 4x DDR +strm:\n", df_u280_ddr["time_loop"].loc[1] / df_u280_ddr["time_loop"].loc[5])
+print("Speedups 4x DDR bank-opt:\n", df_u280_ddr["time_loop"].loc[3] / df_u280_ddr["time_loop"].loc[4])
+print("Speedups 4x DDR +strm:\n", df_u280_ddr["time_loop"].loc[3] / df_u280_ddr["time_loop"].loc[5])
 
 # Native vs Proteus plot ------------------------------------------------------------------------------------
 
