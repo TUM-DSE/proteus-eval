@@ -64,12 +64,12 @@ stddev_ddr_dc = df_u280_ddr_dc_fast["time_total_stddev"].values
 ddr_dc_diff = (times_ddr_dc / times_ddr_opt * 100) - 100
 
 # HBM unopt
-plt.bar(x - 1.5 * bar_width, times_hbm_unopt, hatch=hatches[0], label="HBM seq", **bar_args)
+plt.bar(x - 1.5 * bar_width, times_hbm_unopt, hatch=hatches[0], label="HBM mem", **bar_args)
 plt.errorbar(x - 1.5 * bar_width, times_hbm_unopt, yerr=stddev_hbm_unopt, **errorbar_args)
 
 # HBM opt
 bars = plt.bar(x - 0.5 * bar_width, times_hbm_opt,
-               hatch=hatches[1], label="HBM opt", **bar_args)
+               hatch=hatches[1], label="HBM strm", **bar_args)
 # for i, b in enumerate(bars[1:]):
 #     plt.text(b.get_x() + 0.03, b.get_height() + 0.05,
 #              f"{hbm_opt_diff[i]:+.1f}%", rotation=90, size=8)
@@ -77,7 +77,7 @@ plt.errorbar(x - 0.5 * bar_width, times_hbm_opt, yerr=stddev_hbm_opt, **errorbar
 
 # DDR unopt
 plt.bar(x + 0.5 * bar_width, times_ddr_unopt,
-        hatch=hatches[0], label="DDR seq", **bar_args)
+        hatch=hatches[0], label="DDR mem", **bar_args)
 plt.errorbar(x + 0.5 * bar_width, times_ddr_unopt, yerr=stddev_ddr_unopt, **errorbar_args)
 
 # DDR opt
@@ -90,7 +90,7 @@ plt.errorbar(x + 0.5 * bar_width, times_ddr_unopt, yerr=stddev_ddr_unopt, **erro
 
 # DDR opt + dualchannel
 bars = plt.bar(x + 1.5 * bar_width, times_ddr_dc, hatch=hatches[1],
-               label="DDR opt", **bar_args)
+               label="DDR strm", **bar_args)
 # for i, b in enumerate(bars[1:]):
 #     plt.text(b.get_x() + 0.03, b.get_height() + 0.05,
 #              f"{ddr_dc_diff[i]:+.1f}%", rotation=90, size=8)
