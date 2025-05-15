@@ -55,8 +55,6 @@ print(app_names)
 
 mem_app_patterns = ["wide_mem_rw", "gmem_2banks"]
 
-mem_app_patterns = ["wide_mem_rw", "gmem_2banks"]
-
 ros_app_names = ["3d-rendering", "digit-recognition", "optical-flow", "spam-filter"]
 
 # Get app dfs

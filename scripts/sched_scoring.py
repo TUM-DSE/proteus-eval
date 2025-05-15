@@ -30,35 +30,38 @@ W_OUTPUT = 1
 
 ### Define metadata of FPGA kernels
 class Kernel:
-    def __init__(self, in_ports, out_ports):
+    def __init__(self, in_ports, out_ports, latency):
         """in_ports, out_ports: list of widths in bits"""
         self.in_ports = in_ports
         self.out_ports = out_ports
+        # self.in_sizes = in_sizes
+        # self.out_sizes = out_sizes
+        self.latency = latency
 
 kernels = {
-    "cl_array_partition": Kernel([32, 32], [32]),
+    "cl_array_partition": Kernel([32, 32], [32], 4102),
     # "cl_burst_rw": Kernel([32], []),  # Result written back to input port
-    "cl_burst_rw": Kernel([32], [32]),  # Result written back to input port
-    "cl_dataflow_func": Kernel([32], [32]),
-    "cl_dataflow_subfunc": Kernel([32], [32]),
-    "cl_helloworld": Kernel([32, 32], [32]),
-    "cl_lmem_2rw": Kernel([32, 32], [32]),
-    "cl_loop_reorder": Kernel([32, 32], [32]),
-    "cl_partition_cyclicblock": Kernel([32, 32], [32]),
-    "cl_shift_register": Kernel([32, 32], [32]),
-    "cl_systolic_array": Kernel([32, 32], [32]),
-    "cl_gmem_2banks": Kernel([512], [512]),
+    "cl_burst_rw": Kernel([32], [32], 259),  # Result written back to input port
+    "cl_dataflow_func": Kernel([32], [32], 131148),
+    "cl_dataflow_subfunc": Kernel([32], [32], 131149),
+    "cl_helloworld": Kernel([32, 32], [32], 259),
+    "cl_lmem_2rw": Kernel([32, 32], [32], 1027),
+    "cl_loop_reorder": Kernel([32, 32], [32], 4102),
+    "cl_partition_cyclicblock": Kernel([32, 32], [32], 4103),
+    "cl_shift_register": Kernel([32, 32], [32], 1048582),
+    "cl_systolic_array": Kernel([32, 32], [32], 579),
+    "cl_gmem_2banks": Kernel([512], [512], 5),
     # "cl_gmem_2banks_2x": Kernel([512, 512], [512, 512]),
     # "cl_gmem_2banks_4x": Kernel([512, 512, 512, 512], [512, 512, 512, 512]),
     # "cl_wide_mem_rw": Kernel([512, 512], [512]),
-    "cl_wide_mem_rw_strm": Kernel([512, 512], [512]),
-    "cl_wide_mem_rw_2x": Kernel([512, 512, 512, 512], [512, 512]),
-    "cl_wide_mem_rw_4x": Kernel([512, 512, 512, 512, 512, 512, 512, 512], [512, 512, 512, 512]),
-    "3d-rendering": Kernel([32], [32]),
+    "cl_wide_mem_rw_strm": Kernel([512, 512], [512], 132), # size: 512 * 16
+    "cl_wide_mem_rw_2x": Kernel([512, 512, 512, 512], [512, 512], 132), # size: 512 * 16
+    "cl_wide_mem_rw_4x": Kernel([512, 512, 512, 512, 512, 512, 512, 512], [512, 512, 512, 512], 132), # size: 512 * 16
+    "3d-rendering": Kernel([32], [32], 261777),
     # "digit-recognition": Kernel([512, 512], [128]),
-    "digit-recognition": Kernel([512, 512], [128]),
-    "optical-flow": Kernel([512], [512]),
-    "spam-filter": Kernel([512, 32], [512]),
+    "digit-recognition": Kernel([512, 512], [128], 441627152),
+    "optical-flow": Kernel([512], [512], 449548),
+    "spam-filter": Kernel([512, 32], [512], 3060556),
 }
 
 ### Define FPGA types
@@ -182,6 +185,7 @@ def scoring_new(df_scores):
         port_widths = kernels[app].in_ports + kernels[app].out_ports
         in_port_widths = kernels[app].in_ports
         out_port_widths = kernels[app].out_ports 
+        kernel_latency = kernels[app].latency 
         thrps = {}
         kernel_lats = {}
         score_lats = {}
@@ -208,9 +212,15 @@ def scoring_new(df_scores):
             # In MB/s
             # port_bandwidths = [(width * freq) / 8 for width in port_widths]
             # max_ports_per_channel = math.ceil(len(port_widths) / channels)
+            
+            # for mem-bound apps
+            data_factor = 1.0
+            if "wide_mem_rw" in app:
+                data_factor = 16.0
 
             # CF for inputs
-            in_port_bandwidths = [(width * freq) / 8 for width in in_port_widths]
+            # in_port_bandwidths = [(width * freq) / 8 for width in in_port_widths]
+            in_port_bandwidths = [min((width * freq) / 8, (width * data_factor) * (freq / kernel_latency) ) for width in in_port_widths]
             max_input_ports_per_channel = math.ceil(len(in_port_widths) / channels)
             in_congestion_factors = [min(
                 1, channel_bandwidth / (max_input_ports_per_channel * pbw)) for pbw in in_port_bandwidths]
@@ -219,7 +229,8 @@ def scoring_new(df_scores):
             #         1, channel_bandwidth / (2 * pbw)) for pbw in in_port_bandwidths]
 
             # CF for outputs
-            out_port_bandwidths = [(width * freq) / 8 for width in out_port_widths]
+            # out_port_bandwidths = [(width * freq) / 8 for width in out_port_widths]
+            out_port_bandwidths = [min((width * freq) / 8, (width * data_factor) * (freq / kernel_latency) ) for width in out_port_widths]
             max_output_ports_per_channel = math.ceil(len(out_port_widths) / channels)
             out_congestion_factors = [min(
                 1, channel_bandwidth / (max_output_ports_per_channel * pbw)) for pbw in out_port_bandwidths]
