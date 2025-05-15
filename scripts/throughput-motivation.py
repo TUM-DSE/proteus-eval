@@ -108,7 +108,7 @@ for app in mem_app_names:
 
 ### Preparation to create plots
 width = 4.4
-height = 2.4
+height = 2.2
 # aspect = 2
 # height = width / aspect
 width_comp = width * (2.2/5)
@@ -157,7 +157,7 @@ plt.xticks(x2, mem_xlabel_names, rotation=0)
 plt.ylim(0,53)
 plt.ylabel("Kernel's throughput (GiB/s)")
 plt.legend(loc='upper left', fancybox=True, shadow=True, # fontsize=7, 
-           ncol=2, prop={'size': 6.8}, bbox_to_anchor=(-0.03, 1.24))
+           ncol=2, prop={'size': 6.5}, bbox_to_anchor=(-0.03, 1.26))
 plt.tight_layout()
 configure_ax()
 
