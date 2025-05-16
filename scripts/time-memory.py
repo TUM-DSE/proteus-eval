@@ -64,7 +64,7 @@ plt.bar(x - 1.5 * bar_width, df_u280_hbm["time_loop"].loc[[1, 4]],
 plt.errorbar(x - 1.5 * bar_width, df_u280_hbm["time_loop"].loc[[1, 4]],
              yerr=df_u280_hbm["time_loop_stddev"].loc[[1, 4]], **errorbar_args)
 plt.bar(x - 0.5 * bar_width, df_u280_hbm["time_loop"].loc[[2, 5]],
-        label="HBM bank-opt+stream", hatch="**", **bar_args)
+        label="HBM bank-opt+strm", hatch="**", **bar_args)
 plt.errorbar(x - 0.5 * bar_width, df_u280_hbm["time_loop"].loc[[2, 5]],
              yerr=df_u280_hbm["time_loop_stddev"].loc[[2, 5]], **errorbar_args)
 
@@ -77,7 +77,7 @@ plt.bar(x + 1.5 * bar_width, df_u280_ddr["time_loop"].loc[[1, 4]],
 plt.errorbar(x + 1.5 * bar_width, df_u280_ddr["time_loop"].loc[[1, 4]],
              yerr=df_u280_ddr["time_loop_stddev"].loc[[1, 4]], **errorbar_args)
 plt.bar(x + 2.5 * bar_width, df_u280_ddr["time_loop"].loc[[2, 5]],
-        label="DDR bank-opt+stream", hatch="**", **bar_args)
+        label="DDR bank-opt+strm", hatch="**", **bar_args)
 plt.errorbar(x + 2.5 * bar_width, df_u280_ddr["time_loop"].loc[[2, 5]],
              yerr=df_u280_ddr["time_loop_stddev"].loc[[2, 5]], **errorbar_args)
 
@@ -87,7 +87,7 @@ plt.ylabel("Data transfer + kernel time (s)")
 # x_margin, y_margin = plt.margins()
 # plt.margins(y=y_margin + 0.15)
 plt.legend(loc='upper left', fancybox=True, shadow=True, ncol=2,
-           prop={'size': 8}, bbox_to_anchor=(-0.1, 1.18))
+           prop={'size': 8}, bbox_to_anchor=(-0.03, 1.18))
 plt.tight_layout()
 
 ax = plt.gca()
