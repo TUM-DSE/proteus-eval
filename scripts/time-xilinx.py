@@ -185,6 +185,14 @@ labels = ["U50 native", "U50 Proteus", "U280 native",
 
 # Total execution time --------------------------------------------------------------------------------------
 
+print("Mean of stddevs")
+print("U50 native:      ", df_u50_fast["native"]["stddev"].mean())
+print("U50 Proteus:     ", df_u50_fast["proteus"]["stddev"].mean())
+print("U280 native:     ", df_u280_fast["native"]["stddev"].mean())
+print("U280 Proteus:    ", df_u280_fast["proteus"]["stddev"].mean())
+print("U280 DDR native: ", df_u280_ddr_fast["native"]["stddev"].mean())
+print("U280 DDR Proteus:", df_u280_ddr_fast["proteus"]["stddev"].mean())
+
 upper_bar_colors = ["#5783d4", "#de8a54", "#46b097"]
 
 x_offs = -2.5
