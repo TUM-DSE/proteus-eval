@@ -77,4 +77,4 @@ filename = f"{common.plot_dir}/time-intel.pdf"
 print(f"Saving figure to {filename}")
 plt.margins(x=0.01, tight=True)
 plt.savefig(filename, dpi=300, pad_inches=0.02, bbox_inches="tight", format="pdf")
-plt.show()
+# plt.show()
