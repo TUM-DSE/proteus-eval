@@ -5,7 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import common
 
-bar_width = 0.13
+bar_width = 0.11
 
 bar_args = {
     "width": bar_width,
@@ -31,9 +31,9 @@ colors = [common.bar_blue, common.bar_blue, common.bar_blue,
           common.bar_orange, common.bar_orange, common.bar_orange]
 plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
 
-plt.rcParams.update({'font.size': 10})
+plt.rcParams.update({'font.size': 9.5})
 width = 4.0
-height = 2.8
+height = 2.2
 plt.figure(figsize=(width, height))
 
 # First 10 rows compute intensive applications, remaining rows memory intensive applications
@@ -82,12 +82,12 @@ plt.errorbar(x + 2.5 * bar_width, df_u280_ddr["time_loop"].loc[[2, 5]],
              yerr=df_u280_ddr["time_loop_stddev"].loc[[2, 5]], **errorbar_args)
 
 plt.xticks(x, xlabels, rotation=0)
-plt.ylim(0, 11)
-plt.ylabel("Data transfer + kernel time (s)")
+plt.ylim(0, 11.9)
+plt.ylabel("Data transfer + kernel time (s)", fontsize=8.5)
 # x_margin, y_margin = plt.margins()
 # plt.margins(y=y_margin + 0.15)
 plt.legend(loc='upper left', fancybox=True, shadow=True, ncol=2,
-           prop={'size': 8}, bbox_to_anchor=(-0.03, 1.18))
+           prop={'size': 8}, bbox_to_anchor=(-0.03, 1.22))
 plt.tight_layout()
 
 ax = plt.gca()
@@ -102,4 +102,5 @@ filename = f"../plots/time-memory-total.pdf"
 print(f"Saving figure to {filename}")
 plt.margins(x=0.01, tight=True)
 plt.savefig(filename, **savefig_args)
+# plt.show()
 plt.clf()

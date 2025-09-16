@@ -25,7 +25,7 @@ plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
 plt.rcParams.update({'font.size': 10})
 bar_width = 0.28
 width = 4.0
-height = 2.8
+height = 2.4
 # aspect = 2.0
 # height = width / aspect
 plt.figure(figsize=(width, height))
@@ -62,7 +62,7 @@ plt.xticks(x, xlabel_names, rotation=0)
 plt.ylabel("Total execution time (s)")
 x_margin, y_margin = plt.margins()
 # plt.margins(y=y_margin + 0.1)
-plt.legend(loc='upper left', fancybox=True, shadow=True, ncol=1, prop={'size': 8}, bbox_to_anchor=(0, 1.13))
+plt.legend(loc='upper left', fancybox=True, shadow=True, ncol=1, prop={'size': 8}, bbox_to_anchor=(0, 1.18))
 plt.tight_layout()
 
 ax = plt.gca()
@@ -77,3 +77,4 @@ filename = f"{common.plot_dir}/time-intel.pdf"
 print(f"Saving figure to {filename}")
 plt.margins(x=0.01, tight=True)
 plt.savefig(filename, dpi=300, pad_inches=0.02, bbox_inches="tight", format="pdf")
+plt.show()

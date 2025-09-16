@@ -108,7 +108,7 @@ for app in mem_app_names:
 
 ### Preparation to create plots
 width = 4.4
-height = 2.2
+height = 1.9
 # aspect = 2
 # height = width / aspect
 width_comp = width * (2.2/5)
@@ -120,7 +120,7 @@ hatches = ["", "//"]
 
 ### For compute-bound apps
 plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
-plt.rcParams.update({'font.size': 9})
+plt.rcParams.update({'font.size': 8})
 plt.figure(figsize=(width_comp, height))
 
 x = np.arange(len(cmp_xlabel_names))
@@ -144,7 +144,7 @@ plt.clf()
 
 ### For memory-bound apps
 plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
-plt.rcParams.update({'font.size': 8})
+plt.rcParams.update({'font.size': 7.5})
 plt.figure(figsize=(width_mem, height))
 
 x2 = np.arange(len(mem_xlabel_names))
@@ -154,7 +154,7 @@ for i in range(len(dfs_mem)):
             hatch=hatches[i % 2], label=labels[i], **bar_args)
 
 plt.xticks(x2, mem_xlabel_names, rotation=0)
-plt.ylim(0,53)
+plt.ylim(0,59)
 plt.ylabel("Kernel's throughput (GiB/s)")
 plt.legend(loc='upper left', fancybox=True, shadow=True, # fontsize=7, 
            ncol=2, prop={'size': 6.5}, bbox_to_anchor=(-0.03, 1.26))
@@ -165,4 +165,5 @@ filename_mem = f"../plots/native/throughput-motivation-mem.pdf"
 print(f"Saving figure to {filename_mem}")
 plt.margins(x=0.01, tight=True)
 plt.savefig(filename_mem, **savefig_args)
+# plt.show()
 plt.clf()

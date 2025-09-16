@@ -44,13 +44,13 @@ plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
 
 plt.rcParams.update({'font.size': 9.2})
 width = 4.0
-height = 2.8
+height = 2.4
 # width = 7.0
 # aspect = 2.0
 # height = width / aspect
 fig, (ax1, ax2, ax3) = plt.subplots(3, 1, sharex=True, figsize=(width, height))
 
-ax1.set_ylim(70, 450)
+ax1.set_ylim(70, 499)
 ax2.set_ylim(1, 24)
 ax3.set_ylim(0, 0.01)
 
@@ -88,19 +88,19 @@ axs = [ax1, ax2, ax3]
 for ax in axs:
     ax.bar(x - 2.5 * bar_width, times.iloc[3], hatch=hatches[0], label="U50 native", **bar_args)
     ax.bar(x - 1.5 * bar_width, times.iloc[0], hatch=hatches[1], label="U50 Proteus", **bar_args)
-    ax.bar(x - 0.5 * bar_width, times.iloc[4], hatch=hatches[0], label="U280 nat.", **bar_args)
-    ax.bar(x + 0.5 * bar_width, times.iloc[1], hatch=hatches[1], label="U280 Pro.", **bar_args)
-    ax.bar(x + 1.5 * bar_width, times.iloc[5], hatch=hatches[0], label="U280-DDR nat.", **bar_args)
-    ax.bar(x + 2.5 * bar_width, times.iloc[2], hatch=hatches[1], label="U280-DDR Pro.", **bar_args)
+    ax.bar(x - 0.5 * bar_width, times.iloc[4], hatch=hatches[0], label="U280 na.", **bar_args)
+    ax.bar(x + 0.5 * bar_width, times.iloc[1], hatch=hatches[1], label="U280 Pr.", **bar_args)
+    ax.bar(x + 1.5 * bar_width, times.iloc[5], hatch=hatches[0], label="U280-DDR na.", **bar_args)
+    ax.bar(x + 2.5 * bar_width, times.iloc[2], hatch=hatches[1], label="U280-DDR Pr.", **bar_args)
 
 # plt.xticks(x, x_labels)
 ax.set_xticks(x, x_labels)
-ax.set_xticklabels(x_labels, rotation=15, fontsize=9)
+ax.set_xticklabels(x_labels, rotation=14, fontsize=9)
 ax2.set_ylabel("Time (ms)")
 # ax2.yaxis.set_label_coords(-0.07, 0.7)
 ax2.yaxis.set_label_coords(-0.12, 0.7)
 ax1.legend(loc='upper right', fancybox=True, shadow=True,
-           ncol=3, prop={'size': 8.0}, bbox_to_anchor=(1, 1.9))
+           ncol=3, prop={'size': 8.0}, bbox_to_anchor=(1, 2.0))
 plt.tight_layout()
 # FIXME: plt.margiins() doesn't change margins for some reason...
 plt.margins(x=0.0, tight=True) 
@@ -120,3 +120,4 @@ for ax in axs:
 filename = f"../plots/overheads.pdf"
 print(f"Saving figure to {filename}")
 plt.savefig(filename, dpi=300, pad_inches=0.02, bbox_inches='tight', format="pdf")
+# plt.show()

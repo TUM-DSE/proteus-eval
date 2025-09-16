@@ -55,7 +55,7 @@ plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
 
 plt.rcParams.update({'font.size': 10})
 width = 4.0
-height = 2.8
+height = 2.3
 # aspect = 1.8
 # height = width / aspect
 plt.figure(figsize=(width, height))
@@ -157,8 +157,8 @@ for app in app_names:
 
 x = np.arange(len(xlabel_names))
 dfs = [df_u50_fast, df_u280_fast, df_u280_ddr_fast]
-labels = ["U50 native", "U50 Proteus", "U280 nat.",
-          "U280 Pro.", "U280-DDR nat.", "U280-DDR Pro."]
+labels = ["U50 native", "U50 Proteus", "U280 na.",
+          "U280 Pr.", "U280-DDR na.", "U280-DDR Pr."]
 
 # Total execution time --------------------------------------------------------------------------------------
 
@@ -192,10 +192,10 @@ for i in range(3):
 plt.xticks(x, xlabel_names, rotation=0)
 # x_margin, y_margin = plt.margins()
 # plt.margins(y=y_margin + 0.33)
-plt.ylim(0,49.5)
+plt.ylim(0,66)
 plt.ylabel("Total execution time (s)")
 plt.legend(loc='upper left', fancybox=True, shadow=True,
-           ncol=3, prop={'size': 8}, bbox_to_anchor=(-0.13, 1.26))
+           ncol=3, prop={'size': 8}, bbox_to_anchor=(-0.11, 1.08))
 plt.tight_layout()
 configure_ax()
 
@@ -203,6 +203,7 @@ filename = f"../plots/time-rosetta-total.pdf"
 print(f"Saving figure to {filename}")
 plt.margins(x=0.01, tight=True)
 plt.savefig(filename, **savefig_args)
+# plt.show()
 plt.clf()
 
 # # Data transfer + kernel time -------------------------------------------------------------------------------

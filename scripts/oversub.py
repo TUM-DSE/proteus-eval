@@ -26,12 +26,12 @@ colors = [common.bar_blue, common.bar_blue, common.bar_orange,
 hatches = ["", "//", "--"]
 plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
 
-plt.rcParams.update({'font.size': 10})
+plt.rcParams.update({'font.size': 9.5})
 # width = 7.0
 # aspect = 2
 # height = width / aspect
 width = 4.0
-height = 2.8
+height = 2.2
 plt.figure(figsize=(width, height))
 
 df_u280_fast = pd.read_csv(f"../data/native/oversub-u280-fast.csv", skipinitialspace=True)
@@ -120,12 +120,12 @@ plt.errorbar(x + 1.5 * bar_width, times_ddr_dc, yerr=stddev_ddr_dc, **errorbar_a
 
 plt.xticks(x, app_names)
 plt.xlabel("Emulated FPGA memory capacity (MiB)")
-plt.ylim(0,1.4)
-plt.ylabel("Data transfer + kernel time (s)")
+plt.ylim(0,1.48)
+# plt.ylabel("Data transfer + kernel time (s)")
 # x_margin, y_margin = plt.margins()
 # plt.margins(y=y_margin + 0.1)
 plt.legend(loc="upper left", fancybox=True, shadow=True, # fontsize=7.5,
-           ncol=2, prop={'size': 8}, bbox_to_anchor=(0, 1.08))
+           ncol=2, prop={'size': 8}, bbox_to_anchor=(0, 1.12))
 plt.tight_layout()
 
 ax = plt.gca()
@@ -136,7 +136,13 @@ ax.spines['left'].set_visible(False)
 ax.set_axisbelow(True)
 ax.grid(axis='y')
 
+ax.set_ylabel("Data transfer + kernel time (s)", fontsize=8.5)
+# ax2.yaxis.set_label_coords(-0.22, 1.1)
+ax.yaxis.set_label_coords(-0.117, 0.4)
+# plt.ylabel("Data transfer + kernel time (s)")
+
 filename = f"../plots/native/oversub.pdf"
 print(f"Saving figure to {filename}")
 plt.margins(x=0.01, tight=True)
 plt.savefig(filename, dpi=300, pad_inches=0.02, bbox_inches='tight', format="pdf")
+# plt.show()

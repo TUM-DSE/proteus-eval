@@ -263,7 +263,7 @@ print(f"Proteus       : {proteus_improve.mean()}")
 # width = 15.0
 # aspect = 4.2
 width = 14.0
-height = 3.5
+height = 2.8
 # aspect = 4.0
 # height = width / aspect
 width_cmp = width * (8.8/18)
@@ -345,7 +345,7 @@ for i in range(len(dfs_plot_cmp)):
 plt.xticks(x2, xlabel_names_cmp, rotation=12)
 plt.ylim(0,2.6)
 plt.ylabel("Throughput (GiB/s)")
-plt.legend(loc='upper right', fancybox=True, shadow=True, ncol=2, prop={'size': 11}, bbox_to_anchor=(1.0, 1.09))
+plt.legend(loc='upper right', fancybox=True, shadow=True, ncol=2, prop={'size': 11}, bbox_to_anchor=(1.0, 1.15))
 plt.tight_layout()
 configure_ax()
 
@@ -484,7 +484,8 @@ for i in range(len(dfs_plot_ros)):
 plt.xticks(x3, xlabel_names_ros, rotation=12)
 # plt.ylim(0,8.0)
 ax2.set_ylabel("Throughput (GiB/s)")
-ax2.yaxis.set_label_coords(-0.22, 1.1)
+# ax2.yaxis.set_label_coords(-0.22, 1.1)
+ax2.yaxis.set_label_coords(-0.25, 0.4)
 # plt.legend(loc='upper left', fancybox=True, shadow=True, ncol=4, bbox_to_anchor=(0.0, 1.1))
 plt.tight_layout()
 
