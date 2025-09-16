@@ -18,9 +18,9 @@ import common
 # df_s10_proteus = pd.read_csv(f"{common.data_rootdir}/proteus/s10-fast-estimated.csv")
 # dfs = [df_s10_native, df_s10_proteus]
 
-u280_only_dummy = [120, 60, 60]
-u50_only_dummy = [100, 50, 50]
-proteus_dummy = [100, 50, 30]
+u280_only_dummy = [314188, 135182, 0]
+u50_only_dummy = [333147, 149582, 0]
+proteus_dummy = [0, 0, 59705]
 
 colors = [common.bar_blue, common.bar_orange, common.bar_green]
 plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
