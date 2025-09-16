@@ -18,15 +18,20 @@ import common
 # df_s10_proteus = pd.read_csv(f"{common.data_rootdir}/proteus/s10-fast-estimated.csv")
 # dfs = [df_s10_native, df_s10_proteus]
 
-u280_only_dummy = [314188, 135182, 0]
-u50_only_dummy = [333147, 149582, 0]
-proteus_dummy = [0, 0, 59705]
+# numbers are in milliseconds (?)
+u50_only_ms  = [333147, 149582, 0]
+u280_only_ms = [314188, 135182, 0]
+proteus_ms   = [314188, 135182, 59705] # When FPGAs = 1 or 2, Proteus will choose a faster FPGA
+
+u50_only_sec  = [x / 1000.0 for x in u50_only_ms]
+u280_only_sec = [x / 1000.0 for x in u280_only_ms]
+proteus_sec   = [x / 1000.0 for x in proteus_ms]
 
 colors = [common.bar_blue, common.bar_orange, common.bar_green]
 plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
 
 plt.rcParams.update({'font.size': 10})
-bar_width = 0.22
+bar_width = 0.20
 width = 4.4
 height = 2.0
 # aspect = 2.0
@@ -52,11 +57,11 @@ xlabel_names = [1, 2, 4]
 
 x = np.arange(len(xlabel_names))
 
-plt.bar(x - 1.0 * bar_width, u50_only_dummy,
+bars_u50  = plt.bar(x - 1.0 * bar_width, u50_only_sec,
         bar_width, label="U50-only", linewidth=1, edgecolor="k")
-plt.bar(x, u280_only_dummy,
+bars_u280 = plt.bar(x, u280_only_sec,
                bar_width, label="U280-only", linewidth=1, edgecolor="k", hatch="//")
-bars = plt.bar(x + 1.0 * bar_width, proteus_dummy,
+bars_pro  = plt.bar(x + 1.0 * bar_width, proteus_sec,
                bar_width, label="Proteus", linewidth=1, edgecolor="k", hatch="**")
 
 # proteus_overhead = ((df_s10_proteus["average"].values /
@@ -64,6 +69,21 @@ bars = plt.bar(x + 1.0 * bar_width, proteus_dummy,
 # for j, b in enumerate(bars):
 #     plt.text(b.get_x()+0.07, b.get_height()+0.4,
 #              f" {proteus_overhead[j]:.1f}%", rotation=90, size=8) #, fontweight='bold')
+
+for j, b in enumerate(bars_u50):
+    if u50_only_sec[j]==0:
+        plt.text(b.get_x()+0.06, b.get_height()+1.5, f"X", color='red', rotation=0, size=10, fontweight='bold')
+
+for j, b in enumerate(bars_u280):
+    if u280_only_sec[j]==0:
+        plt.text(b.get_x()+0.06, b.get_height()+1.5, f"X", color='red', rotation=0, size=10, fontweight='bold')
+
+proteus_baseline = proteus_sec[0] # FPGA = 1
+for j, b in enumerate(bars_pro):
+    # if j != 0:
+    plt.text(b.get_x()+0.0, b.get_height()+5.0, f"{(proteus_baseline / proteus_sec[j]):.1f}x", 
+             rotation=0, size=9, fontweight='bold')
+
 
 plt.xticks(x, xlabel_names, rotation=0)
 plt.xlabel("Number of FPGAs")
