@@ -55,7 +55,7 @@ plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
 
 plt.rcParams.update({'font.size': 10})
 width = 4.0
-height = 2.3
+height = 2.0
 # aspect = 1.8
 # height = width / aspect
 plt.figure(figsize=(width, height))
@@ -192,10 +192,11 @@ for i in range(3):
 plt.xticks(x, xlabel_names, rotation=0)
 # x_margin, y_margin = plt.margins()
 # plt.margins(y=y_margin + 0.33)
-plt.ylim(0,66)
-plt.ylabel("Total execution time (s)")
+plt.ylim(0,70)
+plt.yticks([0, 20, 40])
+plt.ylabel("Total execution time (s)", fontsize=9)
 plt.legend(loc='upper left', fancybox=True, shadow=True,
-           ncol=3, prop={'size': 8}, bbox_to_anchor=(-0.11, 1.08))
+           ncol=3, prop={'size': 7.4}, bbox_to_anchor=(-0.03, 1.15))
 plt.tight_layout()
 configure_ax()
 

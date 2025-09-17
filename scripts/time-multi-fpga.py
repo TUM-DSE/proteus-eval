@@ -32,8 +32,8 @@ plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
 
 plt.rcParams.update({'font.size': 10})
 bar_width = 0.20
-width = 4.4
-height = 2.0
+width = 4.6
+height = 1.5
 # aspect = 2.0
 # height = width / aspect
 plt.figure(figsize=(width, height))
@@ -53,7 +53,8 @@ plt.figure(figsize=(width, height))
 # for app in app_names:
 #     xlabel_names.append(common.app_names_abb[app])
 
-xlabel_names = [1, 2, 4]
+# xlabel_names = [1, 2, 4]
+xlabel_names = ["1 FPGA", "2 FPGAs", "4 FPGAs"]
 
 x = np.arange(len(xlabel_names))
 
@@ -86,7 +87,8 @@ for j, b in enumerate(bars_pro):
 
 
 plt.xticks(x, xlabel_names, rotation=0)
-plt.xlabel("Number of FPGAs")
+# plt.xlabel("Number of FPGAs")
+plt.yticks(np.arange(0, 301, 100))
 plt.ylabel("Total time (s)")
 x_margin, y_margin = plt.margins()
 # plt.margins(y=y_margin + 0.1)
@@ -103,6 +105,6 @@ ax.grid(axis='y')
 
 filename = f"{common.plot_dir}/time-multi-fpga.pdf"
 print(f"Saving figure to {filename}")
-plt.margins(x=0.01, tight=True)
+plt.margins(x=0.06, tight=True)
 plt.savefig(filename, dpi=300, pad_inches=0.02, bbox_inches="tight", format="pdf")
-plt.show()
+# plt.show()

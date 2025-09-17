@@ -44,13 +44,13 @@ plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
 
 plt.rcParams.update({'font.size': 9.2})
 width = 4.0
-height = 2.4
+height = 2.0
 # width = 7.0
 # aspect = 2.0
 # height = width / aspect
 fig, (ax1, ax2, ax3) = plt.subplots(3, 1, sharex=True, figsize=(width, height))
 
-ax1.set_ylim(70, 499)
+ax1.set_ylim(70, 560)
 ax2.set_ylim(1, 24)
 ax3.set_ylim(0, 0.01)
 
@@ -95,15 +95,17 @@ for ax in axs:
 
 # plt.xticks(x, x_labels)
 ax.set_xticks(x, x_labels)
-ax.set_xticklabels(x_labels, rotation=14, fontsize=9)
+ax.set_xticklabels(x_labels, rotation=0, fontsize=8)
 ax2.set_ylabel("Time (ms)")
+ax1.set_yticks([200, 400])
 # ax2.yaxis.set_label_coords(-0.07, 0.7)
 ax2.yaxis.set_label_coords(-0.12, 0.7)
 ax1.legend(loc='upper right', fancybox=True, shadow=True,
-           ncol=3, prop={'size': 8.0}, bbox_to_anchor=(1, 2.0))
+           ncol=3, prop={'size': 7.0}, bbox_to_anchor=(1, 1.9))
 plt.tight_layout()
-# FIXME: plt.margiins() doesn't change margins for some reason...
+# FIXME: plt.margins() doesn't change margins for some reason...
 plt.margins(x=0.0, tight=True) 
+plt.xlim(-0.5, x.max()+0.5)
 plt.subplots_adjust(wspace=0, hspace=0.05)
 
 for ax in axs:
@@ -116,6 +118,8 @@ for ax in axs:
 # ax.spines['left'].set_visible(False)
 # ax.set_axisbelow(True)
 # ax.grid(axis='y')
+
+# print(x.max())
 
 filename = f"../plots/overheads.pdf"
 print(f"Saving figure to {filename}")

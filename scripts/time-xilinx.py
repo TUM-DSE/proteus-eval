@@ -55,8 +55,9 @@ plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
 
 plt.rcParams.update({'font.size': 12})
 width = 14.0
-aspect = 5
-height = width / aspect
+# aspect = 5
+# height = width / aspect
+height = 2.4
 plt.figure(figsize=(width, height))
 
 # Individual plots ------------------------------------------------------------------------------------------
@@ -214,15 +215,15 @@ for i in range(3):
     proteus_overhead = ((dfs[i]["proteus"]["average"].values /
                         dfs[i]["native"]["average"].values) * 100) - 100
     for j, (bl, bh) in enumerate(zip(bars_low, bars_high)):
-        plt.text(bl.get_x() + 0.01, bl.get_height() + bh.get_height(),
-                 f"  {proteus_overhead[j]:.1f}%", rotation=90, size=9)
+        plt.text(bl.get_x() + 0.01, bl.get_height() + bh.get_height() + 0.2,
+                 f" {proteus_overhead[j]:.1f}%", rotation=90, size=9)
     plt.errorbar(x + x_offs * bar_width, dfs[i]["proteus"]["average"].values,
                  yerr=dfs[i]["proteus"]["stddev"].values, **errorbar_args)
     x_offs += 1
 
 plt.xticks(x, xlabel_names, rotation=0)
-plt.ylabel("Total execution time (s)")
-plt.legend(loc='upper left', fancybox=True, shadow=True, ncol=3, prop={'size': 10}, bbox_to_anchor=(0, 1.1))
+plt.ylabel("Total execution time (s)", fontsize=11)
+plt.legend(loc='upper left', fancybox=True, shadow=True, ncol=3, prop={'size': 10}, bbox_to_anchor=(0, 1.2))
 plt.tight_layout()
 configure_ax()
 
@@ -230,6 +231,7 @@ filename = f"../plots/time-xilinx-total.pdf"
 print(f"Saving figure to {filename}")
 plt.margins(x=0.005, tight=True)
 plt.savefig(filename, **savefig_args)
+plt.show()
 plt.clf()
 
 # Data transfer + kernel time -------------------------------------------------------------------------------

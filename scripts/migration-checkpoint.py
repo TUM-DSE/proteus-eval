@@ -44,7 +44,7 @@ labels = [
 plt.rcParams.update({'font.size': 9.5})
 bar_width = 0.19
 width = 4.0
-height = 2.2
+height = 2.0
 fig, ax = plt.subplots(figsize=(width, height))
 
 np_save_fpga_cp = df_cp["save_fpga[s]"].to_numpy(dtype=float)
@@ -99,13 +99,14 @@ ax.bar(x_pos_r4, np_load_vm_cp,   bar_width, bottom=np_load_fpga_cp,
 # define x/y labels and legends
 ax.set_xticks((x_pos_r1+x_pos_r2+x_pos_r3+x_pos_r4)/4, labels)
 ax.set_xticklabels(labels, rotation=0, fontsize=8.5)
-plt.ylim(0,9.6)
-ax.set_ylabel('Time (s)')
-ax.yaxis.set_label_coords(-0.07, 0.4)
+plt.ylim(0,10.5)
+ax.set_yticks(np.arange(0, 8, 2))
+ax.set_ylabel('Time (s)', fontsize=8.5)
+ax.yaxis.set_label_coords(-0.06, 0.4)
 # x_margin, y_margin = plt.margins()
 # plt.margins(y=y_margin + 0.3)
 ax.legend(loc='upper left', fancybox=True, shadow=True, # fontsize=6.5,
-          ncol=3, prop={'size': 7.8}, bbox_to_anchor=(-0.095, 1.05))
+          ncol=3, prop={'size': 7.8}, bbox_to_anchor=(-0.09, 1.05))
 
 # define plot flames
 ax.spines['top'].set_visible(False)
@@ -119,9 +120,9 @@ add_line(ax, 0.333, -.2)
 add_line(ax, 0.666, -.2)
 add_line(ax, 1, -.2)
 
-plt.text(0.5, -2.1,  "Src: U50",       fontsize=9.5)
-plt.text(3.35, -2.1,  "Src: U280",       fontsize=9.5)
-plt.text(5.9, -2.1, "Src: U280-DDR",    fontsize=9.5)
+plt.text(0.5, -2.5,  "Src: U50",       fontsize=9.5)
+plt.text(3.35, -2.5,  "Src: U280",       fontsize=9.5)
+plt.text(5.9, -2.5, "Src: U280-DDR",    fontsize=9.5)
 
 # save the plot as pdf
 plt.tight_layout()

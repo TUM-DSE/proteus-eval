@@ -263,7 +263,7 @@ print(f"Proteus       : {proteus_improve.mean()}")
 # width = 15.0
 # aspect = 4.2
 width = 14.0
-height = 2.8
+height = 2.0
 # aspect = 4.0
 # height = width / aspect
 width_cmp = width * (8.8/18)
@@ -291,7 +291,7 @@ for app in app_names:
 
 # Total throughput --------------------------------------------------------------------------------------
 plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
-plt.rcParams.update({'font.size': 12})
+plt.rcParams.update({'font.size': 10})
 plt.figure(figsize=(width, height))
 
 # x = np.arange(len(app_names)-mem_app_num)
@@ -310,7 +310,7 @@ for i in range(len(dfs_plot)):
         plt.text(b.get_x() + 0.19 * bar_width, b.get_height(),
                  f"  {improves[i-1][j]:.1f}%", rotation=90, size=8.5)
 
-plt.xticks(x, xlabel_names, rotation=12)
+plt.xticks(x, xlabel_names, rotation=0)
 plt.ylabel("Throughput (GiB/s)")
 plt.legend(loc='upper left', fancybox=True, shadow=True, ncol=4, bbox_to_anchor=(0.0, 1.1))
 plt.tight_layout()
@@ -324,7 +324,7 @@ plt.clf()
 
 # Total throughput (compute)  --------------------------------------------------------------------------------------
 plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
-plt.rcParams.update({'font.size': 12})
+plt.rcParams.update({'font.size': 10})
 plt.figure(figsize=(width_cmp, height))
 
 x2 = np.arange(len(xlabel_names_cmp))
@@ -340,12 +340,12 @@ for i in range(len(dfs_plot_cmp)):
 
     for j, b in enumerate(bars):
         plt.text(b.get_x() + 0.19 * bar_width, b.get_height(),
-                 f"  {improves_cmp[i-1][j]:.1f}%", rotation=90, size=8.5)
+                 f" {improves_cmp[i-1][j]:.1f}%", rotation=90, size=8.5)
 
-plt.xticks(x2, xlabel_names_cmp, rotation=12)
+plt.xticks(x2, xlabel_names_cmp, rotation=0)
 plt.ylim(0,2.6)
 plt.ylabel("Throughput (GiB/s)")
-plt.legend(loc='upper right', fancybox=True, shadow=True, ncol=2, prop={'size': 11}, bbox_to_anchor=(1.0, 1.15))
+plt.legend(loc='upper right', fancybox=True, shadow=True, ncol=2, prop={'size': 10}, bbox_to_anchor=(1.0, 1.2))
 plt.tight_layout()
 configure_ax()
 
@@ -353,11 +353,12 @@ filename_cmp = f"../plots/scheduler-thrp-cmp.pdf"
 print(f"Saving figure to {filename_cmp}")
 plt.margins(x=0.01, tight=True)
 plt.savefig(filename_cmp, **savefig_args)
+# plt.show()
 plt.clf()
 
 # Total throughput (memory)  --------------------------------------------------------------------------------------
 plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
-plt.rcParams.update({'font.size': 12})
+plt.rcParams.update({'font.size': 10})
 plt.figure(figsize=(width_mem, height))
 
 x3 = np.arange(len(xlabel_names_mem))
@@ -373,9 +374,9 @@ for i in range(len(dfs_plot_mem)):
 
     for j, b in enumerate(bars):
         plt.text(b.get_x() + 0.19 * bar_width, b.get_height(),
-                 f"  {improves_mem[i-1][j]:.1f}%", rotation=90, size=8.5)
+                 f" {improves_mem[i-1][j]:.1f}%", rotation=90, size=8.5)
 
-plt.xticks(x3, xlabel_names_mem, rotation=12)
+plt.xticks(x3, xlabel_names_mem, rotation=0)
 plt.ylim(0,8.0)
 plt.ylabel("Throughput (GiB/s)")
 # plt.legend(loc='upper left', fancybox=True, shadow=True, ncol=4, bbox_to_anchor=(0.0, 1.1))
@@ -386,15 +387,16 @@ filename_mem = f"../plots/scheduler-thrp-mem.pdf"
 print(f"Saving figure to {filename_mem}")
 plt.margins(x=0.01, tight=True)
 plt.savefig(filename_mem, **savefig_args)
+# plt.show()
 plt.clf()
 
 # Total throughput (Rosetta)  --------------------------------------------------------------------------------------
 plt.rcParams['axes.prop_cycle'] = plt.cycler(color=colors)
-plt.rcParams.update({'font.size': 12})
+plt.rcParams.update({'font.size': 10})
 # plt.figure(figsize=(width_ros, height))
 fig, (ax1, ax2, ax3) = plt.subplots(3, 1, sharex=True, figsize=(width_ros, height))
 
-ax1.set_ylim(0.2, 3.0)
+ax1.set_ylim(0.2, 2.6)
 ax2.set_ylim(0.002, 0.12)
 ax3.set_ylim(0.0, 0.0012)
 
@@ -447,7 +449,7 @@ for i in range(len(dfs_plot_ros)):
     for j in [2, 3]:
         b = bars[j]
         ax1.text(b.get_x() - 0.002, b.get_height(),
-            f"  {improves_ros[i-1][j]:.1f}%", rotation=90, size=8.5)
+            f" {improves_ros[i-1][j]:.1f}%", rotation=90, size=8.5)
 
 # Middle figure
 for i in range(len(dfs_plot_ros)):
@@ -463,7 +465,7 @@ for i in range(len(dfs_plot_ros)):
     j = 0
     b = bars[j]
     ax2.text(b.get_x() - 0.002, b.get_height(),
-        f"  {improves_ros[i-1][j]:.1f}%", rotation=90, size=8.5)
+        f" {improves_ros[i-1][j]:.1f}%", rotation=90, size=8.5)
 
 # Lower figure
 for i in range(len(dfs_plot_ros)):
@@ -479,13 +481,14 @@ for i in range(len(dfs_plot_ros)):
     j = 1
     b = bars[j]
     ax3.text(b.get_x() - 0.002, b.get_height(),
-        f"  {improves_ros[i-1][j]:.1f}%", rotation=90, size=8.5)
+        f" {improves_ros[i-1][j]:.1f}%", rotation=90, size=8.5)
 
-plt.xticks(x3, xlabel_names_ros, rotation=12)
+plt.xticks(x3, xlabel_names_ros, rotation=0)
 # plt.ylim(0,8.0)
+ax1.set_yticks([1,2])
 ax2.set_ylabel("Throughput (GiB/s)")
 # ax2.yaxis.set_label_coords(-0.22, 1.1)
-ax2.yaxis.set_label_coords(-0.25, 0.4)
+ax2.yaxis.set_label_coords(-0.28, 0.4)
 # plt.legend(loc='upper left', fancybox=True, shadow=True, ncol=4, bbox_to_anchor=(0.0, 1.1))
 plt.tight_layout()
 
@@ -494,5 +497,6 @@ print(f"Saving figure to {filename_ros}")
 plt.subplots_adjust(wspace=0, hspace=0.05)
 plt.margins(x=0.01, tight=True)
 plt.savefig(filename_ros, **savefig_args)
+# plt.show()
 plt.clf()
 
