@@ -212,9 +212,10 @@ bars = plt.bar(x + -2 * bar_width, df_u50_fast_arax["avg_time"].values, hatch=ha
 
 arax_overhead = ((df_u50_fast_arax["avg_time"] / df_u50_fast["native"]["average"]) * 100) - 100
 for i, bar in enumerate(bars):
-    # Skip apps without measurements
-    if arax_overhead[i] > -100:
+    if arax_overhead[i] > -100: # Data available
         plt.text(bar.get_x() + 0.01, bar.get_height() + 0.2, f" {arax_overhead[i]:.1f}%", rotation=90, size=9)
+    else: # No data, put a red X
+        plt.text(bar.get_x() + 0.0072, bar.get_height() + 0.15, f"X", color='red', rotation=0, size=10, fontweight='bold')
 
 x_offs = -3
 for i in range(3):
