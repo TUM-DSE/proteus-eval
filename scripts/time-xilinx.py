@@ -196,7 +196,22 @@ for i, df in enumerate(dfs):
 
 upper_bar_colors = ["#5783d4", "#de8a54", "#46b097"]
 
-x_offs = -2.5
+# Arax
+df_u50_fast_arax = pd.read_csv(f"../data/arax/vitis-apps.csv", skipinitialspace=True)
+# It doesn't make sense to include the total average if some apps are missing
+# avg_arax = df_u50_fast_arax[df_u50_fast_arax["avg_time"] > 0].loc[:, "avg_time"].mean()
+avg_arax = 0.0
+new_idx = len(df_u50_fast_arax)
+df_u50_fast_arax.loc[new_idx] = {
+    "app": "average",
+    "avg_time": avg_arax,
+    "stddev": 0.0,}
+print(df_u50_fast_arax)
+x_offs = -3
+plt.bar(x + x_offs * bar_width, df_u50_fast_arax["avg_time"].values, hatch=hatches[1],
+        label="U50 Arax", color=common.bar_brown, **bar_args)
+x_offs += 1
+
 for i in range(3):
     # Native
     plt.bar(x + x_offs * bar_width, dfs[i]["native"]["transfer+kernel"].values,
@@ -223,7 +238,11 @@ for i in range(3):
 
 plt.xticks(x, xlabel_names, rotation=0)
 plt.ylabel("Total execution time (s)", fontsize=11)
-plt.legend(loc='upper left', fancybox=True, shadow=True, ncol=3, prop={'size': 10}, bbox_to_anchor=(0, 1.2))
+handles, labels = plt.gca().get_legend_handles_labels()
+# Put Arax at the end
+order = [1, 2, 3, 4, 5, 6, 0]
+plt.legend([handles[idx] for idx in order],[labels[idx] for idx in order], loc='upper left',
+           fancybox=True, shadow=True, ncol=4, prop={'size': 10}, bbox_to_anchor=(0, 1.2))
 plt.tight_layout()
 configure_ax()
 
