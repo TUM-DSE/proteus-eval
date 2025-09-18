@@ -206,12 +206,17 @@ df_u50_fast_arax.loc[new_idx] = {
     "app": "average",
     "avg_time": avg_arax,
     "stddev": 0.0,}
-print(df_u50_fast_arax)
-x_offs = -3
-plt.bar(x + x_offs * bar_width, df_u50_fast_arax["avg_time"].values, hatch=hatches[1],
-        label="U50 Arax", color=common.bar_brown, **bar_args)
-x_offs += 1
 
+bars = plt.bar(x + -2 * bar_width, df_u50_fast_arax["avg_time"].values, hatch=hatches[1],
+        label="U50 Arax", color=common.bar_brown, **bar_args)
+
+arax_overhead = ((df_u50_fast_arax["avg_time"] / df_u50_fast["native"]["average"]) * 100) - 100
+for i, bar in enumerate(bars):
+    # Skip apps without measurements
+    if arax_overhead[i] > -100:
+        plt.text(bar.get_x() + 0.01, bar.get_height() + 0.2, f" {arax_overhead[i]:.1f}%", rotation=90, size=9)
+
+x_offs = -3
 for i in range(3):
     # Native
     plt.bar(x + x_offs * bar_width, dfs[i]["native"]["transfer+kernel"].values,
@@ -221,6 +226,11 @@ for i in range(3):
     plt.errorbar(x + x_offs * bar_width, dfs[i]["native"]["average"].values,
                  yerr=dfs[i]["native"]["stddev"].values, **errorbar_args)
     x_offs += 1
+
+    # Arax at -2, skip
+    if x_offs == -2:
+        x_offs += 1
+
     # Proteus
     bars_low = plt.bar(x + x_offs * bar_width, dfs[i]["proteus"]["transfer+kernel"].values,
                        hatch=hatches[1], label=labels[2 * i + 1], color=colors[2 * i], **bar_args)
