@@ -107,8 +107,8 @@ for app in mem_app_names:
     mem_xlabel_names.append(common.app_names_abb[app])
 
 ### Preparation to create plots
-width = 4.4
-height = 1.9
+width = 4.2
+height = 1.6
 # aspect = 2
 # height = width / aspect
 width_comp = width * (2.2/5)
@@ -129,9 +129,10 @@ for i in range(len(dfs_comp)):
     plt.bar(x + x_offs * bar_width, dfs_comp[i]["thrp_kernel"].values,
             hatch=hatches[i % 2], label=labels[i], **bar_args)
 
+plt.ylim(0,1.7)
 plt.xticks(x, cmp_xlabel_names, rotation=0)
 plt.margins(x=0.01, tight=True)
-plt.ylabel("Kernel's throughput (GiB/s)")
+plt.ylabel("Kernel's thrp. (GiB/s)")
 # plt.legend(loc='upper left', fancybox=True, shadow=True,
 #            fontsize=8, ncol=1, bbox_to_anchor=(0, 0.98))
 plt.tight_layout()
@@ -140,6 +141,7 @@ configure_ax()
 filename_comp = f"../plots/native/throughput-motivation-comp.pdf"
 print(f"Saving figure to {filename_comp}")
 plt.savefig(filename_comp, **savefig_args)
+plt.show()
 plt.clf()
 
 ### For memory-bound apps
@@ -154,10 +156,11 @@ for i in range(len(dfs_mem)):
             hatch=hatches[i % 2], label=labels[i], **bar_args)
 
 plt.xticks(x2, mem_xlabel_names, rotation=0)
-plt.ylim(0,59)
-plt.ylabel("Kernel's throughput (GiB/s)")
+plt.ylim(0,70)
+plt.yticks(np.arange(0, 60, 10))
+plt.ylabel("Kernel's thrp. (GiB/s)", fontsize=7)
 plt.legend(loc='upper left', fancybox=True, shadow=True, # fontsize=7, 
-           ncol=2, prop={'size': 6.5}, bbox_to_anchor=(-0.03, 1.26))
+           ncol=2, prop={'size': 6.2}, bbox_to_anchor=(-0.03, 1.18))
 plt.tight_layout()
 configure_ax()
 
@@ -165,5 +168,4 @@ filename_mem = f"../plots/native/throughput-motivation-mem.pdf"
 print(f"Saving figure to {filename_mem}")
 plt.margins(x=0.01, tight=True)
 plt.savefig(filename_mem, **savefig_args)
-# plt.show()
 plt.clf()
