@@ -198,13 +198,11 @@ upper_bar_colors = ["#5783d4", "#de8a54", "#46b097"]
 
 # Arax
 df_u50_fast_arax = pd.read_csv(f"../data/arax/vitis-apps.csv", skipinitialspace=True)
-# It doesn't make sense to include the total average if some apps are missing
-# avg_arax = df_u50_fast_arax[df_u50_fast_arax["avg_time"] > 0].loc[:, "avg_time"].mean()
-avg_arax = 0.0
+avg_arax = df_u50_fast_arax[df_u50_fast_arax["avg_time"] > 0].loc[:, "avg_time"].mean()
 new_idx = len(df_u50_fast_arax)
 df_u50_fast_arax.loc[new_idx] = {
     "app": "average",
-    "avg_time": avg_arax,
+    "avg_time": 0.0, # It doesn't make sense to include the total average if some apps are missing
     "stddev": 0.0,}
 
 bars = plt.bar(x + -2 * bar_width, df_u50_fast_arax["avg_time"].values, hatch=hatches[1],
@@ -216,6 +214,14 @@ for i, bar in enumerate(bars):
         plt.text(bar.get_x() + 0.01, bar.get_height() + 0.2, f" {arax_overhead[i]:.1f}%", rotation=90, size=9)
     else: # No data, put a red X
         plt.text(bar.get_x() + 0.0072, bar.get_height() + 0.15, f"X", color='red', rotation=0, size=10, fontweight='bold')
+
+# Arax vs Proteus overhead
+arax_overhead_2 = ((df_u50_fast_arax[:10]["avg_time"] / df_u50_fast["native"][:10]["average"]) * 100) - 100
+proteus_overhead_2 = ((df_u50_fast["proteus"][:10]["average"] / df_u50_fast["native"][:10]["average"]) * 100) - 100
+
+print("Mean overheads across all apps that work in Arax (no gmem, wmem):")
+print(f"Arax: {arax_overhead_2.mean()}")
+print(f"Proteus {proteus_overhead_2.mean()}")
 
 x_offs = -3
 for i in range(3):
