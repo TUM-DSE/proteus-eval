@@ -19,9 +19,9 @@ import common
 # dfs = [df_s10_native, df_s10_proteus]
 
 # numbers are in milliseconds (?)
-u50_only_ms  = [333147, 149582, 0]
-u280_only_ms = [314188, 135182, 0]
-proteus_ms   = [314188, 135182, 59705] # When FPGAs = 1 or 2, Proteus will choose a faster FPGA
+u50_only_ms  = [664608, 298791, 0]
+u280_only_ms = [644823, 288449, 0]
+proteus_ms   = [644823, 288449, 115046] # When FPGAs = 1 or 2, Proteus will choose a faster FPGA
 
 u50_only_sec  = [x / 1000.0 for x in u50_only_ms]
 u280_only_sec = [x / 1000.0 for x in u280_only_ms]
