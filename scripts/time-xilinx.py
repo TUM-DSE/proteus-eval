@@ -205,8 +205,9 @@ df_u50_fast_arax.loc[new_idx] = {
     "avg_time": 0.0, # It doesn't make sense to include the total average if some apps are missing
     "stddev": 0.0,}
 
-bars = plt.bar(x + -2 * bar_width, df_u50_fast_arax["avg_time"].values, hatch=hatches[1],
+bars = plt.bar(x - 2 * bar_width, df_u50_fast_arax["avg_time"].values, hatch=hatches[1],
         label="U50 Arax", color=common.bar_brown, **bar_args)
+plt.errorbar(x - 2 * bar_width, df_u50_fast_arax["avg_time"].values, yerr=df_u50_fast_arax["stddev"].values, **errorbar_args)
 
 arax_overhead = ((df_u50_fast_arax["avg_time"] / df_u50_fast["native"]["average"]) * 100) - 100
 for i, bar in enumerate(bars):
