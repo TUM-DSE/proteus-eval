@@ -82,13 +82,13 @@ for j, b in enumerate(bars_u280):
 proteus_baseline = proteus_sec[0] # FPGA = 1
 for j, b in enumerate(bars_pro):
     # if j != 0:
-    plt.text(b.get_x()+0.0, b.get_height()+5.0, f"{(proteus_baseline / proteus_sec[j]):.1f}x", 
+    plt.text(b.get_x()+0.0, b.get_height()+10.0, f"{(proteus_baseline / proteus_sec[j]):.1f}x", 
              rotation=0, size=9, fontweight='bold')
 
 
 plt.xticks(x, xlabel_names, rotation=0)
 # plt.xlabel("Number of FPGAs")
-plt.yticks(np.arange(0, 301, 100))
+# plt.yticks(np.arange(0, 301, 100))
 plt.ylabel("Total time (s)")
 x_margin, y_margin = plt.margins()
 # plt.margins(y=y_margin + 0.1)
