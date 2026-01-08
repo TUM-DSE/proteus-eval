@@ -132,7 +132,7 @@ for i in range(len(dfs_comp)):
 plt.ylim(0,1.7)
 plt.xticks(x, cmp_xlabel_names, rotation=0)
 plt.margins(x=0.01, tight=True)
-plt.ylabel("Kernel's thrp. (GiB/s)")
+plt.ylabel("Kernel thrp. (GiB/s)")
 # plt.legend(loc='upper left', fancybox=True, shadow=True,
 #            fontsize=8, ncol=1, bbox_to_anchor=(0, 0.98))
 plt.tight_layout()
@@ -158,7 +158,7 @@ for i in range(len(dfs_mem)):
 plt.xticks(x2, mem_xlabel_names, rotation=0)
 plt.ylim(0,70)
 plt.yticks(np.arange(0, 60, 10))
-plt.ylabel("Kernel's thrp. (GiB/s)", fontsize=7)
+plt.ylabel("Kernel thrp. (GiB/s)", fontsize=7)
 plt.legend(loc='upper left', fancybox=True, shadow=True, # fontsize=7, 
            ncol=2, prop={'size': 6.2}, bbox_to_anchor=(-0.03, 1.18))
 plt.tight_layout()
