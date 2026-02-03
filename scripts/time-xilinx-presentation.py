@@ -182,7 +182,7 @@ for app in app_names:
 x = np.arange(len(xlabel_names))
 # dfs = [df_u50_fast, df_u280_fast, df_u280_ddr_fast]
 dfs = [df_u50_fast]
-labels = ["U50 native", "U50 Proteus"]
+labels = ["Native", "Proteus"]
 
 # Total execution time --------------------------------------------------------------------------------------
 
@@ -206,7 +206,7 @@ df_u50_fast_arax.loc[new_idx] = {
     "stddev": 0.0,}
 
 bars = plt.bar(x + bar_width, df_u50_fast_arax["avg_time"].values, hatch=hatches[1],
-        label="U50 Arax", color=common.bar_brown, **bar_args)
+        label="Arax", color=common.bar_orange, **bar_args)
 plt.errorbar(x + bar_width, df_u50_fast_arax["avg_time"].values, yerr=df_u50_fast_arax["stddev"].values, **errorbar_args)
 
 arax_overhead = ((df_u50_fast_arax["avg_time"] / df_u50_fast["native"]["average"]) * 100) - 100
@@ -240,10 +240,10 @@ if x_offs == 1:
 
 # Proteus
 bars_low = plt.bar(x + x_offs * bar_width, dfs[0]["proteus"]["transfer+kernel"].values,
-                    hatch=hatches[1], label=labels[1], color=colors[0], **bar_args)
+                    hatch=hatches[1], label=labels[1], color=colors[4], **bar_args)
 bars_high = plt.bar(x + x_offs * bar_width, dfs[0]["proteus"]["average_host"].values,
                     bottom=dfs[0]["proteus"]["transfer+kernel"].values,
-                    hatch=hatches[1], color=upper_bar_colors[0], **bar_args)
+                    hatch=hatches[1], color=upper_bar_colors[2], **bar_args)
 proteus_overhead = ((dfs[0]["proteus"]["average"].values /
                     dfs[0]["native"]["average"].values) * 100) - 100
 for j, (bl, bh) in enumerate(zip(bars_low, bars_high)):
