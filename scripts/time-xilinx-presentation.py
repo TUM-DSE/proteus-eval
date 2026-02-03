@@ -196,35 +196,14 @@ labels = ["Native", "Proteus"]
 
 upper_bar_colors = ["#5783d4", "#de8a54", "#46b097"]
 
-# Arax
-df_u50_fast_arax = pd.read_csv(f"../data/arax/vitis-apps.csv", skipinitialspace=True)
-avg_arax = df_u50_fast_arax[df_u50_fast_arax["avg_time"] > 0].loc[:, "avg_time"].mean()
-new_idx = len(df_u50_fast_arax)
-df_u50_fast_arax.loc[new_idx] = {
-    "app": "average",
-    "avg_time": 0.0, # It doesn't make sense to include the total average if some apps are missing
-    "stddev": 0.0,}
 
-bars = plt.bar(x + bar_width, df_u50_fast_arax["avg_time"].values, hatch=hatches[1],
-        label="Arax", color=common.bar_orange, **bar_args)
-plt.errorbar(x + bar_width, df_u50_fast_arax["avg_time"].values, yerr=df_u50_fast_arax["stddev"].values, **errorbar_args)
-
-arax_overhead = ((df_u50_fast_arax["avg_time"] / df_u50_fast["native"]["average"]) * 100) - 100
-for i, bar in enumerate(bars):
-    if arax_overhead[i] > -100: # Data available
-        plt.text(bar.get_x() + 0.03, bar.get_height() + 0.2, f" {arax_overhead[i]:.1f}%", rotation=90, size=9)
-    else: # No data, put a red X
-        plt.text(bar.get_x() + 0.0072, bar.get_height() + 0.15, f"X", color='red', rotation=0, size=10, fontweight='bold')
-
-# Arax vs Proteus overhead
-arax_overhead_2 = ((df_u50_fast_arax[:10]["avg_time"] / df_u50_fast["native"][:10]["average"]) * 100) - 100
 proteus_overhead_2 = ((df_u50_fast["proteus"][:10]["average"] / df_u50_fast["native"][:10]["average"]) * 100) - 100
 
-print("Mean overheads across all apps that work in Arax (no gmem, wmem):")
-print(f"Arax: {arax_overhead_2.mean()}")
-print(f"Proteus {proteus_overhead_2.mean()}")
+# print("Mean overheads across all apps that work in Arax (no gmem, wmem):")
+# print(f"Arax: {arax_overhead_2.mean()}")
+# print(f"Proteus {proteus_overhead_2.mean()}")
 
-x_offs = -1
+x_offs = -0.5
 # Native
 plt.bar(x + x_offs * bar_width, dfs[0]["native"]["transfer+kernel"].values,
         hatch=hatches[0], label=labels[0], color=colors[0], **bar_args)
@@ -256,9 +235,7 @@ x_offs += 1
 plt.xticks(x, xlabel_names, rotation=0)
 plt.ylabel("Total execution time (s)", fontsize=11)
 handles, labels = plt.gca().get_legend_handles_labels()
-# Put Arax at the end
-order = [1, 2, 0]
-plt.legend([handles[idx] for idx in order],[labels[idx] for idx in order], loc='upper left',
+plt.legend(loc='upper left',
            fancybox=True, shadow=True, ncol=4, prop={'size': 12}, bbox_to_anchor=(0, 1.2))
 plt.tight_layout()
 configure_ax()
