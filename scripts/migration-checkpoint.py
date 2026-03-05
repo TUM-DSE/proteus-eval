@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import matplotlib
 import common as fp
 from common import (
     plt, np, pd, sns
@@ -11,6 +12,9 @@ def add_line(ax, xpos, ypos):
     line.set_clip_on(False)
     ax.add_line(line)
 
+
+matplotlib.rcParams['pdf.fonttype'] = 42
+matplotlib.rcParams['ps.fonttype'] = 42
 
 plot_name = "mig-and-snapshot-oh"
 data_subdir = "proteus"

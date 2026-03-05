@@ -2,9 +2,15 @@
 
 import pandas as pd
 import numpy as np
+import matplotlib
 import matplotlib.pyplot as plt
 import statistics as stat
 import common
+
+
+matplotlib.rcParams['pdf.fonttype'] = 42
+matplotlib.rcParams['ps.fonttype'] = 42
+
 # Python does not like filenames with dashes :(
 # import importlib
 # est_intel = importlib.import_module("estimate-intel-performance")
@@ -82,7 +88,7 @@ for j, b in enumerate(bars_u280):
 proteus_baseline = proteus_sec[0] # FPGA = 1
 for j, b in enumerate(bars_pro):
     # if j != 0:
-    plt.text(b.get_x()+0.0, b.get_height()+10.0, f"{(proteus_baseline / proteus_sec[j]):.1f}x", 
+    plt.text(b.get_x()+0.0, b.get_height()+10.0, f"{(proteus_baseline / proteus_sec[j]):.1f}x",
              rotation=0, size=9, fontweight='bold')
 
 
