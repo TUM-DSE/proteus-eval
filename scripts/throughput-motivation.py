@@ -2,6 +2,7 @@
 
 import pandas as pd
 import numpy as np
+import matplotlib
 import matplotlib.pyplot as plt
 import statistics as stat
 import common
@@ -17,6 +18,10 @@ def configure_ax():
 
     ax.set_axisbelow(True)
     ax.grid(axis='y')
+
+
+matplotlib.rcParams['pdf.fonttype'] = 42
+matplotlib.rcParams['ps.fonttype'] = 42
 
 bar_width = 0.14
 
@@ -159,7 +164,7 @@ plt.xticks(x2, mem_xlabel_names, rotation=0)
 plt.ylim(0,70)
 plt.yticks(np.arange(0, 60, 10))
 plt.ylabel("Kernel thrp. (GiB/s)", fontsize=7)
-plt.legend(loc='upper left', fancybox=True, shadow=True, # fontsize=7, 
+plt.legend(loc='upper left', fancybox=True, shadow=True, # fontsize=7,
            ncol=2, prop={'size': 6.2}, bbox_to_anchor=(-0.03, 1.18))
 plt.tight_layout()
 configure_ax()

@@ -2,6 +2,7 @@
 
 import pandas as pd
 import numpy as np
+import matplotlib
 import matplotlib.pyplot as plt
 import statistics as stat
 import common
@@ -9,6 +10,9 @@ import common
 import importlib
 est_intel = importlib.import_module("estimate-intel-performance")
 
+
+matplotlib.rcParams['pdf.fonttype'] = 42
+matplotlib.rcParams['ps.fonttype'] = 42
 
 # Make sure Intel csv file is up-to-date
 est_intel.estimate_intel_performance()

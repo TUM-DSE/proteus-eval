@@ -2,9 +2,13 @@
 
 import pandas as pd
 import numpy as np
+import matplotlib
 import matplotlib.pyplot as plt
 import common
 
+
+matplotlib.rcParams['pdf.fonttype'] = 42
+matplotlib.rcParams['ps.fonttype'] = 42
 
 df = pd.read_csv(f"../data/overheads.csv", skipinitialspace=True)
 
@@ -104,7 +108,7 @@ ax1.legend(loc='upper right', fancybox=True, shadow=True,
            ncol=3, prop={'size': 7.0}, bbox_to_anchor=(1, 1.9))
 plt.tight_layout()
 # FIXME: plt.margins() doesn't change margins for some reason...
-plt.margins(x=0.0, tight=True) 
+plt.margins(x=0.0, tight=True)
 plt.xlim(-0.5, x.max()+0.5)
 plt.subplots_adjust(wspace=0, hspace=0.05)
 

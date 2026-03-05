@@ -2,10 +2,10 @@
 
 import pandas as pd
 import numpy as np
+import matplotlib
 import matplotlib.pyplot as plt
 import statistics as stat
 import common
-
 
 def configure_ax():
     ax = plt.gca()
@@ -18,6 +18,9 @@ def configure_ax():
     ax.set_axisbelow(True)
     ax.grid(axis='y')
 
+
+matplotlib.rcParams['pdf.fonttype'] = 42
+matplotlib.rcParams['ps.fonttype'] = 42
 
 df_u50_slow = {}
 df_u50_fast = {}

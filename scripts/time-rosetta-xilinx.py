@@ -2,6 +2,7 @@
 
 import pandas as pd
 import numpy as np
+import matplotlib
 import matplotlib.pyplot as plt
 import statistics as stat
 import common
@@ -18,6 +19,9 @@ def configure_ax():
     ax.set_axisbelow(True)
     ax.grid(axis='y')
 
+
+matplotlib.rcParams['pdf.fonttype'] = 42
+matplotlib.rcParams['ps.fonttype'] = 42
 
 df_u50_slow = {}
 df_u50_fast = {}
@@ -102,44 +106,44 @@ for setting in ["native", "proteus"]:
 #     xlabel_names = []
 #     for app in app_names:
 #         xlabel_names.append(common.app_names_abb[app])
-# 
+#
 #     x = np.arange(len(xlabel_names))
-# 
+#
 #     # Total execution time ----------------------------------------------------------------------------------
-# 
+#
 #     for i in range(6):
 #         x_offs = i - 2
 #         plt.bar(x + x_offs * bar_width, dfs[i][setting]["average"].values,
 #                 hatch=hatches[i % 2], label=labels[i], **bar_args)
 #         plt.errorbar(x + x_offs * bar_width, dfs[i][setting]["average"].values,
 #                      yerr=dfs[i][setting]["stddev"].values, **errorbar_args)
-# 
+#
 #     plt.xticks(x, xlabel_names, rotation=0)
 #     plt.ylabel("Total execution time (s)")
 #     plt.legend(loc='upper left', fancybox=True, shadow=True, ncol=3, prop={'size': 6}, bbox_to_anchor=(0, 1.0))
 #     plt.tight_layout()
 #     configure_ax()
-# 
+#
 #     filename = f"../plots/{setting}/time-rosetta-total.pdf"
 #     print(f"Saving figure to {filename}")
 #     plt.savefig(filename, **savefig_args)
 #     plt.clf()
-# 
+#
 #     # Data transfer + kernel time ---------------------------------------------------------------------------
-# 
+#
 #     for i in range(6):
 #         x_offs = i - 2
 #         plt.bar(x + x_offs * bar_width, dfs[i][setting]["transfer+kernel"].values,
 #                 hatch=hatches[i % 2], label=labels[i], **bar_args)
 #         plt.errorbar(x + x_offs * bar_width, dfs[i][setting]["transfer+kernel"].values,
 #                      yerr=dfs[i][setting]["transfer+kernel_stddev"].values, **errorbar_args)
-# 
+#
 #     plt.xticks(x, xlabel_names, rotation=0)
 #     plt.ylabel("Total data transfer + kernel time (s)")
 #     plt.legend(loc='upper left', fancybox=True, shadow=True, ncol=3, prop={'size': 6}, bbox_to_anchor=(0, 1.0))
 #     plt.tight_layout()
 #     configure_ax()
-# 
+#
 #     filename = f"../plots/{setting}/time-rosetta-fpga.pdf"
 #     print(f"Saving figure to {filename}")
 #     plt.savefig(filename, **savefig_args)
@@ -208,7 +212,7 @@ plt.savefig(filename, **savefig_args)
 plt.clf()
 
 # # Data transfer + kernel time -------------------------------------------------------------------------------
-# 
+#
 # x_offs = -2
 # for i in range(3):
 #     # Native
@@ -228,7 +232,7 @@ plt.clf()
 #     plt.errorbar(x + x_offs * bar_width, dfs[i]["proteus"]["transfer+kernel"].values,
 #                  yerr=dfs[i]["proteus"]["transfer+kernel_stddev"].values, **errorbar_args)
 #     x_offs += 1
-# 
+#
 # plt.xticks(x, xlabel_names, rotation=0)
 # # x_margin, y_margin = plt.margins()
 # # plt.margins(y=y_margin + 0.6)
@@ -236,7 +240,7 @@ plt.clf()
 # plt.legend(loc='upper left', fancybox=True, shadow=True, ncol=3, prop={'size': 6.5}, bbox_to_anchor=(0, 1.0))
 # plt.tight_layout()
 # configure_ax()
-# 
+#
 # filename = f"../plots/time-rosetta-fpga.pdf"
 # print(f"Saving figure to {filename}")
 # plt.margins(x=0.01, tight=True)
